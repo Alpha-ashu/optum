@@ -1,0 +1,17 @@
+{
+  "name": "HCPvsAlex_Summary",
+  "validation_name": "PPKG vs Alex - IIM Claim Summary Search (Dev vs QAE)",
+
+  "test_data": "src/test/resources/testdata/alex_ppkg/hcp_vs_alex_sample_testdata_2.csv",
+  "claim_filter": null,
+  "claim_type": "Summary",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/ppkg_alex/ppkg_alex/hcp_alex_summaryMapping.xlsx"
+  ],
+
+  "consumer_name": "PPKG vs Alex",
+  "source_feature_file": "src/test/resources/feature_files/ppkg_alex/alex/hcp_dev_vs_alex_qae/summary/ppkg_test_summary.feature",
+  "target_feature_file": "src/test/resources/feature_files/ppkg_alex/alex/hcp_dev_vs_alex_qae/summary/alex_qae_summary.feature",
+  "search_type": "Claim Summary Search"
+}
+

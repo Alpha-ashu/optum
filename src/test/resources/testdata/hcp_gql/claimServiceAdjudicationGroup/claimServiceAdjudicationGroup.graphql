@@ -1,0 +1,15 @@
+query claimServiceAdjudicationGroup($query: ServiceAdjudicationGroupQuery)
+{
+    metadata: serviceAdjudicationGroupsMetadata(query: $query)
+    {
+        totalCount
+        page
+        pageSize
+    }
+    serviceAdjudicationGroups(query: $query)
+    {
+        claimTransactionIdentifier
+        sourceSystemCode
+        adjudicationLevelExpirationDate
+    }
+}

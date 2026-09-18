@@ -1,0 +1,59 @@
+query getClaimServiceOtherPayers($query: ClaimServiceOtherPayerQuery) {
+    claimServiceOtherPayers(query: $query) {
+        claimAdjudicationPlatformCode
+        claimServiceLineIdentifier
+        claimServiceOtherPayerRowIdentifier
+        claimTransactionIdentifier
+        otherPayerClaimRowIdentifier
+        otherPayerBundledLineNumber
+        otherPayerPatientLiabilityAmount
+        otherPayerServiceAllowedAmount
+        otherPayerServicePaidAmount
+        otherPayerServiceUnitCount
+        procedureModifier1Code
+        procedureModifier1Description
+        procedureModifier2Code
+        procedureModifier2Description
+        procedureModifier3Code
+        procedureModifier3Description
+        procedureModifier4Code
+        procedureModifier4Description
+        revenueCode
+        revenueCodeDescription
+        serviceProcedureCode
+        serviceProcedureCodeLevel
+        serviceProcedureDescription
+        sourceSystemCode
+        coordinationOfBenefitCoverageTypeCode
+        coordinationOfBenefitCoverageTypeDescription
+        coordinationOfBenefitInsuranceTypeCode
+        coordinationOfBenefitInsuranceTypeDescription
+        audit {
+            createDatetime
+            updateDatetime
+            recordStatusCode
+            createUserIdentifier
+            updateUserIdentifier
+            sourceSystemCreateDatetime
+            sourceSystemCreateUserIdentifier
+            sourceSystemUpdateDatetime
+            sourceSystemUpdateUserIdentifier
+        }
+        hcpMetaData {
+            kafkaTimestamp
+            upsertTimestamp
+        }
+        claimServiceOtherPayerAdjustment {
+            claimAdjustmentGroupCode
+            claimAdjustmentReasonCode
+            claimAdjustmentReasonDescription
+            otherPayerAdjustmentAmount
+            otherPayerAdjustmentQuantityCount
+        }
+        claimServiceOtherPayerOtherMonetaryAmount {
+            amountTypeCode
+            amountTypeDescription
+            otherPayerClaimServiceOtherAmount
+        }
+    }
+}

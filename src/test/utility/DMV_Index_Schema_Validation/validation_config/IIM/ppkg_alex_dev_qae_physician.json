@@ -1,0 +1,18 @@
+{
+  "name": "HCPvsAlex_Physician",
+  "validation_name": "PPKG vs Alex - IIM Physician Claim Search (Dev vs QAE)",
+
+  "test_data": "src/test/resources/testdata/alex_ppkg/hcp_vs_alex_sample_testdata_2.csv",
+  "claim_filter": "PHYSICIAN",
+  "claim_type": "Physician",
+  "//identifier_column": "The physician feature names its response files by the claim number: '<testcase>_<reqClmNbr>_*.json' (see alex_qae_physician.feature / ppkg_dev_physician.feature -> 'def claimIdentifier = row.reqClmNbr'). The engine already defaults the response-file key to the claim number (reqClmNbr), so NO identifier_column override is needed. Setting it to reqInvnCtlNbr made the engine look for '<testcase>_<reqInvnCtlNbr>_*.json', which does not exist, so every row was wrongly reported as RESPONSE_MISSING_BOTH. Left blank on purpose.",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/ppkg_alex/ppkg_alex/hcp_alex_physicianMapping.xlsx"
+  ],
+
+  "consumer_name": "PPKG vs Alex",
+  "source_feature_file": "src/test/resources/feature_files/ppkg_alex/alex/hcp_dev_vs_alex_qae/physician/ppkg_dev_physician.feature",
+  "target_feature_file": "src/test/resources/feature_files/ppkg_alex/alex/hcp_dev_vs_alex_qae/physician/alex_qae_physician.feature",
+  "search_type": "Claim Search"
+}
+

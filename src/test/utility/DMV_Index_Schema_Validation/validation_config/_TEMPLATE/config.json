@@ -1,0 +1,49 @@
+{
+  "//": "===================================================================",
+  "//name": "COPY THIS FOLDER to validation_config/<YourValidationName>/ and edit.",
+  "//how": "Run with:  python src/test/utility/DMV_Index_Schema_Validation/Schema_Validation.py <name>",
+  "//note": "Folders starting with '_' (like this one) are ignored by discovery.",
+  "//": "===================================================================",
+
+  "name": "TODO_Validation_Name",
+  "validation_name": "TODO human-readable title (shown on the report header)",
+
+  "//comparison_mode": "'direct' = same-shape source vs target (stage vs de-canary). Omit for the legacy PPKG-vs-Alex claim-array comparison.",
+  "comparison_mode": "direct",
+
+  "//test_data": "CSV of request rows the feature exercises (YOU fill this in).",
+  "test_data": "src/test/resources/testdata/TODO/TODO_testdata.csv",
+
+  "//mapping_sheets": "One or more field-mapping .xlsx (YOU fill this in).",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/TODO/TODO_mapping.xlsx"
+  ],
+  "//mapping_columns": "Header names of the source/target path columns in the mapping sheet.",
+  "mapping_columns": { "source": "Source_Path", "target": "Target_Path" },
+
+  "//identifier_column": "CSV column that forms the response filename key '<testcase>_<key>_<suffix>'. Omit to use the claim-number column.",
+  "identifier_column": "TODO_reqKeyColumn",
+
+  "claim_type": "TODO_ClaimType",
+  "claim_filter": null,
+
+  "//response_base": "Root folder the karate features write responses into.",
+  "response_base": "target/All_Responses/TODO",
+  "expected_source": "Source",
+  "actual_source": "Target",
+  "//sources": "folder + filename suffix for each side's response JSON.",
+  "sources": {
+    "Source": { "folder": "Source_Responses", "suffix": "_source.json" },
+    "Target": { "folder": "Target_Responses", "suffix": "_target.json" }
+  },
+
+  "//feature_files": "Used to auto-parse the API URL + environment for the report header/name.",
+  "source_feature_file": "src/test/resources/feature_files/TODO/source.feature",
+  "target_feature_file": "src/test/resources/feature_files/TODO/target.feature",
+  "source_environment": "Nonprod",
+
+  "search_type": "TODO Search",
+  "//report_name_template": "Tokens: {source_env} {target_env} {timestamp} {consumer_token} {search_type} {validation_type} {request_type}",
+  "report_name_template": "TODO_Prefix_{source_env}-{target_env}_{timestamp}"
+}
+

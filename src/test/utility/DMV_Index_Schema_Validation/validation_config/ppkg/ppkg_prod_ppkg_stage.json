@@ -1,0 +1,36 @@
+{
+  "// Steps 1" : "To Update Var from runner feature ",
+  "name": "ppkg_prod_ppkg_stage",
+  "validation_name": "PPKG PROD vs PPKG STAGE - Claims 360 Detail Search Hospital",
+
+  "test_data": "src/test/resources/testdata/ppkg/sample_testdata.csv",
+  "claim_filter": null,
+  "claim_type": "Hospital",
+  "//mapping_sheets": "TODO: no Clink-specific Hospital mapping sheet exists yet. Do NOT reuse json_mapping/ppkg_alex/ppkg_alex/hcp_alex_hospitalMapping.xlsx - that maps the IIM PayerPackage response shape, not Clink's claims360-detail response. Add the correct sheet here.",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/ppkg_ppkg/ppkg_prod_ppkg_stage.xlsx"
+  ],
+
+  "//comparison_mode": "PPKG and Alex hit the SAME claims360-detail endpoint and return the identical '{searchOutput, svcRspSts}' shape (no claim/data array), so compare mapped JSON pointers directly instead of the claim-array PPKG-vs-Alex engine.",
+  "comparison_mode": "direct",
+
+  "//mapping_columns": "The mapping .xlsx uses the header names 'Source' and 'Target' (not the default 'PPKG Path'/'ALEX Path'), so tell the engine which two columns to read.",
+  "mapping_columns": { "source": "Source", "target": "Target" },
+
+  "response_base": "target/All_Responses/Hospital",
+  "// Steps 2" : "Update the comparsion",
+  "//sources": "PPKG PROD and PPKG STAGE hit the SAME endpoint but are two DIFFERENT environments, so they MUST use two DISTINCT logical source names. Do NOT reuse the same 'PPKG' key twice - duplicate JSON keys collapse to one, which makes the engine read both expected and actual from the same folder.",
+  "expected_source": "PPKG_PROD",
+  "actual_source": "PPKG_STAGE",
+  "sources": {
+    "PPKG_PROD": { "folder": "PPKG_PROD_Detail_Responses", "suffix": "_ppkgResponse.json" },
+    "PPKG_STAGE": { "folder": "PPKG_Stage_Detail_Responses", "suffix": "_ppkgResponse.json" }
+  },
+
+  "// Steps 4" : "To Update Var from runner feature ",
+  "consumer_name": "ppkg_prod_ppkg_stage",
+  "source_feature_file": "src/test/resources/feature_files/claim360-ppkg/pkkg/ppkg_detail_prod_stage/ppkg_prod_hospital.feature",
+  "target_feature_file": "src/test/resources/feature_files/claim360-ppkg/pkkg/ppkg_detail_prod_stage/ppkg_stage_hospital.feature",
+  "search_type": "ICN Search"
+}
+

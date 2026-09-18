@@ -1,0 +1,15 @@
+query claimTransactionProviders($query: ClaimTransactionProviderQuery)
+{
+    metadata: claimTransactionProvidersMetadata(query: $query)
+    {
+        totalCount
+        page
+        pageSize
+    }
+    claimTransactionProviders(query: $query)
+    {
+        claimTransactionIdentifier
+        providerEntityRoleCode
+        providerIdentifier
+    }
+}

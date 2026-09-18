@@ -1,0 +1,39 @@
+{
+  "// Steps 1" : "To Update Var from runner feature ",
+  "name": "ppkg_non-prod_ppkg_decanary",
+  "validation_name": "PPKG Non-PROD vs PPKG decanary ",
+
+  "test_data": "src/test/resources/testdata/decanary/decanary_summary.csv",
+  "claim_filter": null,
+  "claim_type": "Summary",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/ppkg_ppkg/decanarysummary.xlsx"
+  ],
+
+  "//comparison_mode": "NOT 'direct'. Both responses use the standard claim-array shape ({meta, data:[...]}) and the mapping sheet pointers are authored as '/claim/*/...', so the default claim-array engine is required - it auto-detects the 'data' root and re-roots the '/claim/*' pointers. Setting 'direct' here made every pointer resolve literally against '/claim' (which does not exist) => everything reported as Missing In Both.",
+
+  "//mapping_columns": "The mapping .xlsx uses the header names 'PPKG_Path' and 'Decanary_Path', so tell the engine which two columns to read.",
+  "mapping_columns": { "source": "PPKG_Path", "target": "Decanary_Path" },
+
+  "//identifier_column": "The karate features name each response file '<testcase>_<internalReferenceIdentifier>_...json', so the response-file key must come from the internalReferenceIdentifier CSV column (NOT the default claim-number column).",
+  "identifier_column": "internalReferenceIdentifier",
+
+  "// Steps 2" : "Update the comparsion",
+  "//response_base": "Must match where the karate features actually write: ppkg_nonprod_summary.feature -> 'All_Responses/TOPS/PPKG_Responses/Summary/' and ppkg_decanary_summary.feature -> 'All_Responses/TOPS/Decanary_Responses/Summary/'. Shared root = target/All_Responses/TOPS.",
+  "response_base": "target/All_Responses/TOPS",
+
+  "//sources": "The two environments MUST use two DISTINCT logical source names, and expected_source/actual_source MUST exactly match the keys defined in 'sources' below - otherwise the engine silently falls back to the default PPKG_Responses/Alex_Responses folders. Do NOT put '// comment' keys inside this object.",
+  "expected_source": "PPKG_NONPROD",
+  "actual_source": "PPKG_DECANARY",
+  "sources": {
+    "PPKG_NONPROD": { "folder": "PPKG_Responses/Summary", "suffix": "_ppkgResponse.json" },
+    "PPKG_DECANARY": { "folder": "Decanary_Responses/Summary", "suffix": "_decanaryResponse.json" }
+  },
+
+  "// Steps 4" : "To Update Var from runner feature ",
+  "consumer_name": "ppkg_non-prod_ppkg_decanary",
+  "source_feature_file": "src/test/resources/feature_files/ppkg-ppkg/cosmos/de-canary/summary/non-prod/ppkg_nonprod_summary.feature",
+  "target_feature_file": "src/test/resources/feature_files/ppkg-ppkg/cosmos/de-canary/summary/non-prod/ppkg_decanary_summary.feature",
+  "search_type": "ICN Search"
+}
+

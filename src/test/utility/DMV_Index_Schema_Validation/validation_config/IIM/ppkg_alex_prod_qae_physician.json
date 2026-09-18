@@ -1,0 +1,19 @@
+{
+  "name": "HCPvsAlex_Physician_Prod",
+  "validation_name": "PPKG vs Alex - IIM Physician Claim Search (Prod vs QAE)",
+
+  "test_data": "src/test/resources/testdata/alex_ppkg/hcp_alex_physician_prod_data.csv",
+  "claim_filter": "PHYSICIAN",
+  "claim_type": "Physician_Prod",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/ppkg_alex/ppkg_alex/hcp_alex_physicianMapping.xlsx"
+  ],
+  "//response_base": "Prod feature writes directly under All_Responses/{PPKG,Alex}_Responses (no per-claim-type subfolder).",
+  "response_base": "target/All_Responses",
+
+  "consumer_name": "PPKG vs Alex (PROD)",
+  "source_feature_file": "src/test/resources/feature_files/ppkg_alex/alex/hcp_prod_vs_alex_qae/ppkg_prod_physician.feature",
+  "target_feature_file": "src/test/resources/feature_files/ppkg_alex/alex/hcp_prod_vs_alex_qae/alex_qae_physician.feature",
+  "search_type": "Claim Search"
+}
+

@@ -1,0 +1,311 @@
+{
+  "claimCOSM" : true,
+  "claimCSP" : false,
+  "claimTransaction" : true,
+  "claimExtension" : false,
+  "claimServiceLine" : true,
+  "serviceAdjudicationGroup" : false,
+  "claimOtherPayer" : false,
+  "claimPricing" : false,
+  "claimTransactionProvider" : false,
+  "claimAdjudicationProcessCode" : false,
+  "claimTransactionStandardizedAttribute" : false,
+  "claimTransactionStatuse" : false,
+  "claimServiceAdjudicationServiceProcessCode" : false,
+  "claimAccumulator" : false,
+  "claimServicePricing" : true,
+  "claimSubmitted" : false,
+  "claimSubmittedAttachment" : false,
+  "claimSubmittedService" : false,
+  "claimSubmittedAssociatedProvider" : false,
+  "claimSubmittedOtherPayer" : false,
+  "claimTransactions" : {
+    "limit" : {
+      "pageSize" : 500
+    },
+    "where" : {
+      "and" : [ {
+        "sourceSystemCode" : {
+          "_eq" : "COS"
+        }
+      }, {
+        "claimTransactionIdentifier" : {
+          "_eq" : "SLC:57213203:0:1:20250215:1414005"
+        }
+      } ]
+    }
+  },
+  "claimExtensions" : {
+    "limit" : {
+      "pageSize" : 500
+    },
+    "where" : {
+      "and" : [ {
+        "sourceSystemCode" : {
+          "_eq" : "COS"
+        }
+      }, {
+        "claimTransactionIdentifier" : {
+          "_eq" : "SLC:57213203:0:1:20250215:1414005"
+        }
+      } ]
+    }
+  },
+  "claimServiceLines" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "sourceSystemCode" : {
+          "_eq" : "COS"
+        }
+      }, {
+        "claimTransactionIdentifier" : {
+          "_eq" : "SLC:57213203:0:1:20250215:1414005"
+        }
+      } ]
+    }
+  },
+  "serviceAdjudicationGroups" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "sourceSystemCode" : {
+          "_eq" : "COS"
+        }
+      }, {
+        "claimTransactionIdentifier" : {
+          "_eq" : "SLC:57213203:0:1:20250215:1414005"
+        }
+      } ]
+    }
+  },
+  "claimOtherPayers" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "sourceSystemCode" : {
+          "_eq" : "COS"
+        }
+      }, {
+        "claimTransactionIdentifier" : {
+          "_eq" : "SLC:57213203:0:1:20250215:1414005"
+        }
+      } ]
+    }
+  },
+  "claimPricings" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "sourceSystemCode" : {
+          "_eq" : "COS"
+        }
+      }, {
+        "claimTransactionIdentifier" : {
+          "_eq" : "SLC:57213203:0:1:20250215:1414005"
+        }
+      } ]
+    }
+  },
+  "claimTransactionProviders" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "sourceSystemCode" : {
+          "_eq" : "COS"
+        }
+      }, {
+        "claimTransactionIdentifier" : {
+          "_eq" : "SLC:57213203:0:1:20250215:1414005"
+        }
+      } ]
+    }
+  },
+  "claimAdjudicationProcessCodes" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "sourceSystemCode" : {
+          "_eq" : "COS"
+        }
+      }, {
+        "claimTransactionIdentifier" : {
+          "_eq" : "SLC:57213203:0:1:20250215:1414005"
+        }
+      } ]
+    }
+  },
+  "claimTransactionStandardizedAttributes" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "sourceSystemCode" : {
+          "_eq" : "COS"
+        }
+      }, {
+        "claimTransactionIdentifier" : {
+          "_eq" : "SLC:57213203:0:1:20250215:1414005"
+        }
+      } ]
+    }
+  },
+  "claimTransactionStatuses" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "sourceSystemCode" : {
+          "_eq" : "COS"
+        }
+      }, {
+        "claimTransactionIdentifier" : {
+          "_eq" : "SLC:57213203:0:1:20250215:1414005"
+        }
+      } ]
+    }
+  },
+  "claimServiceAdjudicationServiceProcessCodes" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "sourceSystemCode" : {
+          "_eq" : "COS"
+        }
+      }, {
+        "claimTransactionIdentifier" : {
+          "_eq" : "SLC:57213203:0:1:20250215:1414005"
+        }
+      } ]
+    }
+  },
+  "claimAccumulators" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "sourceSystemCode" : {
+          "_eq" : "COS"
+        }
+      }, {
+        "claimTransactionIdentifier" : {
+          "_eq" : "SLC:57213203:0:1:20250215:1414005"
+        }
+      } ]
+    }
+  },
+  "claimServicePricings" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "sourceSystemCode" : {
+          "_eq" : "COS"
+        }
+      }, {
+        "claimTransactionIdentifier" : {
+          "_eq" : "SLC:57213203:0:1:20250215:1414005"
+        }
+      } ]
+    }
+  },
+  "claimSubmitteds" : {
+    "limit" : {
+      "pageSize" : 500
+    },
+    "where" : {
+      "and" : [ {
+        "claimSourceSystemCode" : {
+          "_eq" : "COSM"
+        }
+      }, {
+        "claimSubmittedIdentifier" : {
+          "_eq" : "EX32592941"
+        }
+      } ]
+    }
+  },
+  "claimSubmittedAttachments" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "claimSourceSystemCode" : {
+          "_eq" : "COSM"
+        }
+      }, {
+        "claimSubmittedIdentifier" : {
+          "_eq" : "EX32592941"
+        }
+      } ]
+    }
+  },
+  "claimSubmittedServices" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "claimSourceSystemCode" : {
+          "_eq" : "COSM"
+        }
+      }, {
+        "claimSubmittedIdentifier" : {
+          "_eq" : "EX32592941"
+        }
+      } ]
+    }
+  },
+  "claimSubmittedOtherPayers" : {
+    "limit" : {
+      "pageSize" : 100
+    },
+    "where" : {
+      "and" : [ {
+        "claimSourceSystemCode" : {
+          "_eq" : "COSM"
+        }
+      }, {
+        "claimSubmittedIdentifier" : {
+          "_eq" : "EX32592941"
+        }
+      } ]
+    }
+  },
+  "claimSubmittedAssociatedProviders" : {
+    "limit" : {
+      "pageSize" : 4900
+    },
+    "where" : {
+      "and" : [ {
+        "claimSourceSystemCode" : {
+          "_eq" : "COSM"
+        }
+      }, {
+        "claimSubmittedIdentifier" :
+        {
+          "_eq" : "EX32592941"
+        }
+      } ]
+    }
+  }
+}

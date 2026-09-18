@@ -1,0 +1,33 @@
+{
+  "name": "claimOtherPayers",
+  "validation_name": "HCP vs Alex/ALEX GraphQL - claimOtherPayers",
+  "comparison_mode": "direct",
+
+  "test_data": "src/test/resources/testdata/hcp_gql/hcp_alex_testdata.csv",
+
+  "mapping_sheet_dir": "src/test/resources/json_mapping/ppkg_alex/ppkg_mes_gql",
+  "mapping_sheet_pattern": "hcp_mes_{name}.xlsx",
+  "mapping_columns": { "source": "HCP GQL Path", "target": "ALEX Path" },
+
+  "identifier_column": "claimTransactionIdentifier",
+  "identifier_replace": { ":": "_" },
+
+  "claim_type": "claimOtherPayers",
+  "claim_filter": null,
+
+  "response_base": "target/All_Responses",
+  "expected_source": "HCP",
+  "actual_source": "ALEX",
+  "sources": {
+    "HCP": { "folder": "HCP_Responses", "suffix": "_HCPResponse.json" },
+    "ALEX": { "folder": "ALEX_Responses", "suffix": "_ALEXResponse.json" }
+  },
+
+  "source_feature_file": "src/test/resources/feature_files/ppkg_alex/hcp_alex_gql/hcp_dev_vs_alex_qae/claimOtherPayers/hcp_claimOtherPayer.feature",
+  "target_feature_file": "src/test/resources/feature_files/ppkg_alex/hcp_alex_gql/hcp_dev_vs_alex_qae/claimOtherPayers/alex_claimOtherPayer.feature",
+  "source_environment": "Dev",
+  "target_environment": "Uat",
+  "search_type": "GQL Claim Other Payer",
+  "report_name_template": "HCP_ALEX_claimOtherPayers_{source_env}-{target_env}_{timestamp}"
+}
+

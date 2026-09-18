@@ -1,0 +1,31 @@
+{
+  "name": "Claim360_B2B_Member_Search",
+  "validation_name": "Claims360 B2B-EDI Member Search (Stage vs De-Canary)",
+  "comparison_mode": "direct",
+
+  "test_data": "src/test/resources/testdata/claim360/b2b_member_search_testdata.csv",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/legacy_ppkg/claim360/claim360_b2b_member_search_mapping.xlsx"
+  ],
+  "mapping_columns": { "source": "Claim360_Path", "target": "Decanary_Path" },
+
+  "identifier_column": "reqSbmtProvId",
+
+  "claim_type": "Claim360_B2B_Member_Search",
+  "claim_filter": null,
+
+  "response_base": "target/All_Responses/Claim360/B2B/Member_Search",
+  "expected_source": "Claim360",
+  "actual_source": "Decanary",
+  "sources": {
+    "Claim360": { "folder": "B2B_Responses",      "suffix": "_ppkg.json" },
+    "Decanary": { "folder": "Decanary_Responses",  "suffix": "_decan.json" }
+  },
+
+  "source_feature_file": "src/test/resources/feature_files/claim360-ppkg/B2B-EDI/de-canary/member_search/b2b.feature",
+  "target_feature_file": "src/test/resources/feature_files/claim360-ppkg/B2B-EDI/de-canary/member_search/b2b_decanary.feature",
+  "source_environment": "Nonprod",
+  "search_type": "B2B Member Search",
+  "report_name_template": "Claim360_B2B_Member_search_{source_env}-{target_env}_{timestamp}"
+}
+

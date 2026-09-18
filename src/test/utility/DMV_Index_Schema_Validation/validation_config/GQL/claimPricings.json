@@ -1,0 +1,33 @@
+{
+  "name": "claimPricings",
+  "validation_name": "HCP vs Alex/ALEX GraphQL - claimPricings",
+  "comparison_mode": "direct",
+
+  "test_data": "src/test/resources/testdata/hcp_gql/hcp_alex_testdata.csv",
+
+  "mapping_sheet_dir": "src/test/resources/json_mapping/ppkg_alex/ppkg_mes_gql",
+  "mapping_sheet_pattern": "hcp_mes_{name}.xlsx",
+  "mapping_columns": { "source": "HCP GQL Path", "target": "ALEX Path" },
+
+  "identifier_column": "claimTransactionIdentifier",
+  "identifier_replace": { ":": "_" },
+
+  "claim_type": "claimPricings",
+  "claim_filter": null,
+
+  "response_base": "target/All_Responses",
+  "expected_source": "HCP",
+  "actual_source": "ALEX",
+  "sources": {
+    "HCP": { "folder": "HCP_Responses", "suffix": "_HCPResponse.json" },
+    "ALEX": { "folder": "ALEX_Responses", "suffix": "_ALEXResponse.json" }
+  },
+
+  "source_feature_file": "src/test/resources/feature_files/ppkg_alex/hcp_alex_gql/hcp_dev_vs_alex_qae/claimPricing/hcp_claimPricing.feature",
+  "target_feature_file": "src/test/resources/feature_files/ppkg_alex/hcp_alex_gql/hcp_dev_vs_alex_qae/claimPricing/alex_claimPricing.feature",
+  "source_environment": "Dev",
+  "target_environment": "Uat",
+  "search_type": "GQL Claim Pricing",
+  "report_name_template": "HCP_ALEX_claimPricings_{source_env}-{target_env}_{timestamp}"
+}
+

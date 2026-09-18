@@ -1,0 +1,337 @@
+﻿testcase,memberNumber,groupNo,site,payerClaimControlNumber,claimNumber,searchtype,claimtype,claimType,sourceSystemCode,requestBody
+01,970033260,1211,BNA,BNA090760872,090760872,C,HOSPITAL,I,COSM,"<?xml version=""1.0"" encoding=""UTF-8""?>
+<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/""><soapenv:Header><wsse:Security xmlns:wsse=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd""><saml2:Assertion Version=""2.0"" ID=""ID001719a5-ad53-4a5f-be2a-77d78eb4f944"" IssueInstant=""2025-02-21T14:04:02Z"" xmlns:saml2=""urn:oasis:names:tc:SAML:2.0:assertion""><saml2:Issuer>XS</saml2:Issuer><Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+<SignedInfo>
+  <CanonicalizationMethod Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+  <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1""/>
+  <Reference URI=""#ID001719a5-ad53-4a5f-be2a-77d78eb4f944"">
+    <Transforms>
+      <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature""/>
+      <Transform Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+    </Transforms>
+    <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1""/>
+    <DigestValue>td6j3nZr/Wva9Z8clfKIIu6OGsQ=</DigestValue>
+  </Reference>
+</SignedInfo>
+    <SignatureValue>mDjs5cIHfoDPG9zpQmcCp96bM0qDVt+as2G8qEx0RPvzvW8ROGThNPyrr5Rsx5U6jRcRodKIwr77blMMj3AwLwUfzDAzaZZkssTi8+qVUkDFloZd0W7bJklGfmfyWwY9eyLI4WySFSwFJkoAan3H8hCcORHVIeYUPCcDOJisrBQIIf7GIEC3tZuDCxu6RCqFA/h4RE7vAmqMkO/NxWLuOeiFm9svXgn4XeouazifppETZR1HLPky8DEdRjrbEjGAdk6j+Kcla9Dxj+RvaNMnNzIHBHUkq/u+4Evw4QdPfiao+7Kz/DkLEwmJ7U+8qus4wrorMmMpBTSrQYZtFHMVZw==</SignatureValue><KeyInfo><X509Data><X509Certificate>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</X509Certificate><X509IssuerSerial><X509IssuerName>CN=OptumInternalIssuingCA2, O=Optum, L=Minneapolis, ST=Minnesota, C=US</X509IssuerName><X509SerialNumber>1672560161626558262593682121212846832094055858</X509SerialNumber></X509IssuerSerial></X509Data></KeyInfo></Signature><saml2:Subject><saml2:NameID Format=""urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"">CN=clmtstid,CN=Users,DC=ms,DC=ds,DC=uhc,DC=com</saml2:NameID><saml2:SubjectConfirmation Method=""urn:oasis:names:tc:SAML:2.0:cm:bearer""><saml2:SubjectConfirmationData NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/></saml2:SubjectConfirmation></saml2:Subject><saml2:Conditions NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/><saml2:AuthnStatement AuthnInstant=""2025-02-21T14:04:02Z"" SessionNotOnOrAfter=""2025-02-21T14:09:32Z""><saml2:AuthnContext><saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</saml2:AuthnContextClassRef></saml2:AuthnContext></saml2:AuthnStatement></saml2:Assertion></wsse:Security></soapenv:Header><soapenv:Body xmlns:v13=""http://upm3.uhc.com/claim/readclaimdetail/v13"">
+      <v13:invokeService>
+
+         <arg0>
+            <requestHeader>
+               <applicationName>IIM</applicationName>
+               <applicationInstanceName>IIM</applicationInstanceName>
+               <logLevel>DEFAULT</logLevel>
+						<serviceOption>
+						<key>SECURITY_GROUPS</key>
+						<value>Non_User_Accounts,UPM3_MIIM_TST,UPM3_MIIM_STG,UPM3_MIIM_PROD,LeadsService_SRVCGRP,LeadsService_NONPRODSRVCGRP,</value>
+					</serviceOption>
+            <serviceOption><key>SECURITY_GROUPS</key><value>Non_User_Accounts,CSP_MACESS_EXP_DEFAULT_TST,Citrix_Sungard_MacessEXP_SVC_3x_CSP_TST_A,UPM3_AE_TST,AMC_MACESS_CLAIMS_EXAM,Citrix_AMC_Macess_Users,</value></serviceOption><serviceOption><key>AE_TOKEN</key><value>AELLOT-bZTSm</value></serviceOption><internalUse><uid>[[IIM||287549089]UPM3-PROD-FRONTEND]</uid><originalConsumer>IIM</originalConsumer><originalServiceName>invokeService</originalServiceName><originalServiceVersion>1</originalServiceVersion><logSequence>1</logSequence><uidGeneratedBy>DP</uidGeneratedBy></internalUse></requestHeader>
+            <readClaimControlModifiers>
+               <cosmosSystemParameter>
+                  <sourceId>40</sourceId>
+                  <userId>90161</userId>
+               </cosmosSystemParameter>
+               <sourceSystem>COSMOS</sourceSystem>
+            </readClaimControlModifiers>
+            <systemDivision>BNA</systemDivision>
+            <claimType>HOSPITAL</claimType>
+            <auditControlNumber>90760872</auditControlNumber>
+            <auditSubNumber/>
+            <recordId>01</recordId>
+         </arg0>
+      </v13:invokeService>
+   </soapenv:Body></soapenv:Envelope>"
+02,917592087,80188,NTL,NTL023074854,023074854,C,HOSPITAL,I,COSM,"<?xml version=""1.0"" encoding=""UTF-8""?>
+<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/""><soapenv:Header><wsse:Security xmlns:wsse=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd""><saml2:Assertion Version=""2.0"" ID=""ID001719a5-ad53-4a5f-be2a-77d78eb4f944"" IssueInstant=""2025-02-21T14:04:02Z"" xmlns:saml2=""urn:oasis:names:tc:SAML:2.0:assertion""><saml2:Issuer>XS</saml2:Issuer><Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+<SignedInfo>
+  <CanonicalizationMethod Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+  <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1""/>
+  <Reference URI=""#ID001719a5-ad53-4a5f-be2a-77d78eb4f944"">
+    <Transforms>
+      <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature""/>
+      <Transform Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+    </Transforms>
+    <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1""/>
+    <DigestValue>td6j3nZr/Wva9Z8clfKIIu6OGsQ=</DigestValue>
+  </Reference>
+</SignedInfo>
+    <SignatureValue>mDjs5cIHfoDPG9zpQmcCp96bM0qDVt+as2G8qEx0RPvzvW8ROGThNPyrr5Rsx5U6jRcRodKIwr77blMMj3AwLwUfzDAzaZZkssTi8+qVUkDFloZd0W7bJklGfmfyWwY9eyLI4WySFSwFJkoAan3H8hCcORHVIeYUPCcDOJisrBQIIf7GIEC3tZuDCxu6RCqFA/h4RE7vAmqMkO/NxWLuOeiFm9svXgn4XeouazifppETZR1HLPky8DEdRjrbEjGAdk6j+Kcla9Dxj+RvaNMnNzIHBHUkq/u+4Evw4QdPfiao+7Kz/DkLEwmJ7U+8qus4wrorMmMpBTSrQYZtFHMVZw==</SignatureValue><KeyInfo><X509Data><X509Certificate>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</X509Certificate><X509IssuerSerial><X509IssuerName>CN=OptumInternalIssuingCA2, O=Optum, L=Minneapolis, ST=Minnesota, C=US</X509IssuerName><X509SerialNumber>1672560161626558262593682121212846832094055858</X509SerialNumber></X509IssuerSerial></X509Data></KeyInfo></Signature><saml2:Subject><saml2:NameID Format=""urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"">CN=clmtstid,CN=Users,DC=ms,DC=ds,DC=uhc,DC=com</saml2:NameID><saml2:SubjectConfirmation Method=""urn:oasis:names:tc:SAML:2.0:cm:bearer""><saml2:SubjectConfirmationData NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/></saml2:SubjectConfirmation></saml2:Subject><saml2:Conditions NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/><saml2:AuthnStatement AuthnInstant=""2025-02-21T14:04:02Z"" SessionNotOnOrAfter=""2025-02-21T14:09:32Z""><saml2:AuthnContext><saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</saml2:AuthnContextClassRef></saml2:AuthnContext></saml2:AuthnStatement></saml2:Assertion></wsse:Security></soapenv:Header><soapenv:Body xmlns:v13=""http://upm3.uhc.com/claim/readclaimdetail/v13"">
+      <v13:invokeService>
+
+         <arg0>
+            <requestHeader>
+               <applicationName>IIM</applicationName>
+               <applicationInstanceName>IIM</applicationInstanceName>
+               <logLevel>DEFAULT</logLevel>
+						<serviceOption>
+						<key>SECURITY_GROUPS</key>
+						<value>Non_User_Accounts,UPM3_MIIM_TST,UPM3_MIIM_STG,UPM3_MIIM_PROD,LeadsService_SRVCGRP,LeadsService_NONPRODSRVCGRP,</value>
+					</serviceOption>
+            <serviceOption><key>SECURITY_GROUPS</key><value>Non_User_Accounts,CSP_MACESS_EXP_DEFAULT_TST,Citrix_Sungard_MacessEXP_SVC_3x_CSP_TST_A,UPM3_AE_TST,AMC_MACESS_CLAIMS_EXAM,Citrix_AMC_Macess_Users,</value></serviceOption><serviceOption><key>AE_TOKEN</key><value>AELLOT-bZTSm</value></serviceOption><internalUse><uid>[[IIM||287549089]UPM3-PROD-FRONTEND]</uid><originalConsumer>IIM</originalConsumer><originalServiceName>invokeService</originalServiceName><originalServiceVersion>1</originalServiceVersion><logSequence>1</logSequence><uidGeneratedBy>DP</uidGeneratedBy></internalUse></requestHeader>
+            <readClaimControlModifiers>
+               <cosmosSystemParameter>
+                  <sourceId>40</sourceId>
+                  <userId>90161</userId>
+               </cosmosSystemParameter>
+               <sourceSystem>COSMOS</sourceSystem>
+            </readClaimControlModifiers>
+            <systemDivision>NTL</systemDivision>
+            <claimType>HOSPITAL</claimType>
+            <auditControlNumber>23074854</auditControlNumber>
+            <auditSubNumber/>
+            <recordId>01</recordId>
+         </arg0>
+      </v13:invokeService>
+   </soapenv:Body></soapenv:Envelope>"
+03,917592087,80188,NTL,NTL020818049,020818049,C,HOSPITAL,I,COSM,"<?xml version=""1.0"" encoding=""UTF-8""?>
+<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/""><soapenv:Header><wsse:Security xmlns:wsse=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd""><saml2:Assertion Version=""2.0"" ID=""ID001719a5-ad53-4a5f-be2a-77d78eb4f944"" IssueInstant=""2025-02-21T14:04:02Z"" xmlns:saml2=""urn:oasis:names:tc:SAML:2.0:assertion""><saml2:Issuer>XS</saml2:Issuer><Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+<SignedInfo>
+  <CanonicalizationMethod Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+  <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1""/>
+  <Reference URI=""#ID001719a5-ad53-4a5f-be2a-77d78eb4f944"">
+    <Transforms>
+      <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature""/>
+      <Transform Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+    </Transforms>
+    <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1""/>
+    <DigestValue>td6j3nZr/Wva9Z8clfKIIu6OGsQ=</DigestValue>
+  </Reference>
+</SignedInfo>
+    <SignatureValue>mDjs5cIHfoDPG9zpQmcCp96bM0qDVt+as2G8qEx0RPvzvW8ROGThNPyrr5Rsx5U6jRcRodKIwr77blMMj3AwLwUfzDAzaZZkssTi8+qVUkDFloZd0W7bJklGfmfyWwY9eyLI4WySFSwFJkoAan3H8hCcORHVIeYUPCcDOJisrBQIIf7GIEC3tZuDCxu6RCqFA/h4RE7vAmqMkO/NxWLuOeiFm9svXgn4XeouazifppETZR1HLPky8DEdRjrbEjGAdk6j+Kcla9Dxj+RvaNMnNzIHBHUkq/u+4Evw4QdPfiao+7Kz/DkLEwmJ7U+8qus4wrorMmMpBTSrQYZtFHMVZw==</SignatureValue><KeyInfo><X509Data><X509Certificate>MIIHWDCCBUCgAwIBAgITSwAMjbKTCQZUyB7J5AABAAyNsjANBgkqhkiG9w0BAQsFADBpMQswCQYDVQQGEwJVUzESMBAGA1UECBMJTWlubmVzb3RhMRQwEgYDVQQHEwtNaW5uZWFwb2xpczEOMAwGA1UEChMFT3B0dW0xIDAeBgNVBAMTF09wdHVtSW50ZXJuYWxJc3N1aW5nQ0EyMB4XDTI0MDkwMzExMTMxMloXDTI1MDkwMzExMTMxMlowgZAxCzAJBgNVBAYTAlVTMRIwEAYDVQQIEwlNaW5uZXNvdGExETAPBgNVBAcTCFBseW1vdXRoMRswGQYDVQQKExJVbml0ZWRIZWFsdGggR3JvdXAxHzAdBgNVBAsTFkFwcGxpY2F0aW9uIEVuYWJsZW1lbnQxHDAaBgNVBAMTE0FFUFJPRFBST1hZLlVIQy5DT00wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCwDlAj0vovlCK2xXB1S7jzRAfStpcWQl9Rj8gd/k3dHaknpFd1Gog/zOEB1WVvqHZFYrak+gaRM+DRXOmzh89Ul46qW/5HNO7ZRPkYecZNoqEFJiBBWjEXZM/TTgEQ+0ta9yFPwPUhq5X8qf89le3qbKqrqMqlIxQO3GHgLogcO4RmbDfJGu176r1KAU2WfqZZz9PyDxKaNYB7oy74gV2PJFMlks77gvWy4Xcwl2FBS1f0RlbvI5zAKKOTVo4cOC4QZolNnWM/0qSITp/c1CMJsV0rf8Z6Y6oNs/bWExmt2INTKW5V2dOhdsvBe+MHP05+yqu18mkaRFMyz4ti9NH1AgMBAAGjggLPMIICyzCCASoGA1UdEQSCASEwggEdghNBRVBST0RQUk9YWS5VSEMuQ09NghRkcC1lbHItcHJkMDEudWhjLmNvbYIUZHAtZWxyLXByZDAyLnVoYy5jb22CFGRwLWN0Yy1wcmQwMy51aGMuY29tghRkcC1jdGMtcHJkMDQudWhjLmNvbYIWZHAtZWxyLXByZDAxbG8udWhjLmNvbYIWZHAtZWxyLXByZDA0bG8udWhjLmNvbYIWZHAtY3RjLXByZDAzbG8udWhjLmNvbYIWZHAtY3RjLXByZDAybG8udWhjLmNvbYISZHBlbHJwcmQwMS51aGMuY29tghJkcGVscnByZDA0LnVoYy5jb22CEmRwY3RjcHJkMDIudWhjLmNvbYISZHBjdGNwcmQwMy51aGMuY29tMB0GA1UdDgQWBBShy+ggqUlQfi1RqPpjGAzMDzACpzAfBgNVHSMEGDAWgBTih8dT/Hhm93wVC4ofv0Hp0N2XyzBJBgNVHR8EQjBAMD6gPKA6hjhodHRwOi8vb2NzcC5vcHR1bS5jb20vcGtpL09wdHVtSW50ZXJuYWxJc3N1aW5nQ0EyKDEpLmNybDB8BggrBgEFBQcBAQRwMG4wRAYIKwYBBQUHMAKGOGh0dHA6Ly9vY3NwLm9wdHVtLmNvbS9wa2kvT3B0dW1JbnRlcm5hbElzc3VpbmdDQTIoMSkuY3J0MCYGCCsGAQUFBzABhhpodHRwOi8vb2NzcC5vcHR1bS5jb20vb2NzcDALBgNVHQ8EBAMCBLAwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUIhYXuCoHq8gaG+ZMVup8OgsTxfoFahtuyfYenwA4CAWQCATUwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMCcGCSsGAQQBgjcVCgQaMBgwCgYIKwYBBQUHAwEwCgYIKwYBBQUHAwIwDQYJKoZIhvcNAQELBQADggIBAGB5TrsQXi3B6gKgyK3cI5he9A0aM+B6Q4kTpIvpmoHdTVFjq4QUpF/nglJ4RUlOvNnJCZh6/0syVb0EdHcj0KRRis0Ra4T1Yf/GatQlB9MOhE99A3pntn1RpikONcxeaKy5V/+DKkGMfKmmGpybbl93W5gBXYRN4HxzLksVBsoEnd2xCq/j1GIY/s4cN06ibL0d2td0fwIcmp0Gz+a8FEOa8jS0JWmM3kJsaMhmw5olTDZzPx/RzXMisja/+se0wEwRjmnELmkzhz7yHB0WZEw46mW+AwekApPtA7zncrCYBsPfmvOVNOysjTdQmJcmPWBh7wqpbuKD8CL1jPF9Gp1foFaSXLq5wjNNzpGqYV+loUHMlmHcx+LVeEIG1En2HhJBdm+Se4CtmY14stKWpmx+YnvWh73mO+mE5o7jj7j6rhrzaWv2NJ7LrjFkE2M7UeYlBoQIziQebZlCLkZLOSUtZq0siPsq4u1P5lXl2qRxRDAi7p5LYj1fK0b4TSVia9fI5zGwkOz8Ei70g67MopWxpxsF+rdEx8SJOVyzhV2jD7bnb9PVKLPwOz3Ig7Q3WQXZiDkW6EEFoLbRh6lge0sHXVgl/nr3uTCtUHte3sWy55NimzED3YKzyFARfYeTxvS1Hi+i6ZnIUvOcJ2Or9fwoW16kpyYnef4XRpwetta8</X509Certificate><X509IssuerSerial><X509IssuerName>CN=OptumInternalIssuingCA2, O=Optum, L=Minneapolis, ST=Minnesota, C=US</X509IssuerName><X509SerialNumber>1672560161626558262593682121212846832094055858</X509SerialNumber></X509IssuerSerial></X509Data></KeyInfo></Signature><saml2:Subject><saml2:NameID Format=""urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"">CN=clmtstid,CN=Users,DC=ms,DC=ds,DC=uhc,DC=com</saml2:NameID><saml2:SubjectConfirmation Method=""urn:oasis:names:tc:SAML:2.0:cm:bearer""><saml2:SubjectConfirmationData NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/></saml2:SubjectConfirmation></saml2:Subject><saml2:Conditions NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/><saml2:AuthnStatement AuthnInstant=""2025-02-21T14:04:02Z"" SessionNotOnOrAfter=""2025-02-21T14:09:32Z""><saml2:AuthnContext><saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</saml2:AuthnContextClassRef></saml2:AuthnContext></saml2:AuthnStatement></saml2:Assertion></wsse:Security></soapenv:Header><soapenv:Body xmlns:v13=""http://upm3.uhc.com/claim/readclaimdetail/v13"">
+      <v13:invokeService>
+
+         <arg0>
+            <requestHeader>
+               <applicationName>IIM</applicationName>
+               <applicationInstanceName>IIM</applicationInstanceName>
+               <logLevel>DEFAULT</logLevel>
+						<serviceOption>
+						<key>SECURITY_GROUPS</key>
+						<value>Non_User_Accounts,UPM3_MIIM_TST,UPM3_MIIM_STG,UPM3_MIIM_PROD,LeadsService_SRVCGRP,LeadsService_NONPRODSRVCGRP,</value>
+					</serviceOption>
+            <serviceOption><key>SECURITY_GROUPS</key><value>Non_User_Accounts,CSP_MACESS_EXP_DEFAULT_TST,Citrix_Sungard_MacessEXP_SVC_3x_CSP_TST_A,UPM3_AE_TST,AMC_MACESS_CLAIMS_EXAM,Citrix_AMC_Macess_Users,</value></serviceOption><serviceOption><key>AE_TOKEN</key><value>AELLOT-bZTSm</value></serviceOption><internalUse><uid>[[IIM||287549089]UPM3-PROD-FRONTEND]</uid><originalConsumer>IIM</originalConsumer><originalServiceName>invokeService</originalServiceName><originalServiceVersion>1</originalServiceVersion><logSequence>1</logSequence><uidGeneratedBy>DP</uidGeneratedBy></internalUse></requestHeader>
+            <readClaimControlModifiers>
+               <cosmosSystemParameter>
+                  <sourceId>40</sourceId>
+                  <userId>90161</userId>
+               </cosmosSystemParameter>
+               <sourceSystem>COSMOS</sourceSystem>
+            </readClaimControlModifiers>
+            <systemDivision>NTL</systemDivision>
+            <claimType>HOSPITAL</claimType>
+            <auditControlNumber>20818049</auditControlNumber>
+            <auditSubNumber/>
+            <recordId>01</recordId>
+         </arg0>
+      </v13:invokeService>
+   </soapenv:Body></soapenv:Envelope>"
+04,917592087,80188,NTL,NTL020575538,020575538,C,HOSPITAL,I,COSM,"<?xml version=""1.0"" encoding=""UTF-8""?>
+<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/""><soapenv:Header><wsse:Security xmlns:wsse=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd""><saml2:Assertion Version=""2.0"" ID=""ID001719a5-ad53-4a5f-be2a-77d78eb4f944"" IssueInstant=""2025-02-21T14:04:02Z"" xmlns:saml2=""urn:oasis:names:tc:SAML:2.0:assertion""><saml2:Issuer>XS</saml2:Issuer><Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+<SignedInfo>
+  <CanonicalizationMethod Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+  <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1""/>
+  <Reference URI=""#ID001719a5-ad53-4a5f-be2a-77d78eb4f944"">
+    <Transforms>
+      <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature""/>
+      <Transform Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+    </Transforms>
+    <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1""/>
+    <DigestValue>td6j3nZr/Wva9Z8clfKIIu6OGsQ=</DigestValue>
+  </Reference>
+</SignedInfo>
+    <SignatureValue>mDjs5cIHfoDPG9zpQmcCp96bM0qDVt+as2G8qEx0RPvzvW8ROGThNPyrr5Rsx5U6jRcRodKIwr77blMMj3AwLwUfzDAzaZZkssTi8+qVUkDFloZd0W7bJklGfmfyWwY9eyLI4WySFSwFJkoAan3H8hCcORHVIeYUPCcDOJisrBQIIf7GIEC3tZuDCxu6RCqFA/h4RE7vAmqMkO/NxWLuOeiFm9svXgn4XeouazifppETZR1HLPky8DEdRjrbEjGAdk6j+Kcla9Dxj+RvaNMnNzIHBHUkq/u+4Evw4QdPfiao+7Kz/DkLEwmJ7U+8qus4wrorMmMpBTSrQYZtFHMVZw==</SignatureValue><KeyInfo><X509Data><X509Certificate>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</X509Certificate><X509IssuerSerial><X509IssuerName>CN=OptumInternalIssuingCA2, O=Optum, L=Minneapolis, ST=Minnesota, C=US</X509IssuerName><X509SerialNumber>1672560161626558262593682121212846832094055858</X509SerialNumber></X509IssuerSerial></X509Data></KeyInfo></Signature><saml2:Subject><saml2:NameID Format=""urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"">CN=clmtstid,CN=Users,DC=ms,DC=ds,DC=uhc,DC=com</saml2:NameID><saml2:SubjectConfirmation Method=""urn:oasis:names:tc:SAML:2.0:cm:bearer""><saml2:SubjectConfirmationData NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/></saml2:SubjectConfirmation></saml2:Subject><saml2:Conditions NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/><saml2:AuthnStatement AuthnInstant=""2025-02-21T14:04:02Z"" SessionNotOnOrAfter=""2025-02-21T14:09:32Z""><saml2:AuthnContext><saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</saml2:AuthnContextClassRef></saml2:AuthnContext></saml2:AuthnStatement></saml2:Assertion></wsse:Security></soapenv:Header><soapenv:Body xmlns:v13=""http://upm3.uhc.com/claim/readclaimdetail/v13"">
+      <v13:invokeService>
+
+         <arg0>
+            <requestHeader>
+               <applicationName>IIM</applicationName>
+               <applicationInstanceName>IIM</applicationInstanceName>
+               <logLevel>DEFAULT</logLevel>
+						<serviceOption>
+						<key>SECURITY_GROUPS</key>
+						<value>Non_User_Accounts,UPM3_MIIM_TST,UPM3_MIIM_STG,UPM3_MIIM_PROD,LeadsService_SRVCGRP,LeadsService_NONPRODSRVCGRP,</value>
+					</serviceOption>
+            <serviceOption><key>SECURITY_GROUPS</key><value>Non_User_Accounts,CSP_MACESS_EXP_DEFAULT_TST,Citrix_Sungard_MacessEXP_SVC_3x_CSP_TST_A,UPM3_AE_TST,AMC_MACESS_CLAIMS_EXAM,Citrix_AMC_Macess_Users,</value></serviceOption><serviceOption><key>AE_TOKEN</key><value>AELLOT-bZTSm</value></serviceOption><internalUse><uid>[[IIM||287549089]UPM3-PROD-FRONTEND]</uid><originalConsumer>IIM</originalConsumer><originalServiceName>invokeService</originalServiceName><originalServiceVersion>1</originalServiceVersion><logSequence>1</logSequence><uidGeneratedBy>DP</uidGeneratedBy></internalUse></requestHeader>
+            <readClaimControlModifiers>
+               <cosmosSystemParameter>
+                  <sourceId>40</sourceId>
+                  <userId>90161</userId>
+               </cosmosSystemParameter>
+               <sourceSystem>COSMOS</sourceSystem>
+            </readClaimControlModifiers>
+            <systemDivision>NTL</systemDivision>
+            <claimType>HOSPITAL</claimType>
+            <auditControlNumber>20575538</auditControlNumber>
+            <auditSubNumber/>
+            <recordId>01</recordId>
+         </arg0>
+      </v13:invokeService>
+   </soapenv:Body></soapenv:Envelope>"
+05,917592087,80188,NTL,NTL020407342,020407342,C,HOSPITAL,I,COSM,"<?xml version=""1.0"" encoding=""UTF-8""?>
+<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/""><soapenv:Header><wsse:Security xmlns:wsse=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd""><saml2:Assertion Version=""2.0"" ID=""ID001719a5-ad53-4a5f-be2a-77d78eb4f944"" IssueInstant=""2025-02-21T14:04:02Z"" xmlns:saml2=""urn:oasis:names:tc:SAML:2.0:assertion""><saml2:Issuer>XS</saml2:Issuer><Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+<SignedInfo>
+  <CanonicalizationMethod Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+  <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1""/>
+  <Reference URI=""#ID001719a5-ad53-4a5f-be2a-77d78eb4f944"">
+    <Transforms>
+      <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature""/>
+      <Transform Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+    </Transforms>
+    <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1""/>
+    <DigestValue>td6j3nZr/Wva9Z8clfKIIu6OGsQ=</DigestValue>
+  </Reference>
+</SignedInfo>
+    <SignatureValue>mDjs5cIHfoDPG9zpQmcCp96bM0qDVt+as2G8qEx0RPvzvW8ROGThNPyrr5Rsx5U6jRcRodKIwr77blMMj3AwLwUfzDAzaZZkssTi8+qVUkDFloZd0W7bJklGfmfyWwY9eyLI4WySFSwFJkoAan3H8hCcORHVIeYUPCcDOJisrBQIIf7GIEC3tZuDCxu6RCqFA/h4RE7vAmqMkO/NxWLuOeiFm9svXgn4XeouazifppETZR1HLPky8DEdRjrbEjGAdk6j+Kcla9Dxj+RvaNMnNzIHBHUkq/u+4Evw4QdPfiao+7Kz/DkLEwmJ7U+8qus4wrorMmMpBTSrQYZtFHMVZw==</SignatureValue><KeyInfo><X509Data><X509Certificate>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</X509Certificate><X509IssuerSerial><X509IssuerName>CN=OptumInternalIssuingCA2, O=Optum, L=Minneapolis, ST=Minnesota, C=US</X509IssuerName><X509SerialNumber>1672560161626558262593682121212846832094055858</X509SerialNumber></X509IssuerSerial></X509Data></KeyInfo></Signature><saml2:Subject><saml2:NameID Format=""urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"">CN=clmtstid,CN=Users,DC=ms,DC=ds,DC=uhc,DC=com</saml2:NameID><saml2:SubjectConfirmation Method=""urn:oasis:names:tc:SAML:2.0:cm:bearer""><saml2:SubjectConfirmationData NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/></saml2:SubjectConfirmation></saml2:Subject><saml2:Conditions NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/><saml2:AuthnStatement AuthnInstant=""2025-02-21T14:04:02Z"" SessionNotOnOrAfter=""2025-02-21T14:09:32Z""><saml2:AuthnContext><saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</saml2:AuthnContextClassRef></saml2:AuthnContext></saml2:AuthnStatement></saml2:Assertion></wsse:Security></soapenv:Header><soapenv:Body xmlns:v13=""http://upm3.uhc.com/claim/readclaimdetail/v13"">
+      <v13:invokeService>
+
+         <arg0>
+            <requestHeader>
+               <applicationName>IIM</applicationName>
+               <applicationInstanceName>IIM</applicationInstanceName>
+               <logLevel>DEFAULT</logLevel>
+						<serviceOption>
+						<key>SECURITY_GROUPS</key>
+						<value>Non_User_Accounts,UPM3_MIIM_TST,UPM3_MIIM_STG,UPM3_MIIM_PROD,LeadsService_SRVCGRP,LeadsService_NONPRODSRVCGRP,</value>
+					</serviceOption>
+            <serviceOption><key>SECURITY_GROUPS</key><value>Non_User_Accounts,CSP_MACESS_EXP_DEFAULT_TST,Citrix_Sungard_MacessEXP_SVC_3x_CSP_TST_A,UPM3_AE_TST,AMC_MACESS_CLAIMS_EXAM,Citrix_AMC_Macess_Users,</value></serviceOption><serviceOption><key>AE_TOKEN</key><value>AELLOT-bZTSm</value></serviceOption><internalUse><uid>[[IIM||287549089]UPM3-PROD-FRONTEND]</uid><originalConsumer>IIM</originalConsumer><originalServiceName>invokeService</originalServiceName><originalServiceVersion>1</originalServiceVersion><logSequence>1</logSequence><uidGeneratedBy>DP</uidGeneratedBy></internalUse></requestHeader>
+            <readClaimControlModifiers>
+               <cosmosSystemParameter>
+                  <sourceId>40</sourceId>
+                  <userId>90161</userId>
+               </cosmosSystemParameter>
+               <sourceSystem>COSMOS</sourceSystem>
+            </readClaimControlModifiers>
+            <systemDivision>NTL</systemDivision>
+            <claimType>HOSPITAL</claimType>
+            <auditControlNumber>20407342</auditControlNumber>
+            <auditSubNumber/>
+            <recordId>01</recordId>
+         </arg0>
+      </v13:invokeService>
+   </soapenv:Body></soapenv:Envelope>"
+06,917592087,80188,NTL,NTL019813936,019813936,C,HOSPITAL,I,COSM,"<?xml version=""1.0"" encoding=""UTF-8""?>
+<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/""><soapenv:Header><wsse:Security xmlns:wsse=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd""><saml2:Assertion Version=""2.0"" ID=""ID001719a5-ad53-4a5f-be2a-77d78eb4f944"" IssueInstant=""2025-02-21T14:04:02Z"" xmlns:saml2=""urn:oasis:names:tc:SAML:2.0:assertion""><saml2:Issuer>XS</saml2:Issuer><Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+<SignedInfo>
+  <CanonicalizationMethod Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+  <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1""/>
+  <Reference URI=""#ID001719a5-ad53-4a5f-be2a-77d78eb4f944"">
+    <Transforms>
+      <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature""/>
+      <Transform Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+    </Transforms>
+    <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1""/>
+    <DigestValue>td6j3nZr/Wva9Z8clfKIIu6OGsQ=</DigestValue>
+  </Reference>
+</SignedInfo>
+    <SignatureValue>mDjs5cIHfoDPG9zpQmcCp96bM0qDVt+as2G8qEx0RPvzvW8ROGThNPyrr5Rsx5U6jRcRodKIwr77blMMj3AwLwUfzDAzaZZkssTi8+qVUkDFloZd0W7bJklGfmfyWwY9eyLI4WySFSwFJkoAan3H8hCcORHVIeYUPCcDOJisrBQIIf7GIEC3tZuDCxu6RCqFA/h4RE7vAmqMkO/NxWLuOeiFm9svXgn4XeouazifppETZR1HLPky8DEdRjrbEjGAdk6j+Kcla9Dxj+RvaNMnNzIHBHUkq/u+4Evw4QdPfiao+7Kz/DkLEwmJ7U+8qus4wrorMmMpBTSrQYZtFHMVZw==</SignatureValue><KeyInfo><X509Data><X509Certificate>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</X509Certificate><X509IssuerSerial><X509IssuerName>CN=OptumInternalIssuingCA2, O=Optum, L=Minneapolis, ST=Minnesota, C=US</X509IssuerName><X509SerialNumber>1672560161626558262593682121212846832094055858</X509SerialNumber></X509IssuerSerial></X509Data></KeyInfo></Signature><saml2:Subject><saml2:NameID Format=""urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"">CN=clmtstid,CN=Users,DC=ms,DC=ds,DC=uhc,DC=com</saml2:NameID><saml2:SubjectConfirmation Method=""urn:oasis:names:tc:SAML:2.0:cm:bearer""><saml2:SubjectConfirmationData NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/></saml2:SubjectConfirmation></saml2:Subject><saml2:Conditions NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/><saml2:AuthnStatement AuthnInstant=""2025-02-21T14:04:02Z"" SessionNotOnOrAfter=""2025-02-21T14:09:32Z""><saml2:AuthnContext><saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</saml2:AuthnContextClassRef></saml2:AuthnContext></saml2:AuthnStatement></saml2:Assertion></wsse:Security></soapenv:Header><soapenv:Body xmlns:v13=""http://upm3.uhc.com/claim/readclaimdetail/v13"">
+      <v13:invokeService>
+
+         <arg0>
+            <requestHeader>
+               <applicationName>IIM</applicationName>
+               <applicationInstanceName>IIM</applicationInstanceName>
+               <logLevel>DEFAULT</logLevel>
+						<serviceOption>
+						<key>SECURITY_GROUPS</key>
+						<value>Non_User_Accounts,UPM3_MIIM_TST,UPM3_MIIM_STG,UPM3_MIIM_PROD,LeadsService_SRVCGRP,LeadsService_NONPRODSRVCGRP,</value>
+					</serviceOption>
+            <serviceOption><key>SECURITY_GROUPS</key><value>Non_User_Accounts,CSP_MACESS_EXP_DEFAULT_TST,Citrix_Sungard_MacessEXP_SVC_3x_CSP_TST_A,UPM3_AE_TST,AMC_MACESS_CLAIMS_EXAM,Citrix_AMC_Macess_Users,</value></serviceOption><serviceOption><key>AE_TOKEN</key><value>AELLOT-bZTSm</value></serviceOption><internalUse><uid>[[IIM||287549089]UPM3-PROD-FRONTEND]</uid><originalConsumer>IIM</originalConsumer><originalServiceName>invokeService</originalServiceName><originalServiceVersion>1</originalServiceVersion><logSequence>1</logSequence><uidGeneratedBy>DP</uidGeneratedBy></internalUse></requestHeader>
+            <readClaimControlModifiers>
+               <cosmosSystemParameter>
+                  <sourceId>40</sourceId>
+                  <userId>90161</userId>
+               </cosmosSystemParameter>
+               <sourceSystem>COSMOS</sourceSystem>
+            </readClaimControlModifiers>
+            <systemDivision>NTL</systemDivision>
+            <claimType>HOSPITAL</claimType>
+            <auditControlNumber>19813936</auditControlNumber>
+            <auditSubNumber/>
+            <recordId>01</recordId>
+         </arg0>
+      </v13:invokeService>
+   </soapenv:Body></soapenv:Envelope>"
+07,917592087,80188,NTL,NTL019654583,019654583,C,HOSPITAL,I,COSM,"<?xml version=""1.0"" encoding=""UTF-8""?>
+<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/""><soapenv:Header><wsse:Security xmlns:wsse=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd""><saml2:Assertion Version=""2.0"" ID=""ID001719a5-ad53-4a5f-be2a-77d78eb4f944"" IssueInstant=""2025-02-21T14:04:02Z"" xmlns:saml2=""urn:oasis:names:tc:SAML:2.0:assertion""><saml2:Issuer>XS</saml2:Issuer><Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+<SignedInfo>
+  <CanonicalizationMethod Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+  <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1""/>
+  <Reference URI=""#ID001719a5-ad53-4a5f-be2a-77d78eb4f944"">
+    <Transforms>
+      <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature""/>
+      <Transform Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+    </Transforms>
+    <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1""/>
+    <DigestValue>td6j3nZr/Wva9Z8clfKIIu6OGsQ=</DigestValue>
+  </Reference>
+</SignedInfo>
+    <SignatureValue>mDjs5cIHfoDPG9zpQmcCp96bM0qDVt+as2G8qEx0RPvzvW8ROGThNPyrr5Rsx5U6jRcRodKIwr77blMMj3AwLwUfzDAzaZZkssTi8+qVUkDFloZd0W7bJklGfmfyWwY9eyLI4WySFSwFJkoAan3H8hCcORHVIeYUPCcDOJisrBQIIf7GIEC3tZuDCxu6RCqFA/h4RE7vAmqMkO/NxWLuOeiFm9svXgn4XeouazifppETZR1HLPky8DEdRjrbEjGAdk6j+Kcla9Dxj+RvaNMnNzIHBHUkq/u+4Evw4QdPfiao+7Kz/DkLEwmJ7U+8qus4wrorMmMpBTSrQYZtFHMVZw==</SignatureValue><KeyInfo><X509Data><X509Certificate>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</X509Certificate><X509IssuerSerial><X509IssuerName>CN=OptumInternalIssuingCA2, O=Optum, L=Minneapolis, ST=Minnesota, C=US</X509IssuerName><X509SerialNumber>1672560161626558262593682121212846832094055858</X509SerialNumber></X509IssuerSerial></X509Data></KeyInfo></Signature><saml2:Subject><saml2:NameID Format=""urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"">CN=clmtstid,CN=Users,DC=ms,DC=ds,DC=uhc,DC=com</saml2:NameID><saml2:SubjectConfirmation Method=""urn:oasis:names:tc:SAML:2.0:cm:bearer""><saml2:SubjectConfirmationData NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/></saml2:SubjectConfirmation></saml2:Subject><saml2:Conditions NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/><saml2:AuthnStatement AuthnInstant=""2025-02-21T14:04:02Z"" SessionNotOnOrAfter=""2025-02-21T14:09:32Z""><saml2:AuthnContext><saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</saml2:AuthnContextClassRef></saml2:AuthnContext></saml2:AuthnStatement></saml2:Assertion></wsse:Security></soapenv:Header><soapenv:Body xmlns:v13=""http://upm3.uhc.com/claim/readclaimdetail/v13"">
+      <v13:invokeService>
+
+         <arg0>
+            <requestHeader>
+               <applicationName>IIM</applicationName>
+               <applicationInstanceName>IIM</applicationInstanceName>
+               <logLevel>DEFAULT</logLevel>
+						<serviceOption>
+						<key>SECURITY_GROUPS</key>
+						<value>Non_User_Accounts,UPM3_MIIM_TST,UPM3_MIIM_STG,UPM3_MIIM_PROD,LeadsService_SRVCGRP,LeadsService_NONPRODSRVCGRP,</value>
+					</serviceOption>
+            <serviceOption><key>SECURITY_GROUPS</key><value>Non_User_Accounts,CSP_MACESS_EXP_DEFAULT_TST,Citrix_Sungard_MacessEXP_SVC_3x_CSP_TST_A,UPM3_AE_TST,AMC_MACESS_CLAIMS_EXAM,Citrix_AMC_Macess_Users,</value></serviceOption><serviceOption><key>AE_TOKEN</key><value>AELLOT-bZTSm</value></serviceOption><internalUse><uid>[[IIM||287549089]UPM3-PROD-FRONTEND]</uid><originalConsumer>IIM</originalConsumer><originalServiceName>invokeService</originalServiceName><originalServiceVersion>1</originalServiceVersion><logSequence>1</logSequence><uidGeneratedBy>DP</uidGeneratedBy></internalUse></requestHeader>
+            <readClaimControlModifiers>
+               <cosmosSystemParameter>
+                  <sourceId>40</sourceId>
+                  <userId>90161</userId>
+               </cosmosSystemParameter>
+               <sourceSystem>COSMOS</sourceSystem>
+            </readClaimControlModifiers>
+            <systemDivision>NTL</systemDivision>
+            <claimType>HOSPITAL</claimType>
+            <auditControlNumber>19654583</auditControlNumber>
+            <auditSubNumber/>
+            <recordId>01</recordId>
+         </arg0>
+      </v13:invokeService>
+   </soapenv:Body></soapenv:Envelope>"
+08,917592087,80188,NTL,NTL019688012,019688012,C,HOSPITAL,I,COSM,"<?xml version=""1.0"" encoding=""UTF-8""?>
+<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/""><soapenv:Header><wsse:Security xmlns:wsse=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd""><saml2:Assertion Version=""2.0"" ID=""ID001719a5-ad53-4a5f-be2a-77d78eb4f944"" IssueInstant=""2025-02-21T14:04:02Z"" xmlns:saml2=""urn:oasis:names:tc:SAML:2.0:assertion""><saml2:Issuer>XS</saml2:Issuer><Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">
+<SignedInfo>
+  <CanonicalizationMethod Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+  <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1""/>
+  <Reference URI=""#ID001719a5-ad53-4a5f-be2a-77d78eb4f944"">
+    <Transforms>
+      <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature""/>
+      <Transform Algorithm=""http://www.w3.org/2001/10/xml-exc-c14n#""/>
+    </Transforms>
+    <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1""/>
+    <DigestValue>td6j3nZr/Wva9Z8clfKIIu6OGsQ=</DigestValue>
+  </Reference>
+</SignedInfo>
+    <SignatureValue>mDjs5cIHfoDPG9zpQmcCp96bM0qDVt+as2G8qEx0RPvzvW8ROGThNPyrr5Rsx5U6jRcRodKIwr77blMMj3AwLwUfzDAzaZZkssTi8+qVUkDFloZd0W7bJklGfmfyWwY9eyLI4WySFSwFJkoAan3H8hCcORHVIeYUPCcDOJisrBQIIf7GIEC3tZuDCxu6RCqFA/h4RE7vAmqMkO/NxWLuOeiFm9svXgn4XeouazifppETZR1HLPky8DEdRjrbEjGAdk6j+Kcla9Dxj+RvaNMnNzIHBHUkq/u+4Evw4QdPfiao+7Kz/DkLEwmJ7U+8qus4wrorMmMpBTSrQYZtFHMVZw==</SignatureValue><KeyInfo><X509Data><X509Certificate>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</X509Certificate><X509IssuerSerial><X509IssuerName>CN=OptumInternalIssuingCA2, O=Optum, L=Minneapolis, ST=Minnesota, C=US</X509IssuerName><X509SerialNumber>1672560161626558262593682121212846832094055858</X509SerialNumber></X509IssuerSerial></X509Data></KeyInfo></Signature><saml2:Subject><saml2:NameID Format=""urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"">CN=clmtstid,CN=Users,DC=ms,DC=ds,DC=uhc,DC=com</saml2:NameID><saml2:SubjectConfirmation Method=""urn:oasis:names:tc:SAML:2.0:cm:bearer""><saml2:SubjectConfirmationData NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/></saml2:SubjectConfirmation></saml2:Subject><saml2:Conditions NotBefore=""2025-02-21T14:03:32Z"" NotOnOrAfter=""2025-02-21T14:09:32Z""/><saml2:AuthnStatement AuthnInstant=""2025-02-21T14:04:02Z"" SessionNotOnOrAfter=""2025-02-21T14:09:32Z""><saml2:AuthnContext><saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</saml2:AuthnContextClassRef></saml2:AuthnContext></saml2:AuthnStatement></saml2:Assertion></wsse:Security></soapenv:Header><soapenv:Body xmlns:v13=""http://upm3.uhc.com/claim/readclaimdetail/v13"">
+      <v13:invokeService>
+
+         <arg0>
+            <requestHeader>
+               <applicationName>IIM</applicationName>
+               <applicationInstanceName>IIM</applicationInstanceName>
+               <logLevel>DEFAULT</logLevel>
+						<serviceOption>
+						<key>SECURITY_GROUPS</key>
+						<value>Non_User_Accounts,UPM3_MIIM_TST,UPM3_MIIM_STG,UPM3_MIIM_PROD,LeadsService_SRVCGRP,LeadsService_NONPRODSRVCGRP,</value>
+					</serviceOption>
+            <serviceOption><key>SECURITY_GROUPS</key><value>Non_User_Accounts,CSP_MACESS_EXP_DEFAULT_TST,Citrix_Sungard_MacessEXP_SVC_3x_CSP_TST_A,UPM3_AE_TST,AMC_MACESS_CLAIMS_EXAM,Citrix_AMC_Macess_Users,</value></serviceOption><serviceOption><key>AE_TOKEN</key><value>AELLOT-bZTSm</value></serviceOption><internalUse><uid>[[IIM||287549089]UPM3-PROD-FRONTEND]</uid><originalConsumer>IIM</originalConsumer><originalServiceName>invokeService</originalServiceName><originalServiceVersion>1</originalServiceVersion><logSequence>1</logSequence><uidGeneratedBy>DP</uidGeneratedBy></internalUse></requestHeader>
+            <readClaimControlModifiers>
+               <cosmosSystemParameter>
+                  <sourceId>40</sourceId>
+                  <userId>90161</userId>
+               </cosmosSystemParameter>
+               <sourceSystem>COSMOS</sourceSystem>
+            </readClaimControlModifiers>
+            <systemDivision>NTL</systemDivision>
+            <claimType>HOSPITAL</claimType>
+            <auditControlNumber>19688012</auditControlNumber>
+            <auditSubNumber/>
+            <recordId>01</recordId>
+         </arg0>
+      </v13:invokeService>
+   </soapenv:Body></soapenv:Envelope>"

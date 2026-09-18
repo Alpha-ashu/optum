@@ -1,0 +1,29 @@
+{
+  "name": "HCPClink_Alex_Summary",
+  "validation_name": "Clink API Payer vs Alex - Claims 360 Summary Search (COSMOS Nonprod)",
+
+  "test_data": "src/test/resources/testdata/clink/clink_payer_summary_testdata.csv",
+  "claim_filter": null,
+  "claim_type": "Summary",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/legacy_ppkg/clink/hcp_alex_summaryMapping.xlsx"
+  ],
+
+  "//comparison_mode": "PPKG and Alex hit the SAME Claims360 endpoint and return the identical '{searchOutput, svcRspSts}' shape (no claim/data array), so compare mapped JSON pointers directly instead of the claim-array PPKG-vs-Alex engine.",
+  "comparison_mode": "direct",
+
+  "response_base": "target/All_Responses/Summary",
+  "response_base": "target/All_Responses/Summary",
+  "expected_source": "PPKG",
+  "actual_source": "Alex",
+  "sources": {
+    "PPKG": { "folder": "PPKG_Responses", "suffix": "_ppkg.json" },
+    "Alex": { "folder": "Alex_Responses", "suffix": "_alex.json" }
+  },
+
+  "consumer_name": "Clink vs Alex",
+  "source_feature_file": "src/test/resources/feature_files/ppkg_alex/alex/clink/non-prod/summary/clink_ppkg.feature",
+  "target_feature_file": "src/test/resources/feature_files/ppkg_alex/alex/clink/non-prod/summary/clink_alex.feature",
+  "search_type": "Claim Summary Search"
+}
+

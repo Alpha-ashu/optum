@@ -1,0 +1,52 @@
+query getClaimAmbulances($query: ClaimAmbulanceQuery)
+{
+    claimAmbulances(query: $query)
+    {
+        claimTransactionIdentifier
+        claimAdjudicationPlatformCode
+        sourceSystemCode
+        ambulanceReasonCode
+        ambulanceReasonDescription
+        ambulanceTransportTypeCode
+        ambulanceTransportDescription
+        certificationConditionIndicator
+        patientWeightCount
+        patientWeightMeasureCode
+        roundTripPurposeText
+        stretcherPurposeText
+        transportDistanceCount
+        transportDistanceMeasureCode
+        transportDistanceUnitOfMeasureDescription
+        transportDistanceUnitOfMeasureEffectiveDate
+        transportDistanceUnitOfMeasureExpirationDate
+        audit
+        {
+            createDatetime
+            createUserIdentifier
+            recordStatusCode
+            updateDatetime
+            updateUserIdentifier
+        }
+        hcpMetaData
+        {
+            kafkaTimestamp
+            upsertTimestamp
+        }
+        claimAmbulanceCertification
+        {
+            ambulanceCertificationConditionCode
+            ambulanceCertificationConditionCodeDescription
+            claimAmbulanceCertificationRowIdentifier
+        }
+        claimAmbulanceLocation
+        {
+            addressLine1Text
+            addressLine2Text
+            addressTownName
+            stateProvinceCode
+            postalCode
+            ambulanceLocationTypeCode
+            ambulanceLocationTypeDescription
+        }
+    }
+}

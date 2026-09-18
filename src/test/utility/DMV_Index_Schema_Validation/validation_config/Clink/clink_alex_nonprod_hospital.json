@@ -1,0 +1,29 @@
+{
+  "name": "HCPClink_Alex_Hospital",
+  "validation_name": "Clink API HCP vs Alex - Claims 360 Detail Search Hospital (COSMOS Nonprod)",
+
+  "test_data": "src/test/resources/testdata/clink/clink_payer_hospital_testdata.csv",
+  "claim_filter": null,
+  "claim_type": "Hospital",
+  "//mapping_sheets": "TODO: no Clink-specific Hospital mapping sheet exists yet. Do NOT reuse json_mapping/ppkg_alex/ppkg_alex/hcp_alex_hospitalMapping.xlsx - that maps the IIM PayerPackage response shape, not Clink's claims360-detail response. Add the correct sheet here.",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/legacy_ppkg/clink/clink_hospital_mapping.xlsx"
+  ],
+
+  "//comparison_mode": "PPKG and Alex hit the SAME claims360-detail endpoint and return the identical '{searchOutput, svcRspSts}' shape (no claim/data array), so compare mapped JSON pointers directly instead of the claim-array PPKG-vs-Alex engine.",
+  "comparison_mode": "direct",
+
+  "response_base": "target/All_Responses/Hospital",
+  "expected_source": "PPKG",
+  "actual_source": "Alex",
+  "sources": {
+    "PPKG": { "folder": "PPKG_Responses", "suffix": "_ppkg.json" },
+    "Alex": { "folder": "Alex_Responses", "suffix": "_alex.json" }
+  },
+
+  "consumer_name": "Clink vs Alex",
+  "source_feature_file": "src/test/resources/feature_files/ppkg_alex/alex/clink/non-prod/detail/hospital/clink_ppkg.feature",
+  "target_feature_file": "src/test/resources/feature_files/ppkg_alex/alex/clink/non-prod/detail/hospital/clink_alex.feature",
+  "search_type": "Claim Search"
+}
+

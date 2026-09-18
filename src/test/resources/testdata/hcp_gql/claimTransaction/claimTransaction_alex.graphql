@@ -1,0 +1,398 @@
+query ClaimTransactionAndServiceLine(
+    $claimTransaction: Boolean!
+    $claimServiceLine: Boolean!
+    $claimTransactions: ClaimTransactionQuery
+    $claimServiceLines: ClaimServiceLineQuery
+) {
+    claimTransactions(query: $claimTransactions) @include(if: $claimTransaction) {
+        __typename
+        claimTransactionIdentifier
+        sourceSystemCode
+        lastSeenDate
+        originalPayerClaimNumber
+        claimSubmittedIdentifier
+        totalContractAmount
+        providerContingencyPercent
+        patientAccountNumber
+        claimReceiptLocatorNumber
+        claimAdjudicationPlatformCode
+        benefitLevelCauseCode
+        claimTypeDescription
+        claimTypeCode
+        claimBillType
+        placeOfServiceCode
+        placeOfServiceCodeDescription
+        claimEncounterIndicator
+        claimSubmissionMethodCode
+        claimSubmissionMethodDescription
+        claimBillTypeDescription
+        originalClaimTransactionIdentifier
+        totalBilledChargeAmount
+        claimTransactionStatusCode
+        claimAdjudicationEntryTime
+        surpriseMedicalBillingLevelCode
+        claimReceiptDate
+        billingProviderTaxIdentificationNumber
+        billingProviderIdentifier
+        billingProviderNationalProviderIdentifier
+        billingProviderAgreementIdentifier
+        renderingProviderNationalProviderIdentifier
+        renderingProviderIdentifier
+        claimAdjustedTime
+        claimTransactionType
+        checkIssueDate
+        checkPaymentTrackingNumber
+        electronicFundsTransferTrackingNumber
+        inoutNetworkClaimCode
+        startingServiceDate
+        endingServiceDate
+        claimAdjudicationEntryDate
+        claimAdjudicationDate
+        claimAdjudicationTime
+        claimAdjustedDate
+        electronicFundsTransferDate
+        totalPatientNotCoveredAmount
+        totalProviderNotCoveredAmount
+        totalDiscountAmount
+        totalClaimAllowedAmount
+        totalCopayAmount
+        totalBenefitCoinsuranceAmount
+        totalDeductibleAmount
+        totalPatientResponsibilityAmount
+        totalClaimPaidAmount
+        totalInterestAmount
+        patientIndividualIdentifier
+        subscriberIndividualIdentifier
+        medicalRecordNumber
+        admissionDatetime
+        dischargeDatetime
+        dischargeStatusCode
+        adjudicatedCobLevel
+        totalPatientPaidAmount
+        claimPayeeAssignmentCode
+        totalCobSavingsAmount
+        otherLetterCorrespondenceIdentifier
+        lastWorkedDate
+        delayReasonCode
+        claimDenialReasonDescription
+        primaryCareProviderIdentifier
+        referringProviderIdentifier
+        claimTransactionProcessStatusDescription
+        outOfNetworkClaimBillingProviderIndicator
+        outOfNetworkClaimRenderingProviderIndicator
+        claimServiceOtherPayers {
+            __typename
+            claimServiceOtherPayerRowIdentifier
+            otherPayerServicePaidAmount
+            otherPayerPatientLiabilityAmount
+            claimServiceOtherPayerOtherMonetaryAmount {
+                __typename
+                otherPayerClaimServiceOtherAmount
+                amountTypeCode
+            }
+        }
+        claimTransactionExtensions {
+            __typename
+            claimOverrideFlag
+            dol
+            cobCalc
+        }
+        claimValueCode {
+            __typename
+            valueAmount
+            valueDescription
+        }
+        claimOtherIndicator {
+            __typename
+            indicatorTypeCode
+            indicatorTypeDescription
+            claimOtherIndicator
+        }
+        claimIcdProcedureCode {
+            __typename
+            icdProcedureCode
+            icdVersion
+            icdProcedureDate
+            principalProcedureIndicator
+            procedurePrioritySequenceNumber
+        }
+        claimConditionCode {
+            __typename
+            conditionCode
+            conditionCodeDescription
+        }
+        claimNote {
+            __typename
+            claimNoteTypeCode
+            claimNoteTypeDescription
+            noteTypeText
+            noteEnteredDate
+            noteEnteredByName
+        }
+        claimOtherMonetaryAmount {
+            __typename
+            amountTypeCode
+            claimAmount
+        }
+        outOfNetworkClaimBillingProviderIndicator
+        claimTransactionSourceSpecificAttribute {
+            __typename
+            attributeName
+            attributeValue
+        }
+        claimDiagnosisRelatedGroupCode {
+            __typename
+            diagnosisRelatedGroupCode
+        }
+        claimDiagnosisCode {
+            __typename
+            diagnosisPrioritySequenceNumber
+            diagnosisCode
+            diagnosisTypeCode
+            diagnosisCodeDescription
+            diagnosisLevelTypeCode
+            presentOnAdmissionsIndicator
+        }
+        claimAuthorization {
+            __typename
+            authorizationNumber
+            authorizationTypeCode
+            claimAuthorizationExceptionCode
+        }
+        claimTransactionAdjustment {
+            __typename
+            claimAdjustmentGroupCode
+            claimAdjustmentReasonCode
+            claimAdjustmentAmount
+            claimAdjustmentQuantity
+            claimAdjustmentReasonDescription
+        }
+        claimReview {
+            __typename
+            claimReviewDate
+            claimReviewReasonCode
+            claimReviewReasonDescription
+            claimReviewIdentifier
+            reviewProcessorIdentifier
+            claimReviewResultCode
+            claimReviewResultDescription
+        }
+        claimRemittanceAdviceRemark {
+            __typename
+            remittanceAdviceRemarkCode
+            proprietaryCodeIndicator
+            remittanceAdviceRemarkDescription
+        }
+        claimPayToAddress {
+            __typename
+            addressLine1Text
+            addressLine2Text
+            addressTownName
+            stateProvinceCode
+            postalCode
+            submittedAddressLine1Text
+            submittedAddressLine2Text
+            submittedCityNameText
+            submittedStateProvinceCode
+            submittedPostalCode
+            entityTypeCode
+            fipsStateCode
+        }
+        claimSubmitted {
+            __typename
+            claimSourceSystemCode
+            claimSubmittedIdentifier
+            claimReceiptLocatorNumber
+            totalBilledChargeAmount
+            patientGenderCode
+            claimSubmittedOtherIdentifier {
+                __typename
+                claimOtherIdentifier
+                otherIdentifierTypeCode
+            }
+        }
+        claimServiceLineExtensions {
+            __typename
+            payeeCode
+            otherinsurancePatientresponsibilityAmount
+            lineProviderInfo {
+                __typename
+                providerTaxPrefixSuffixIdentifier
+            }
+        }
+        claimOtherIdentifier {
+            __typename
+            claimOtherIdentifier
+            otherIdentifierTypeCode
+        }
+    }
+    claimServiceLines(query: $claimServiceLines) @include(if: $claimServiceLine) {
+        __typename
+        claimTransactionIdentifier
+        claimSubmittedIdentifier
+        claimServiceLineIdentifier
+        claimSubmittedServiceIdentifier
+        serviceLineDeniedIndicator
+        referringProviderNationalProviderIdentifier
+        claimServiceLineTransactionStatusCode
+        contractWithholdContingencyLineAmount
+        outOfNetworkServiceIndicator
+        claimServiceLineCancelReasonCode
+        claimServiceLineCancelReasonDescription
+        serviceDate
+        serviceEndDate
+        claimLineAdjudicationDate
+        claimLineAdjudicationTime
+        professionalDiagnosis1PointerNumber
+        professionalDiagnosis2PointerNumber
+        professionalDiagnosis3PointerNumber
+        professionalDiagnosis4PointerNumber
+        serviceUnitCount
+        serviceProcedureCode
+        serviceProcedureDescription
+        revenueCode
+        procedureModifier1Code
+        procedureModifier2Code
+        procedureModifier3Code
+        procedureModifier4Code
+        nationalDrugCode
+        billedChargeLineAmount
+        patientNotCoveredAmount
+        providerNotCoveredAmount
+        discountLineAmount
+        allowedLineAmount
+        deductibleLineAmount
+        benefitCopayLineAmount
+        benefitCoinsuranceLineAmount
+        memberResponsibilityLineAmount
+        netPaidLineAmount
+        capitatedServiceIndicator
+        approvedLineAmount
+        placeOfServiceCode
+        placeOfServiceCodeDescription
+        qualifiedPaymentAmount
+        feeScheduleIdentifier
+        claimServiceNote {
+            __typename
+            claimServiceNoteRowIdentifier
+            noteTypeText
+        }
+        claimServiceLineExtension {
+            __typename
+            originalPlaceofServicecode
+            lineFinalCauseCode
+            lbmLineIncludeCode
+            pharmacyCouponAmount
+            baseWouldPayAmount
+            supplementalWouldPayAmount
+            majorMedicalWouldPayAmount
+            lineProviderWriteOff
+            payeeCode
+            prsDispositionCode
+            prsCreateSourceCode
+            prsDispositionCode12
+            coinsuranceAfterCouponAmount
+            pharmacyCouponStatusCode
+            deductibleAfterCouponAmount
+            closure1Code
+            closure2Code
+            closure3Code
+            closure4Code
+            prsRemarkCode
+            remarkCode2
+            notCoveredRemark1Code
+            notCoveredRemark2Code
+            informationRemark1Code
+            informationRemark2Code
+            otherinsurancePaidLineAmount
+            pharmacyCouponPatientResponsibilityAmount
+            medicaidL04Amount
+            ub92Chargeamount
+            ub92NotcoveredAmount
+            ub92OriginalunitsCount
+            ub92Servicedate
+            ub92ProcedureCode
+            hcfaItemcontrolText
+            hcfaProceduremodifier1code
+            hcfaProceduremodifier2code
+            hcfaProceduremodifier3code
+            hcfaProceduremodifier4code
+            hcfaServiceplaceCode
+            contractAmount
+            procedureCode
+            originalProcedurecode
+            timelyFileLimitValue
+            timelyFileTypeCode
+            linePaymentInfo {
+                __typename
+                paymentAmount
+                paymentNumber
+                paymentEffectiveDate
+                checkSeriesDesignatorCode
+            }
+            lineProviderInfo {
+                __typename
+                providerProductCode
+                providerMarketTypecode
+                providerMarketNumber
+                providerIpaIndicator
+                providerTierIndicator
+            }
+        }
+        claimServiceBenefitCoverage {
+            __typename
+            eligibilityRelationshipCode
+            enrolleeMemberFacingIdentifier
+            organizationPopulationGroupNumber
+            productCode
+            packageCode
+            networkIdentifier
+        }
+        claimServiceLineAuthorization {
+            __typename
+            authorizationNumber
+            authorizationTypeCode
+            authorizationSourceCode
+            externalOrganizationAuthorizationIdentifier
+        }
+        claimServiceAdjustment {
+            __typename
+            claimAdjustmentGroupCode
+            claimAdjustmentReasonCode
+            serviceAdjustmentAmount
+            claimAdjustment835GroupCode
+            claimAdjustment835ReasonCode
+        }
+        claimServiceOtherIndicator {
+            __typename
+            indicatorTypeCode
+            claimServiceOtherIndicator
+            indicatorTypeDescription
+        }
+        claimServiceLineAccumulators {
+            __typename
+            claimAccumulatorTypeCode
+            claimAccumulatorTypeDescription
+            claimServiceLineAccumulatorAmount
+            claimServiceLineIdentifier
+            claimTransactionIdentifier
+        }
+        claimServiceOtherMonetaryAmount {
+            __typename
+            amountTypeCode
+            claimServiceLineAmount
+            amountTypeDescription
+        }
+        claimServiceRemittanceAdviceRemark {
+            __typename
+            remittanceAdviceRemarkCode
+            remittanceAdviceRemarkDescription
+            proprietaryCodeIndicator
+        }
+        claimServiceLineSourceSpecificAttribute {
+            __typename
+            attributeName
+            attributeValue
+        }
+    }
+}
