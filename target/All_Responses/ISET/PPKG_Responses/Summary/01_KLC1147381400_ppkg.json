@@ -1,0 +1,251 @@
+{
+  "meta": {
+    "numOfRecords": "1",
+    "pagingState": {
+      "pageNum": 1,
+      "pageSize": 200
+    }
+  },
+  "data": [
+    {
+      "claimIdentifiers": {
+        "internalReferenceIdentifier": "FW09938022",
+        "payerClaimControlNumber": "KLC11473814",
+        "patientAccountNumber": "RPMBC1114266",
+        "clearinghouseTraceNumber": "Q7EZMH2WEY01ZM",
+        "filmLocation": {
+          "claimReceiptLocatorNumber": "945261952786000",
+          "filmOfficeNumber": "27860",
+          "fileLocatorDate": "2026-07-14"
+        },
+        "claimOtherIdentifiers": [
+          {
+            "benefitLevelCauseCode": "999",
+            "lineofBusinessCode": "MCR",
+            "planBenefitTypeCode": "MEDICAL"
+          }
+        ],
+        "sourceSystemCode": "COS",
+        "claimAdjudicationPlatformCode": "Professional",
+        "claimTransactionIdentifier": "KLC:11473814:0:1:20260714:23562880",
+        "claimSubmittedSourceSystemCode": "COSM",
+        "claimSubmittedIdentifier": "FW09938022"
+      },
+      "claimCategories": {
+        "claimType": "PROFESSIONAL",
+        "claimFrequencyTypeCode": "1",
+        "claimFrequencyTypeDescription": "Admit thru discharge claim",
+        "claimEncounterIndicator": false,
+        "claimTransactionType": "ORIGINAL",
+        "isSplitClaim": false,
+        "claimSubmissionMethodCode": "EDI",
+        "claimSubmissionMethodDescription": "ELECTRONIC",
+        "inoutNetworkClaimCode": "IN"
+      },
+      "claimState": {
+        "claimTransactionStatus": [
+          {
+            "sequence": 1,
+            "statusEffectivePeriod": {
+              "start": "2026-07-14",
+              "end": "2026-09-10"
+            },
+            "claimTransactionProcessStatusCode": "approved",
+            "claimTransactionStatusCode": "D",
+            "claimTransactionStatusDescription": "FINALIZED DENIED",
+            "claimStatusCrosswalkData": [
+              {
+                "claimStatusCategoryCode507": "F2",
+                "claimStatusCode508": "585"
+              }
+            ]
+          }
+        ],
+        "claimEvents": {
+          "startingServiceDate": "2026-07-02",
+          "endingServiceDate": "2026-07-02",
+          "claimReceiptDatetime": "2026-07-14",
+          "claimAdjudicationEntryDatetime": "2026-07-14T23:56:28.800+0000",
+          "claimAdjudicationDatetime": "2026-09-05T01:38:51",
+          "claimReviewDatetime": "2026-09-04T00:00:00",
+          "claimPaidDate": "2026-09-10"
+        }
+      },
+      "patient": {
+        "name": {
+          "fullName": "LUANN FLOOD",
+          "lastName": "FLOOD",
+          "firstName": "LUANN"
+        },
+        "gender": "Female",
+        "dateOfBirth": "1954-03-24",
+        "age": "72",
+        "subscriberId": "971011891",
+        "memberId": "971011891",
+        "dependent": "00",
+        "policyNumber": "82995"
+      },
+      "providers": [
+        {
+          "providerDataType": "ADJUDICATED",
+          "identifiers": {
+            "providerTaxId": "844880698",
+            "npi": "1619649894",
+            "otherProviderIdentifiers": [
+              {
+                "providerIdentifier": "002236285",
+                "providerIdentifierSourceSystemCode": "MPIN"
+              },
+              {
+                "providerIdentifier": "00040705502",
+                "providerIdentifierSourceSystemCode": "PROVIDERNBR"
+              }
+            ]
+          },
+          "name": {
+            "fullName": "JAIN, M.D., ALKA",
+            "lastName": "ALKA JAIN MD",
+            "firstName": "JAIN, M.D., ALKA"
+          },
+          "role": "BILLING"
+        },
+        {
+          "providerDataType": "ADJUDICATED",
+          "identifiers": {
+            "npi": "1962407544"
+          },
+          "role": "RENDERING"
+        },
+        {
+          "providerDataType": "SUBMITTED",
+          "identifiers": {
+            "providerTaxId": "844880698",
+            "npi": "1619649894"
+          },
+          "name": {
+            "fullName": "SCIOMETRIX LLC",
+            "lastName": "SCIOMETRIX LLC"
+          },
+          "role": "BILLING"
+        },
+        {
+          "providerDataType": "SUBMITTED",
+          "identifiers": {
+            "npi": "1962407544"
+          },
+          "name": {
+            "fullName": "ALKA JAIN",
+            "lastName": "JAIN",
+            "firstName": "ALKA"
+          },
+          "role": "RENDERING"
+        }
+      ],
+      "claimAuthorizations": [
+        {
+          "authorizationNumber": ":0:0"
+        }
+      ],
+      "insurance": {
+        "coverage": {
+          "insurer": [
+            {
+              "insuranceType": "ADJUDICATED",
+              "insuranceTypeCode": "P"
+            }
+          ]
+        },
+        "sourceSpecificAttributes": [
+          {
+            "sourceName": "COSM",
+            "attributeName": "siteId",
+            "attributeValue": "KLC"
+          },
+          {
+            "sourceName": "COSM",
+            "attributeName": "returnRefundInd"
+          },
+          {
+            "sourceName": "COSM",
+            "attributeName": "ambulancePickupZip"
+          },
+          {
+            "sourceName": "COSM",
+            "attributeName": "overrideAmount"
+          },
+          {
+            "sourceName": "COSM",
+            "attributeName": "lineLevelLMSVCode"
+          },
+          {
+            "sourceName": "COSM",
+            "attributeName": "claimDevAICode",
+            "attributeValue": "913"
+          },
+          {
+            "sourceName": "COSM",
+            "attributeName": "claimDevCode",
+            "attributeValue": "913"
+          },
+          {
+            "sourceName": "COSM",
+            "attributeName": "claimDevDeptCode",
+            "attributeValue": "FW5"
+          }
+        ],
+        "reasonCodes": [
+          {
+            "claimRemittanceAdviceRemarks": [
+              {
+                "remittanceAdviceRemarkCode": "0"
+              }
+            ],
+            "claimDenialReasonCode": "1370",
+            "claimDenialReasonDescription": "REQUESTED INFORMATION NOT RECEIVED. DISREGARD IF RECENTLY SENT."
+          }
+        ]
+      },
+      "payments": [
+        {
+          "claimPaymentAmount": "0.00",
+          "paymentAmount": "49.51",
+          "checkSeriesDesignatorCode": "806",
+          "electronicFundsTransferTrackingNumber": "V8558002",
+          "electronicFundsTransferDate": "2026-09-10",
+          "claimAdjudicationDate": "2026-09-05",
+          "claimAdjudicationTime": "01:38:51",
+          "paymentOtherIdentifiers": [
+            {
+              "modeCode": "ACH"
+            }
+          ],
+          "claimPayeeAssignmentCode": "P",
+          "payeeName": "SCIOMETRIX LLC LLC",
+          "payeeAddress": [
+            {
+              "payeeAddressLine1Text": "306 S WASHINGTON AVE STE 600",
+              "payeeCityName": "ROYAL OAK",
+              "payeeStateProvinceCode": "MI",
+              "payeePostalCode": "480673837"
+            }
+          ]
+        }
+      ],
+      "totals": {
+        "totalBilledChargeAmount": "300.00",
+        "totalNotCoveredAmount": "300.00",
+        "totalPatientNotCoveredAmount": "0.00",
+        "totalProviderNotCoveredAmount": "300.00",
+        "totalDiscountAmount": "0.00",
+        "totalClaimAllowedAmount": "0.00",
+        "totalBenefitCoinsuranceAmount": "0.00",
+        "totalCopayAmount": "0.00",
+        "totalDeductibleAmount": "0.00",
+        "totalPatientResponsibilityAmount": "0.00",
+        "totalClaimPaidAmount": "0.00",
+        "totalInterestAmount": "0.00",
+        "totalSequesteredAmount": "0.00"
+      }
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+query getClaimTransactions($query: ClaimTransactionQuery) {
+    claimTransactions(query: $query) {
+        __typename
+        claimTransactionIdentifier
+        sourceSystemCode
+        lastSeenDate
+        originalPayerClaimNumber
+        claimSubmittedIdentifier
+        totalContractAmount
+        providerContingencyPercent
+        patientAccountNumber
+        claimReceiptLocatorNumber
+        claimAdjudicationPlatformCode
+        benefitLevelCauseCode
+        claimTypeDescription
+        claimTypeCode
+        claimBillType
+        placeOfServiceCode
+        placeOfServiceCodeDescription
+        claimEncounterIndicator
+        claimSubmissionMethodCode
+        claimSubmissionMethodDescription
+        claimBillTypeDescription
+        originalClaimTransactionIdentifier
+        totalBilledChargeAmount
+        claimTransactionStatusCode
+        claimAdjudicationEntryTime
+        surpriseMedicalBillingLevelCode
+        claimReceiptDate
+        billingProviderTaxIdentificationNumber
+        billingProviderIdentifier
+        billingProviderNationalProviderIdentifier
+        billingProviderAgreementIdentifier
+        renderingProviderNationalProviderIdentifier
+        renderingProviderIdentifier
+        claimAdjustedTime
+        claimTransactionType
+        checkIssueDate
+        checkPaymentTrackingNumber
+        electronicFundsTransferTrackingNumber
+        inoutNetworkClaimCode
+        startingServiceDate
+        endingServiceDate
+        claimAdjudicationEntryDate
+        claimAdjudicationDate
+        claimAdjudicationTime
+        claimAdjustedDate
+        electronicFundsTransferDate
+        totalPatientNotCoveredAmount
+        totalProviderNotCoveredAmount
+        totalDiscountAmount
+        totalClaimAllowedAmount
+        totalCopayAmount
+        totalBenefitCoinsuranceAmount
+        totalDeductibleAmount
+        totalPatientResponsibilityAmount
+        totalClaimPaidAmount
+        totalInterestAmount
+        patientIndividualIdentifier
+        subscriberIndividualIdentifier
+        medicalRecordNumber
+        admissionDatetime
+        dischargeDatetime
+        dischargeStatusCode
+        adjudicatedCobLevel
+        totalContractAmount
+        totalPatientPaidAmount
+        providerContingencyPercent
+        claimPayeeAssignmentCode
+        totalCobSavingsAmount
+        otherLetterCorrespondenceIdentifier
+        lastWorkedDate
+        delayReasonCode
+        claimDenialReasonDescription
+        primaryCareProviderIdentifier
+        referringProviderIdentifier
+        claimTransactionProcessStatusDescription
+        outOfNetworkClaimBillingProviderIndicator
+        outOfNetworkClaimRenderingProviderIndicator
+        claimServiceOtherPayers {
+            __typename
+            claimServiceOtherPayerRowIdentifier
+            otherPayerServicePaidAmount
+            otherPayerPatientLiabilityAmount
+            claimServiceOtherPayerOtherMonetaryAmount {
+                __typename
+                otherPayerClaimServiceOtherAmount
+                amountTypeCode
+            }
+        }
+        claimValueCode {
+            __typename
+            valueAmount
+            valueDescription
+        }
+        claimOtherIndicator {
+            __typename
+            indicatorTypeCode
+            indicatorTypeDescription
+            claimOtherIndicator
+        }
+        claimIcdProcedureCode {
+            __typename
+            icdProcedureCode
+            icdVersion
+            icdProcedureDate
+            principalProcedureIndicator
+            procedurePrioritySequenceNumber
+        }
+        claimConditionCode {
+            __typename
+            conditionCode
+            conditionCodeDescription
+        }
+        claimNote {
+            __typename
+            claimNoteTypeCode
+            claimNoteTypeDescription
+            noteTypeText
+            noteEnteredDate
+            noteEnteredByName
+        }
+        claimOtherMonetaryAmount {
+            __typename
+            amountTypeCode
+            claimAmount
+        }
+        claimTransactionSourceSpecificAttribute {
+            __typename
+            attributeName
+            attributeValue
+        }
+        claimDiagnosisRelatedGroupCode {
+            __typename
+            diagnosisRelatedGroupCode
+        }
+        claimDiagnosisCode {
+            __typename
+            diagnosisPrioritySequenceNumber
+            diagnosisCode
+            diagnosisTypeCode
+            diagnosisCodeDescription
+            diagnosisLevelTypeCode
+            presentOnAdmissionsIndicator
+        }
+        claimAuthorization {
+            __typename
+            authorizationNumber
+            authorizationTypeCode
+            claimAuthorizationExceptionCode
+        }
+        claimTransactionAdjustment {
+            __typename
+            claimAdjustmentGroupCode
+            claimAdjustmentReasonCode
+            claimAdjustmentAmount
+            claimAdjustmentQuantity
+            claimAdjustmentReasonDescription
+        }
+        claimReview {
+            __typename
+            claimReviewDate
+            claimReviewReasonCode
+            claimReviewReasonDescription
+            claimReviewIdentifier
+            reviewProcessorIdentifier
+            claimReviewResultCode
+            claimReviewResultDescription
+        }
+        claimRemittanceAdviceRemark {
+            __typename
+            remittanceAdviceRemarkCode
+            proprietaryCodeIndicator
+            remittanceAdviceRemarkDescription
+        }
+        claimPayToAddress {
+            __typename
+            addressLine1Text
+            addressLine2Text
+            addressTownName
+            stateProvinceCode
+            postalCode
+            submittedAddressLine1Text
+            submittedAddressLine2Text
+            submittedCityNameText
+            submittedStateProvinceCode
+            submittedPostalCode
+            entityTypeCode
+            fipsStateCode
+        }
+        claimOtherIdentifier {
+            __typename
+            claimOtherIdentifier
+            otherIdentifierTypeCode
+        }
+    }
+}

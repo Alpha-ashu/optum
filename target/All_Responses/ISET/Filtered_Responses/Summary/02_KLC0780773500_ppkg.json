@@ -1,0 +1,224 @@
+{
+    "claimIdentifiers": {
+        "internalReferenceIdentifier": "FU95304740",
+        "payerClaimControlNumber": "KLC07807735",
+        "patientAccountNumber": "02406683SFA048448",
+        "clearinghouseTraceNumber": "Q6A3CH2W8Y0060",
+        "filmLocation": {
+            "claimReceiptLocatorNumber": "942261616198600",
+            "filmOfficeNumber": "61986",
+            "fileLocatorDate": "2026-06-10"
+        },
+        "claimOtherIdentifiers": [
+            {
+                "benefitLevelCauseCode": "999",
+                "lineofBusinessCode": "MCR",
+                "planBenefitTypeCode": "MEDICAL"
+            }
+        ],
+        "sourceSystemCode": "COS",
+        "claimAdjudicationPlatformCode": "Professional",
+        "claimTransactionIdentifier": "KLC:7807735:0:1:20260611:1532733",
+        "claimSubmittedSourceSystemCode": "COSM",
+        "claimSubmittedIdentifier": "FU95304740"
+    },
+    "claimCategories": {
+        "claimType": "PROFESSIONAL",
+        "claimFrequencyTypeCode": "1",
+        "claimFrequencyTypeDescription": "Admit thru discharge claim",
+        "claimEncounterIndicator": false,
+        "claimTransactionType": "ORIGINAL",
+        "isSplitClaim": false,
+        "claimSubmissionMethodCode": "EDI",
+        "claimSubmissionMethodDescription": "ELECTRONIC",
+        "inoutNetworkClaimCode": "IN"
+    },
+    "claimState": {
+        "claimTransactionStatus": [
+            {
+                "sequence": 1,
+                "statusEffectivePeriod": {
+                    "start": "2026-06-10",
+                    "end": "2026-07-09"
+                },
+                "claimTransactionProcessStatusCode": "approved",
+                "claimTransactionStatusCode": "I",
+                "claimTransactionStatusDescription": "FINALIZED PAID",
+                "claimStatusCrosswalkData": [
+                    {
+                        "claimStatusCategoryCode507": "F1",
+                        "claimStatusCode508": "104"
+                    }
+                ]
+            }
+        ],
+        "claimEvents": {
+            "startingServiceDate": "2026-06-02",
+            "endingServiceDate": "2026-06-02",
+            "claimReceiptDatetime": "2026-06-10",
+            "claimAdjudicationEntryDatetime": "2026-06-11T01:53:27.330+0000",
+            "claimAdjudicationDatetime": "2026-06-19T10:18:39",
+            "claimReviewDatetime": "2026-06-16T00:00:00",
+            "claimPaidDate": "2026-07-09"
+        }
+    },
+    "patient": {
+        "name": {
+            "fullName": "CLAIRE WNOROWSKI",
+            "lastName": "WNOROWSKI",
+            "firstName": "CLAIRE"
+        },
+        "gender": "Female",
+        "dateOfBirth": "1946-08-19",
+        "age": "79",
+        "subscriberId": "928197225",
+        "memberId": "928197225",
+        "dependent": "00",
+        "policyNumber": "82943"
+    },
+    "providers": [
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "providerTaxId": "650303665",
+                "npi": "1184625733",
+                "otherProviderIdentifiers": [
+                    {
+                        "providerIdentifier": "003467521",
+                        "providerIdentifierSourceSystemCode": "MPIN"
+                    },
+                    {
+                        "providerIdentifier": "00100044867",
+                        "providerIdentifierSourceSystemCode": "PROVIDERNBR"
+                    }
+                ]
+            },
+            "name": {
+                "fullName": "STUART, M.D., MENACHEM M.",
+                "lastName": "STUART, M.D., MENACHEM M.",
+                "firstName": "STUART, M.D., MENACHEM M."
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "npi": "1154524718"
+            },
+            "role": "RENDERING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "providerTaxId": "650303665",
+                "npi": "1184625733"
+            },
+            "name": {
+                "fullName": "SOUTH FLORIDA ENT ASSOC",
+                "lastName": "SOUTH FLORIDA ENT ASSOC"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "npi": "1154524718"
+            },
+            "name": {
+                "fullName": "MIKE MENACHEM STUART",
+                "lastName": "STUART",
+                "firstName": "MIKE MENACHEM"
+            },
+            "role": "RENDERING"
+        }
+    ],
+    "claimAuthorizations": [
+        {
+            "authorizationNumber": ":0:0"
+        }
+    ],
+    "insurance": {
+        "coverage": {
+            "insurer": [
+                {
+                    "insuranceType": "ADJUDICATED",
+                    "insuranceTypeCode": "P"
+                }
+            ]
+        },
+        "sourceSpecificAttributes": [
+            {
+                "sourceName": "COSM",
+                "attributeName": "siteId",
+                "attributeValue": "KLC"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "returnRefundInd"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "ambulancePickupZip"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "overrideAmount"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "lineLevelLMSVCode"
+            }
+        ],
+        "reasonCodes": [
+            {
+                "claimRemittanceAdviceRemarks": [
+                    {
+                        "remittanceAdviceRemarkCode": "0"
+                    }
+                ],
+                "claimDenialReasonCode": "0"
+            }
+        ]
+    },
+    "payments": [
+        {
+            "claimPaymentAmount": "276.70",
+            "paymentAmount": "15375.10",
+            "checkSeriesDesignatorCode": "806",
+            "electronicFundsTransferTrackingNumber": "V5689111",
+            "electronicFundsTransferDate": "2026-07-09",
+            "claimAdjudicationDate": "2026-06-19",
+            "claimAdjudicationTime": "10:18:39",
+            "paymentOtherIdentifiers": [
+                {
+                    "modeCode": "ACH"
+                }
+            ],
+            "claimPayeeAssignmentCode": "P",
+            "payeeName": "FLORIDA ENT ASSOCIATES",
+            "payeeAddress": [
+                {
+                    "payeeAddressLine1Text": "PO BOX 735717",
+                    "payeeCityName": "DALLAS",
+                    "payeeStateProvinceCode": "TX",
+                    "payeePostalCode": "753735717"
+                }
+            ]
+        }
+    ],
+    "totals": {
+        "totalBilledChargeAmount": "727.00",
+        "totalNotCoveredAmount": "404.66",
+        "totalPatientNotCoveredAmount": "0.00",
+        "totalProviderNotCoveredAmount": "404.66",
+        "totalDiscountAmount": "0.00",
+        "totalClaimAllowedAmount": "322.34",
+        "totalBenefitCoinsuranceAmount": "0.00",
+        "totalCopayAmount": "40.00",
+        "totalDeductibleAmount": "0.00",
+        "totalPatientResponsibilityAmount": "40.00",
+        "totalClaimPaidAmount": "276.70",
+        "totalInterestAmount": "0.00",
+        "totalSequesteredAmount": "5.64"
+    }
+}

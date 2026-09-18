@@ -1,0 +1,56 @@
+query getClaimServicePricings($query: ClaimServicePricingQuery) {
+    claimServicePricings(query: $query) {
+        ambulatoryPaymentClassificationCode
+        ambulatoryPaymentClassificationDescription
+        ambulatoryPaymentStatusCode
+        ambulatoryPaymentStatusDescription
+        approvedDiagnosisRelatedGroupCode
+        approvedDiagnosisRelatedGroupCodeDescription
+        approvedEffectiveDate
+        approvedExpirationDate
+        approvedRevenueCode
+        approvedRevenueCodeDescription
+        approvedServiceProcedureCode
+        approvedServiceProcedureCodeLevel
+        approvedServiceProcedureDescription
+        approvedServiceProcedureEffectiveDate
+        approvedServiceProcedureExpirationDate
+        approvedServiceUnitCount
+        audit {
+            createDatetime
+            createUserIdentifier
+            recordStatusCode
+            sourceSystemCreateDatetime
+            sourceSystemCreateUserIdentifier
+            sourceSystemUpdateDatetime
+            sourceSystemUpdateUserIdentifier
+            updateDatetime
+            updateUserIdentifier
+        }
+        claimAdjudicationPlatformCode
+        claimServiceLineIdentifier
+        claimTransactionIdentifier
+        diagnosisRelatedGroupType
+        grouperAmount
+        hcpMetaData {
+            kafkaTimestamp
+            upsertTimestamp
+        }
+        policyComplianceCode
+        policyComplianceDescription
+        pricingAllowedAmount
+        pricingExceptionCode
+        pricingMethodologyCode
+        pricingMethodologyDescription
+        pricingOrganizationIdentifier
+        pricingRateAmount
+        pricingRejectReasonCode
+        pricingRejectReasonDescription
+        pricingSavingsAmount
+        sourceSystemCode
+        unitOfMeasureCode
+        unitOfMeasureDescription
+        unitOfMeasureEffectiveDate
+        unitOfMeasureExpirationDate
+    }
+}

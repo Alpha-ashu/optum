@@ -1,0 +1,225 @@
+{
+    "claimIdentifiers": {
+        "internalReferenceIdentifier": "FU47628979",
+        "payerClaimControlNumber": "ATL09937593",
+        "patientAccountNumber": "1187893",
+        "clearinghouseTraceNumber": "Q5RZMH35F3013D",
+        "filmLocation": {
+            "claimReceiptLocatorNumber": "975261476835000",
+            "filmOfficeNumber": "68350",
+            "fileLocatorDate": "2026-05-27"
+        },
+        "claimOtherIdentifiers": [
+            {
+                "benefitLevelCauseCode": "999",
+                "lineofBusinessCode": "MCR",
+                "planBenefitTypeCode": "MEDICAL"
+            }
+        ],
+        "sourceSystemCode": "COS",
+        "claimAdjudicationPlatformCode": "Professional",
+        "claimTransactionIdentifier": "ATL:9937593:0:1:20260528:1284981",
+        "claimSubmittedSourceSystemCode": "COSM",
+        "claimSubmittedIdentifier": "FU47628979"
+    },
+    "claimCategories": {
+        "claimType": "PROFESSIONAL",
+        "claimFrequencyTypeCode": "1",
+        "claimFrequencyTypeDescription": "Admit thru discharge claim",
+        "claimEncounterIndicator": false,
+        "claimTransactionType": "ORIGINAL",
+        "isSplitClaim": false,
+        "claimSubmissionMethodCode": "EDI",
+        "claimSubmissionMethodDescription": "ELECTRONIC",
+        "inoutNetworkClaimCode": "IN"
+    },
+    "claimState": {
+        "claimTransactionStatus": [
+            {
+                "sequence": 1,
+                "statusEffectivePeriod": {
+                    "start": "2026-05-27",
+                    "end": "2026-06-25"
+                },
+                "claimTransactionProcessStatusCode": "approved",
+                "claimTransactionStatusCode": "D",
+                "claimTransactionStatusDescription": "FINALIZED DENIED",
+                "claimStatusCrosswalkData": [
+                    {
+                        "claimStatusCategoryCode507": "F2",
+                        "claimStatusCode508": "585"
+                    }
+                ]
+            }
+        ],
+        "claimEvents": {
+            "startingServiceDate": "2026-05-22",
+            "endingServiceDate": "2026-05-22",
+            "claimReceiptDatetime": "2026-05-27",
+            "claimAdjudicationEntryDatetime": "2026-05-28T01:28:49.810+0000",
+            "claimAdjudicationDatetime": "2026-05-29T12:00:20",
+            "claimReviewDatetime": "2026-05-29T00:00:00",
+            "claimPaidDate": "2026-06-25"
+        }
+    },
+    "patient": {
+        "name": {
+            "fullName": "JACQUELINE PHILLIPS",
+            "lastName": "PHILLIPS",
+            "firstName": "JACQUELINE"
+        },
+        "gender": "Female",
+        "dateOfBirth": "1947-03-16",
+        "age": "79",
+        "subscriberId": "916823988",
+        "memberId": "916823988",
+        "dependent": "00",
+        "policyNumber": "12783"
+    },
+    "providers": [
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "providerTaxId": "421533531",
+                "npi": "1316050107",
+                "otherProviderIdentifiers": [
+                    {
+                        "providerIdentifier": "002828337",
+                        "providerIdentifierSourceSystemCode": "MPIN"
+                    },
+                    {
+                        "providerIdentifier": "00620339588",
+                        "providerIdentifierSourceSystemCode": "PROVIDERNBR"
+                    }
+                ]
+            },
+            "name": {
+                "fullName": "SHELTON, LCSW, MARK D.",
+                "lastName": "EL DORADO COUNTY COMMUNITY HEALTH CENTER",
+                "firstName": "SHELTON, LCSW, MARK D."
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "npi": "1215947528"
+            },
+            "role": "RENDERING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "providerTaxId": "421533531",
+                "npi": "1316050107"
+            },
+            "name": {
+                "fullName": "EDCHC PLACERVILLE 4212 MISSOURI FLAT RD",
+                "lastName": "EDCHC PLACERVILLE 4212 MISSOURI FLAT RD"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "npi": "1215947528"
+            },
+            "name": {
+                "fullName": "MARK SHELTON",
+                "lastName": "SHELTON",
+                "firstName": "MARK"
+            },
+            "role": "RENDERING"
+        }
+    ],
+    "claimAuthorizations": [
+        {
+            "authorizationNumber": ":0:0"
+        }
+    ],
+    "insurance": {
+        "coverage": {
+            "insurer": [
+                {
+                    "insuranceType": "ADJUDICATED",
+                    "insuranceTypeCode": "P"
+                }
+            ]
+        },
+        "sourceSpecificAttributes": [
+            {
+                "sourceName": "COSM",
+                "attributeName": "siteId",
+                "attributeValue": "ATL"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "returnRefundInd"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "ambulancePickupZip"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "overrideAmount"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "lineLevelLMSVCode"
+            }
+        ],
+        "reasonCodes": [
+            {
+                "claimRemittanceAdviceRemarks": [
+                    {
+                        "remittanceAdviceRemarkCode": "0"
+                    }
+                ],
+                "claimDenialReasonCode": "877",
+                "claimDenialReasonDescription": "SERVICE NOT MEDICALLY NECESSARY"
+            }
+        ]
+    },
+    "payments": [
+        {
+            "claimPaymentAmount": "0.00",
+            "paymentAmount": "435.92",
+            "checkSeriesDesignatorCode": "806",
+            "electronicFundsTransferTrackingNumber": "V5036463",
+            "electronicFundsTransferDate": "2026-06-25",
+            "claimAdjudicationDate": "2026-05-29",
+            "claimAdjudicationTime": "12:00:20",
+            "paymentOtherIdentifiers": [
+                {
+                    "modeCode": "ACH"
+                }
+            ],
+            "claimPayeeAssignmentCode": "P",
+            "payeeName": "EL DORADO COUNTY COMMUNITY HEALTH CRT",
+            "payeeAddress": [
+                {
+                    "payeeAddressLine1Text": "4327 GOLDEN CENTER DR",
+                    "payeeCityName": "PLACERVILLE",
+                    "payeeStateProvinceCode": "CA",
+                    "payeePostalCode": "956676287"
+                }
+            ]
+        }
+    ],
+    "totals": {
+        "totalBilledChargeAmount": "95.00",
+        "totalNotCoveredAmount": "95.00",
+        "totalPatientNotCoveredAmount": "0.00",
+        "totalProviderNotCoveredAmount": "95.00",
+        "totalDiscountAmount": "0.00",
+        "totalClaimAllowedAmount": "0.00",
+        "totalBenefitCoinsuranceAmount": "0.00",
+        "totalCopayAmount": "0.00",
+        "totalDeductibleAmount": "0.00",
+        "totalPatientResponsibilityAmount": "0.00",
+        "totalClaimPaidAmount": "0.00",
+        "totalInterestAmount": "0.00",
+        "totalSequesteredAmount": "0.00"
+    }
+}

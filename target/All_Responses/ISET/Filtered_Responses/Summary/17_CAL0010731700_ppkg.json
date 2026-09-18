@@ -1,0 +1,227 @@
+{
+    "claimIdentifiers": {
+        "internalReferenceIdentifier": "FN62146151",
+        "payerClaimControlNumber": "CAL00107317",
+        "patientAccountNumber": "COP840042",
+        "clearinghouseTraceNumber": "Q2NAVH0NIZ009D",
+        "filmLocation": {
+            "claimReceiptLocatorNumber": "924260541669100",
+            "filmOfficeNumber": "16691",
+            "fileLocatorDate": "2026-02-23"
+        },
+        "claimOtherIdentifiers": [
+            {
+                "benefitLevelCauseCode": "999",
+                "lineofBusinessCode": "MCR",
+                "planBenefitTypeCode": "MEDICAL"
+            }
+        ],
+        "sourceSystemCode": "COS",
+        "claimAdjudicationPlatformCode": "Professional",
+        "claimTransactionIdentifier": "CAL:107317:0:1:20260223:21214428",
+        "claimSubmittedSourceSystemCode": "COSM",
+        "claimSubmittedIdentifier": "FN62146151"
+    },
+    "claimCategories": {
+        "claimType": "PROFESSIONAL",
+        "claimFrequencyTypeCode": "1",
+        "claimFrequencyTypeDescription": "Admit thru discharge claim",
+        "claimEncounterIndicator": false,
+        "claimTransactionType": "ORIGINAL",
+        "isSplitClaim": false,
+        "claimSubmissionMethodCode": "EDI",
+        "claimSubmissionMethodDescription": "ELECTRONIC",
+        "inoutNetworkClaimCode": "IN"
+    },
+    "claimState": {
+        "claimTransactionStatus": [
+            {
+                "sequence": 1,
+                "statusEffectivePeriod": {
+                    "start": "2026-02-23",
+                    "end": "2026-03-24"
+                },
+                "claimTransactionProcessStatusCode": "denied",
+                "claimTransactionStatusCode": "M",
+                "claimTransactionStatusDescription": "MISDIRECTED",
+                "claimStatusCrosswalkData": [
+                    {
+                        "claimStatusCategoryCode507": "A0",
+                        "claimStatusCode508": "16",
+                        "entityCode": "TT"
+                    }
+                ]
+            }
+        ],
+        "claimEvents": {
+            "startingServiceDate": "2026-02-17",
+            "endingServiceDate": "2026-02-17",
+            "claimReceiptDatetime": "2026-02-23",
+            "claimAdjudicationEntryDatetime": "2026-02-23T21:21:44.280+0000",
+            "claimAdjudicationDatetime": "2026-03-16T03:40:53",
+            "claimReviewDatetime": "2026-02-24T00:00:00",
+            "claimPaidDate": "2026-03-24"
+        }
+    },
+    "patient": {
+        "name": {
+            "fullName": "MINA LERMAN",
+            "lastName": "LERMAN",
+            "firstName": "MINA"
+        },
+        "gender": "Female",
+        "dateOfBirth": "1946-12-11",
+        "age": "79",
+        "subscriberId": "983882006",
+        "memberId": "983882006",
+        "dependent": "00",
+        "policyNumber": "01945"
+    },
+    "providers": [
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "providerTaxId": "954651287",
+                "npi": "1962457812",
+                "otherProviderIdentifiers": [
+                    {
+                        "providerIdentifier": "002381566",
+                        "providerIdentifierSourceSystemCode": "MPIN"
+                    },
+                    {
+                        "providerIdentifier": "00160004270",
+                        "providerIdentifierSourceSystemCode": "PROVIDERNBR"
+                    }
+                ]
+            },
+            "name": {
+                "fullName": "BEVERLY RADIOLOGY MEDICAL GROUP INC",
+                "lastName": "BEVERLY RADIOLOGY MEDICAL GROUP INC",
+                "firstName": "BEVERLY RADIOLOGY MEDICAL GROUP INC"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "npi": "1497963011"
+            },
+            "role": "RENDERING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "providerTaxId": "954651287",
+                "npi": "1962457812"
+            },
+            "name": {
+                "fullName": "BEVERLY RADIOLOGY MEDICAL GROUP",
+                "lastName": "BEVERLY RADIOLOGY MEDICAL GROUP"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "npi": "1497963011"
+            },
+            "name": {
+                "fullName": "DISHANT SHAH",
+                "lastName": "SHAH",
+                "firstName": "DISHANT"
+            },
+            "role": "RENDERING"
+        }
+    ],
+    "claimAuthorizations": [
+        {
+            "authorizationNumber": ":0:0"
+        }
+    ],
+    "insurance": {
+        "coverage": {
+            "insurer": [
+                {
+                    "insuranceType": "ADJUDICATED",
+                    "insuranceTypeCode": "P"
+                }
+            ]
+        },
+        "sourceSpecificAttributes": [
+            {
+                "sourceName": "COSM",
+                "attributeName": "siteId",
+                "attributeValue": "CAL"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "returnRefundInd"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "ambulancePickupZip"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "overrideAmount"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "lineLevelLMSVCode"
+            }
+        ],
+        "reasonCodes": [
+            {
+                "claimRemittanceAdviceRemarks": [
+                    {
+                        "remittanceAdviceRemarkCode": "1764",
+                        "remittanceAdviceRemarkDescription": "CLAIM/SERVICE ROUTED TO PROPER PAYER FOR CLAIMS PROCESSING."
+                    }
+                ],
+                "claimDenialReasonCode": "1764",
+                "claimDenialReasonDescription": "CLAIM/SERVICE ROUTED TO PROPER PAYER FOR CLAIMS PROCESSING."
+            }
+        ]
+    },
+    "payments": [
+        {
+            "claimPaymentAmount": "0.00",
+            "paymentAmount": "11372.92",
+            "checkSeriesDesignatorCode": "806",
+            "electronicFundsTransferTrackingNumber": "V0750917",
+            "electronicFundsTransferDate": "2026-03-24",
+            "claimAdjudicationDate": "2026-03-16",
+            "claimAdjudicationTime": "03:40:53",
+            "paymentOtherIdentifiers": [
+                {
+                    "modeCode": "ACH"
+                }
+            ],
+            "claimPayeeAssignmentCode": "P",
+            "payeeName": "BEVERLY RADIOLOGY MEDICAL GROUP INC",
+            "payeeAddress": [
+                {
+                    "payeeAddressLine1Text": "PO BOX 101418",
+                    "payeeCityName": "PASADENA",
+                    "payeeStateProvinceCode": "CA",
+                    "payeePostalCode": "911890025"
+                }
+            ]
+        }
+    ],
+    "totals": {
+        "totalBilledChargeAmount": "93.00",
+        "totalNotCoveredAmount": "93.00",
+        "totalPatientNotCoveredAmount": "0.00",
+        "totalProviderNotCoveredAmount": "93.00",
+        "totalDiscountAmount": "0.00",
+        "totalClaimAllowedAmount": "0.00",
+        "totalBenefitCoinsuranceAmount": "0.00",
+        "totalCopayAmount": "0.00",
+        "totalDeductibleAmount": "0.00",
+        "totalPatientResponsibilityAmount": "0.00",
+        "totalClaimPaidAmount": "0.00",
+        "totalInterestAmount": "0.00",
+        "totalSequesteredAmount": "0.00"
+    }
+}

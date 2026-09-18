@@ -1,0 +1,34 @@
+query getClaimServiceLineAccumulators($query: ClaimServiceLineAccumulatorQuery)
+{
+          claimServiceLineAccumulators(query: $query)
+          {
+            claimAccumulatorTypeCode
+            claimAccumulatorTypeDescription
+            claimAdjudicationPlatformCode
+            claimServiceLineAccumulatorAmount
+            claimServiceLineIdentifier
+            claimTransactionIdentifier
+            coverageLevelCode
+            serviceUnitAccumulatorCount
+            serviceUnitOfMeasureCode
+            serviceUnitOfMeasureDescription
+            sourceSystemCode
+            audit
+            {
+              createDatetime
+              createUserIdentifier
+              recordStatusCode
+              sourceSystemCreateDatetime
+              sourceSystemCreateUserIdentifier
+              sourceSystemUpdateDatetime
+              sourceSystemUpdateUserIdentifier
+              updateDatetime
+              updateUserIdentifier
+            }
+            hcpMetaData
+            {
+              kafkaTimestamp
+              upsertTimestamp
+            }
+          }
+}

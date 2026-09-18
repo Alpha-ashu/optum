@@ -1,0 +1,226 @@
+{
+    "claimIdentifiers": {
+        "internalReferenceIdentifier": "FM17478318",
+        "payerClaimControlNumber": "KLC91665891",
+        "patientAccountNumber": "PAUA0000XX13579",
+        "clearinghouseTraceNumber": "Q1DAVH0E51029V",
+        "filmLocation": {
+            "claimReceiptLocatorNumber": "924260138315900",
+            "filmOfficeNumber": "83159",
+            "fileLocatorDate": "2026-01-13"
+        },
+        "claimOtherIdentifiers": [
+            {
+                "benefitLevelCauseCode": "999",
+                "lineofBusinessCode": "MCR",
+                "planBenefitTypeCode": "MEDICAL"
+            }
+        ],
+        "sourceSystemCode": "COS",
+        "claimAdjudicationPlatformCode": "Professional",
+        "claimTransactionIdentifier": "KLC:91665891:0:1:20260113:14124362",
+        "claimSubmittedSourceSystemCode": "COSM",
+        "claimSubmittedIdentifier": "FM17478318"
+    },
+    "claimCategories": {
+        "claimType": "PROFESSIONAL",
+        "claimFrequencyTypeCode": "1",
+        "claimFrequencyTypeDescription": "Admit thru discharge claim",
+        "claimEncounterIndicator": false,
+        "claimTransactionType": "ORIGINAL",
+        "isSplitClaim": false,
+        "claimSubmissionMethodCode": "EDI",
+        "claimSubmissionMethodDescription": "ELECTRONIC",
+        "inoutNetworkClaimCode": "IN"
+    },
+    "claimState": {
+        "claimTransactionStatus": [
+            {
+                "sequence": 1,
+                "statusEffectivePeriod": {
+                    "start": "2026-01-13",
+                    "end": "2026-02-07"
+                },
+                "claimTransactionProcessStatusCode": "approved",
+                "claimTransactionStatusCode": "I",
+                "claimTransactionStatusDescription": "FINALIZED PAID",
+                "claimStatusCrosswalkData": [
+                    {
+                        "claimStatusCategoryCode507": "F1",
+                        "claimStatusCode508": "104"
+                    }
+                ]
+            }
+        ],
+        "claimEvents": {
+            "startingServiceDate": "2026-01-06",
+            "endingServiceDate": "2026-01-06",
+            "claimReceiptDatetime": "2026-01-13",
+            "claimAdjudicationEntryDatetime": "2026-01-13T14:12:43.620+0000",
+            "claimAdjudicationDatetime": "2026-01-29T04:00:40",
+            "claimReviewDatetime": "2026-01-29T00:00:00",
+            "claimPaidDate": "2026-02-07"
+        }
+    },
+    "patient": {
+        "name": {
+            "fullName": "A PAUL",
+            "lastName": "PAUL",
+            "firstName": "A"
+        },
+        "gender": "Male",
+        "dateOfBirth": "1954-09-30",
+        "age": "71",
+        "subscriberId": "946032191",
+        "memberId": "946032191",
+        "dependent": "00",
+        "policyNumber": "69505"
+    },
+    "providers": [
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "providerTaxId": "470829589",
+                "npi": "1790086783",
+                "otherProviderIdentifiers": [
+                    {
+                        "providerIdentifier": "001761936",
+                        "providerIdentifierSourceSystemCode": "MPIN"
+                    },
+                    {
+                        "providerIdentifier": "00610012034",
+                        "providerIdentifierSourceSystemCode": "PROVIDERNBR"
+                    }
+                ]
+            },
+            "name": {
+                "fullName": "MONTOYA, P.H.D., HELEN M.",
+                "lastName": "HELEN M MONTOYA",
+                "firstName": "MONTOYA, P.H.D., HELEN M."
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "npi": "1306937842"
+            },
+            "role": "RENDERING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "providerTaxId": "470829589",
+                "npi": "1790086783"
+            },
+            "name": {
+                "fullName": "HELEN M. MONTOYA PH.D. PC",
+                "lastName": "HELEN M. MONTOYA PH.D. PC"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "npi": "1306937842"
+            },
+            "name": {
+                "fullName": "HELEN MONTOYA",
+                "lastName": "MONTOYA",
+                "firstName": "HELEN",
+                "middleName": "M"
+            },
+            "role": "RENDERING"
+        }
+    ],
+    "claimAuthorizations": [
+        {
+            "authorizationNumber": ":0:0"
+        }
+    ],
+    "insurance": {
+        "coverage": {
+            "insurer": [
+                {
+                    "insuranceType": "ADJUDICATED",
+                    "insuranceTypeCode": "P"
+                }
+            ]
+        },
+        "sourceSpecificAttributes": [
+            {
+                "sourceName": "COSM",
+                "attributeName": "siteId",
+                "attributeValue": "KLC"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "returnRefundInd"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "ambulancePickupZip"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "overrideAmount"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "lineLevelLMSVCode"
+            }
+        ],
+        "reasonCodes": [
+            {
+                "claimRemittanceAdviceRemarks": [
+                    {
+                        "remittanceAdviceRemarkCode": "0"
+                    }
+                ],
+                "claimDenialReasonCode": "0"
+            }
+        ]
+    },
+    "payments": [
+        {
+            "claimPaymentAmount": "80.25",
+            "paymentAmount": "80.25",
+            "checkSeriesDesignatorCode": "812",
+            "electronicFundsTransferTrackingNumber": "1341130D",
+            "electronicFundsTransferDate": "2026-02-07",
+            "claimAdjudicationDate": "2026-01-29",
+            "claimAdjudicationTime": "04:00:40",
+            "paymentOtherIdentifiers": [
+                {
+                    "vendorIdentifier": "VPAY",
+                    "modeCode": "VCP"
+                }
+            ],
+            "claimPayeeAssignmentCode": "P",
+            "payeeName": "HELEN M. MONTOYA, PHD",
+            "payeeAddress": [
+                {
+                    "payeeAddressLine1Text": "7441 O ST STE 402",
+                    "payeeCityName": "LINCOLN",
+                    "payeeStateProvinceCode": "NE",
+                    "payeePostalCode": "685102466"
+                }
+            ]
+        }
+    ],
+    "totals": {
+        "totalBilledChargeAmount": "300.00",
+        "totalNotCoveredAmount": "214.75",
+        "totalPatientNotCoveredAmount": "0.00",
+        "totalProviderNotCoveredAmount": "214.75",
+        "totalDiscountAmount": "0.00",
+        "totalClaimAllowedAmount": "85.25",
+        "totalBenefitCoinsuranceAmount": "0.00",
+        "totalCopayAmount": "5.00",
+        "totalDeductibleAmount": "0.00",
+        "totalPatientResponsibilityAmount": "5.00",
+        "totalClaimPaidAmount": "80.25",
+        "totalInterestAmount": "0.00",
+        "totalSequesteredAmount": "0.00"
+    }
+}

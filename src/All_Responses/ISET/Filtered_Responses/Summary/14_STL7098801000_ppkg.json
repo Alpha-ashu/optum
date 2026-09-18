@@ -1,0 +1,225 @@
+{
+    "claimIdentifiers": {
+        "internalReferenceIdentifier": "FL93514886",
+        "payerClaimControlNumber": "STL70988010",
+        "patientAccountNumber": "SMA00034342010",
+        "clearinghouseTraceNumber": "Q16ZMH0IIO00AT",
+        "filmLocation": {
+            "claimReceiptLocatorNumber": "923260069537700",
+            "filmOfficeNumber": "95377",
+            "fileLocatorDate": "2026-01-06"
+        },
+        "claimOtherIdentifiers": [
+            {
+                "benefitLevelCauseCode": "999",
+                "lineofBusinessCode": "MCR",
+                "planBenefitTypeCode": "MEDICAL"
+            }
+        ],
+        "sourceSystemCode": "COS",
+        "claimAdjudicationPlatformCode": "Professional",
+        "claimTransactionIdentifier": "STL:70988010:0:1:20260106:11313628",
+        "claimSubmittedSourceSystemCode": "COSM",
+        "claimSubmittedIdentifier": "FL93514886"
+    },
+    "claimCategories": {
+        "claimType": "PROFESSIONAL",
+        "claimFrequencyTypeCode": "1",
+        "claimFrequencyTypeDescription": "Admit thru discharge claim",
+        "claimEncounterIndicator": false,
+        "claimTransactionType": "ORIGINAL",
+        "isSplitClaim": false,
+        "claimSubmissionMethodCode": "EDI",
+        "claimSubmissionMethodDescription": "ELECTRONIC",
+        "inoutNetworkClaimCode": "IN"
+    },
+    "claimState": {
+        "claimTransactionStatus": [
+            {
+                "sequence": 1,
+                "statusEffectivePeriod": {
+                    "start": "2026-01-06",
+                    "end": "2026-01-30"
+                },
+                "claimTransactionProcessStatusCode": "approved",
+                "claimTransactionStatusCode": "I",
+                "claimTransactionStatusDescription": "FINALIZED PAID",
+                "claimStatusCrosswalkData": [
+                    {
+                        "claimStatusCategoryCode507": "F1",
+                        "claimStatusCode508": "104"
+                    }
+                ]
+            }
+        ],
+        "claimEvents": {
+            "startingServiceDate": "2026-01-02",
+            "endingServiceDate": "2026-01-02",
+            "claimReceiptDatetime": "2026-01-06",
+            "claimAdjudicationEntryDatetime": "2026-01-06T11:31:36.280+0000",
+            "claimAdjudicationDatetime": "2026-01-11T01:38:40",
+            "claimReviewDatetime": "2026-01-10T00:00:00",
+            "claimPaidDate": "2026-01-30"
+        }
+    },
+    "patient": {
+        "name": {
+            "fullName": "ROBERT GIANLORENZO",
+            "lastName": "GIANLORENZO",
+            "firstName": "ROBERT"
+        },
+        "gender": "Male",
+        "dateOfBirth": "1955-12-27",
+        "age": "70",
+        "subscriberId": "942159239",
+        "memberId": "942159239",
+        "dependent": "00",
+        "policyNumber": "74246"
+    },
+    "providers": [
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "providerTaxId": "050459095",
+                "npi": "1891317509",
+                "otherProviderIdentifiers": [
+                    {
+                        "providerIdentifier": "009638344",
+                        "providerIdentifierSourceSystemCode": "MPIN"
+                    },
+                    {
+                        "providerIdentifier": "00240024719",
+                        "providerIdentifierSourceSystemCode": "PROVIDERNBR"
+                    }
+                ]
+            },
+            "name": {
+                "fullName": "ASSIF, M.D., JAMES",
+                "lastName": "ASSIF, M.D., JAMES",
+                "firstName": "ASSIF, M.D., JAMES"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "npi": "1215566849"
+            },
+            "role": "RENDERING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "providerTaxId": "050459095",
+                "npi": "1891317509"
+            },
+            "name": {
+                "fullName": "SOUTH COUNTY MEDICAL GROUP RADIATION",
+                "lastName": "SOUTH COUNTY MEDICAL GROUP RADIATION"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "npi": "1215566849"
+            },
+            "name": {
+                "fullName": "JAMES ASSIF",
+                "lastName": "ASSIF",
+                "firstName": "JAMES",
+                "middleName": "W"
+            },
+            "role": "RENDERING"
+        }
+    ],
+    "claimAuthorizations": [
+        {
+            "authorizationNumber": ":0:0"
+        }
+    ],
+    "insurance": {
+        "coverage": {
+            "insurer": [
+                {
+                    "insuranceType": "ADJUDICATED",
+                    "insuranceTypeCode": "P"
+                }
+            ]
+        },
+        "sourceSpecificAttributes": [
+            {
+                "sourceName": "COSM",
+                "attributeName": "siteId",
+                "attributeValue": "STL"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "returnRefundInd"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "ambulancePickupZip"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "overrideAmount"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "lineLevelLMSVCode"
+            }
+        ],
+        "reasonCodes": [
+            {
+                "claimRemittanceAdviceRemarks": [
+                    {
+                        "remittanceAdviceRemarkCode": "0"
+                    }
+                ],
+                "claimDenialReasonCode": "0"
+            }
+        ]
+    },
+    "payments": [
+        {
+            "claimPaymentAmount": "286.48",
+            "paymentAmount": "286.48",
+            "checkSeriesDesignatorCode": "806",
+            "electronicFundsTransferTrackingNumber": "U7119381",
+            "electronicFundsTransferDate": "2026-01-30",
+            "claimAdjudicationDate": "2026-01-11",
+            "claimAdjudicationTime": "01:38:40",
+            "paymentOtherIdentifiers": [
+                {
+                    "modeCode": "ACH"
+                }
+            ],
+            "claimPayeeAssignmentCode": "P",
+            "payeeName": "SILVER SPRING HEALTHCARE MGT INC",
+            "payeeAddress": [
+                {
+                    "payeeAddressLine1Text": "PO BOX 229",
+                    "payeeCityName": "WAKEFIELD",
+                    "payeeStateProvinceCode": "RI",
+                    "payeePostalCode": "028800229"
+                }
+            ]
+        }
+    ],
+    "totals": {
+        "totalBilledChargeAmount": "920.00",
+        "totalNotCoveredAmount": "572.68",
+        "totalPatientNotCoveredAmount": "0.00",
+        "totalProviderNotCoveredAmount": "572.68",
+        "totalDiscountAmount": "0.00",
+        "totalClaimAllowedAmount": "347.32",
+        "totalBenefitCoinsuranceAmount": "0.00",
+        "totalCopayAmount": "55.00",
+        "totalDeductibleAmount": "0.00",
+        "totalPatientResponsibilityAmount": "55.00",
+        "totalClaimPaidAmount": "286.48",
+        "totalInterestAmount": "0.00",
+        "totalSequesteredAmount": "5.84"
+    }
+}

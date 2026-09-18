@@ -1,0 +1,119 @@
+query getClaimServiceLines($query: ClaimServiceLineQuery) {
+    claimServiceLines(query: $query) {
+        __typename
+        claimTransactionIdentifier
+        claimSubmittedIdentifier
+        claimServiceLineIdentifier
+        claimSubmittedServiceIdentifier
+        serviceLineDeniedIndicator
+        referringProviderNationalProviderIdentifier
+        claimServiceLineTransactionStatusCode
+        contractWithholdContingencyLineAmount
+        outOfNetworkServiceIndicator
+        claimServiceLineCancelReasonCode
+        claimServiceLineCancelReasonDescription
+        serviceDate
+        serviceEndDate
+        claimLineAdjudicationDate
+        claimLineAdjudicationTime
+        professionalDiagnosis1PointerNumber
+        professionalDiagnosis2PointerNumber
+        professionalDiagnosis3PointerNumber
+        professionalDiagnosis4PointerNumber
+        serviceUnitCount
+        serviceProcedureCode
+        serviceProcedureDescription
+        revenueCode
+        procedureModifier1Code
+        procedureModifier2Code
+        procedureModifier3Code
+        procedureModifier4Code
+        nationalDrugCode
+        billedChargeLineAmount
+        patientNotCoveredAmount
+        providerNotCoveredAmount
+        discountLineAmount
+        allowedLineAmount
+        deductibleLineAmount
+        benefitCopayLineAmount
+        benefitCoinsuranceLineAmount
+        memberResponsibilityLineAmount
+        netPaidLineAmount
+        capitatedServiceIndicator
+        approvedLineAmount
+        placeOfServiceCode
+        placeOfServiceCodeDescription
+        qualifiedPaymentAmount
+        feeScheduleIdentifier
+        benefitPayableLineAmount
+        audit {
+            createDatetime
+            updateDatetime
+            recordStatusCode
+        }
+        hcpMetaData {
+            kafkaTimestamp
+            upsertTimestamp
+        }
+        claimServiceNote {
+            __typename
+            claimServiceNoteRowIdentifier
+            noteTypeText
+        }
+        claimServiceBenefitCoverage {
+            __typename
+            eligibilityRelationshipCode
+            enrolleeMemberFacingIdentifier
+            organizationPopulationGroupNumber
+            productCode
+            packageCode
+            networkIdentifier
+        }
+        claimServiceLineAuthorization {
+            __typename
+            authorizationNumber
+            authorizationTypeCode
+            authorizationSourceCode
+            externalOrganizationAuthorizationIdentifier
+        }
+        claimServiceAdjustment {
+            __typename
+            claimAdjustmentGroupCode
+            claimAdjustmentReasonCode
+            serviceAdjustmentAmount
+            claimAdjustment835GroupCode
+            claimAdjustment835ReasonCode
+        }
+        claimServiceOtherIndicator {
+            __typename
+            indicatorTypeCode
+            claimServiceOtherIndicator
+            indicatorTypeDescription
+        }
+        claimServiceLineAccumulators {
+            __typename
+            claimAccumulatorTypeCode
+            claimAccumulatorTypeDescription
+            claimServiceLineAccumulatorAmount
+            claimServiceLineIdentifier
+            claimTransactionIdentifier
+        }
+        claimServiceOtherMonetaryAmount {
+            __typename
+            amountTypeCode
+            claimServiceLineAmount
+            amountTypeDescription
+        }
+        claimServiceRemittanceAdviceRemark {
+            __typename
+            remittanceAdviceRemarkCode
+            remittanceAdviceRemarkDescription
+            proprietaryCodeIndicator
+        }
+        claimServiceLineSourceSpecificAttribute {
+            __typename
+            attributeName
+            attributeValue
+        }
+    }
+}

@@ -1,0 +1,212 @@
+{
+    "claimIdentifiers": {
+        "internalReferenceIdentifier": "FL18256410",
+        "payerClaimControlNumber": "ATL06852777",
+        "patientAccountNumber": "10093450-11022-39283",
+        "clearinghouseTraceNumber": "PCJGLHA4482188",
+        "filmLocation": {
+            "claimReceiptLocatorNumber": "943253464782200",
+            "filmOfficeNumber": "47822",
+            "fileLocatorDate": "2025-12-12"
+        },
+        "claimOtherIdentifiers": [
+            {
+                "benefitLevelCauseCode": "999",
+                "lineofBusinessCode": "MCR",
+                "planBenefitTypeCode": "MEDICAL"
+            }
+        ],
+        "sourceSystemCode": "COS",
+        "claimAdjudicationPlatformCode": "Professional",
+        "claimTransactionIdentifier": "ATL:6852777:2:1:20251221:4061550",
+        "claimSubmittedSourceSystemCode": "COSM",
+        "claimSubmittedIdentifier": "FL18256410"
+    },
+    "claimCategories": {
+        "claimType": "PROFESSIONAL",
+        "claimFrequencyTypeCode": "1",
+        "claimFrequencyTypeDescription": "Admit thru discharge claim",
+        "claimEncounterIndicator": false,
+        "claimTransactionType": "ORIGINAL",
+        "isSplitClaim": true,
+        "claimSubmissionMethodCode": "EDI",
+        "claimSubmissionMethodDescription": "ELECTRONIC",
+        "inoutNetworkClaimCode": "IN"
+    },
+    "claimState": {
+        "claimTransactionStatus": [
+            {
+                "sequence": 1,
+                "statusEffectivePeriod": {
+                    "start": "2025-12-12",
+                    "end": "2026-01-02"
+                },
+                "claimTransactionProcessStatusCode": "approved",
+                "claimTransactionStatusCode": "I",
+                "claimTransactionStatusDescription": "FINALIZED PAID",
+                "claimStatusCrosswalkData": [
+                    {
+                        "claimStatusCategoryCode507": "F2",
+                        "claimStatusCode508": "585"
+                    },
+                    {
+                        "claimStatusCategoryCode507": "F1",
+                        "claimStatusCode508": "104"
+                    }
+                ]
+            }
+        ],
+        "claimEvents": {
+            "startingServiceDate": "2025-01-20",
+            "endingServiceDate": "2025-10-20",
+            "claimReceiptDatetime": "2025-12-12",
+            "claimAdjudicationEntryDatetime": "2025-12-21T04:06:15.500+0000",
+            "claimAdjudicationDatetime": "2025-12-26T03:00:25",
+            "claimReviewDatetime": "2025-12-23T00:00:00",
+            "claimPaidDate": "2026-01-02"
+        }
+    },
+    "patient": {
+        "name": {
+            "fullName": "MARCEL PARDO",
+            "lastName": "PARDO",
+            "firstName": "MARCEL"
+        },
+        "gender": "Male",
+        "dateOfBirth": "1949-07-12",
+        "age": "75",
+        "subscriberId": "984199644",
+        "memberId": "984199644",
+        "dependent": "00",
+        "policyNumber": "15887"
+    },
+    "providers": [
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "providerTaxId": "680469453",
+                "npi": "1679520241",
+                "otherProviderIdentifiers": [
+                    {
+                        "providerIdentifierSourceSystemCode": "PROVIDERNBR"
+                    }
+                ]
+            },
+            "name": {
+                "fullName": "CALIFORNIA SLEEP SOLUTIONS LLC",
+                "lastName": "CALIFORNIA SLEEP SOLUTIONS LLC",
+                "firstName": "CALIFORNIA SLEEP SOLUTIONS LLC"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "ADJUDICATED",
+            "role": "RENDERING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "providerTaxId": "680469453",
+                "npi": "1679520241"
+            },
+            "name": {
+                "fullName": "CALIFORNIA SLEEP SOLUTIONS",
+                "lastName": "CALIFORNIA SLEEP SOLUTIONS"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "role": "RENDERING"
+        }
+    ],
+    "claimAuthorizations": [
+        {
+            "authorizationNumber": ":0:0"
+        }
+    ],
+    "insurance": {
+        "coverage": {
+            "insurer": [
+                {
+                    "insuranceType": "ADJUDICATED",
+                    "insuranceTypeCode": "P"
+                }
+            ]
+        },
+        "sourceSpecificAttributes": [
+            {
+                "sourceName": "COSM",
+                "attributeName": "siteId",
+                "attributeValue": "ATL"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "returnRefundInd"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "ambulancePickupZip"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "overrideAmount"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "lineLevelLMSVCode"
+            }
+        ],
+        "reasonCodes": [
+            {
+                "claimRemittanceAdviceRemarks": [
+                    {
+                        "remittanceAdviceRemarkCode": "0"
+                    }
+                ],
+                "claimDenialReasonCode": "0"
+            }
+        ]
+    },
+    "payments": [
+        {
+            "claimPaymentAmount": "0.00",
+            "paymentAmount": "857.15",
+            "checkSeriesDesignatorCode": "806",
+            "electronicFundsTransferTrackingNumber": "U5776636",
+            "electronicFundsTransferDate": "2026-01-02",
+            "claimAdjudicationDate": "2025-12-26",
+            "claimAdjudicationTime": "03:00:25",
+            "paymentOtherIdentifiers": [
+                {
+                    "modeCode": "ACH"
+                }
+            ],
+            "claimPayeeAssignmentCode": "P",
+            "payeeName": "CALIFORNIA SLEEP SOLUTIONS LLC",
+            "payeeAddress": [
+                {
+                    "payeeAddressLine1Text": "1130 CONROY LN STE 600",
+                    "payeeCityName": "ROSEVILLE",
+                    "payeeStateProvinceCode": "CA",
+                    "payeePostalCode": "956614153"
+                }
+            ]
+        }
+    ],
+    "totals": {
+        "totalBilledChargeAmount": "1000.00",
+        "totalNotCoveredAmount": "817.94",
+        "totalPatientNotCoveredAmount": "0.00",
+        "totalProviderNotCoveredAmount": "817.94",
+        "totalDiscountAmount": "0.00",
+        "totalClaimAllowedAmount": "182.06",
+        "totalBenefitCoinsuranceAmount": "0.00",
+        "totalCopayAmount": "0.00",
+        "totalDeductibleAmount": "0.00",
+        "totalPatientResponsibilityAmount": "0.00",
+        "totalClaimPaidAmount": "182.06",
+        "totalInterestAmount": "0.00",
+        "totalSequesteredAmount": "0.00"
+    }
+}

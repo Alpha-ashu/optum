@@ -1,0 +1,224 @@
+{
+    "claimIdentifiers": {
+        "internalReferenceIdentifier": "FL18047802",
+        "payerClaimControlNumber": "VRG81478565",
+        "patientAccountNumber": "656R2O21",
+        "clearinghouseTraceNumber": "PCCAVH1ZJV01UK",
+        "filmLocation": {
+            "claimReceiptLocatorNumber": "941253465957200",
+            "filmOfficeNumber": "59572",
+            "fileLocatorDate": "2025-12-12"
+        },
+        "claimOtherIdentifiers": [
+            {
+                "benefitLevelCauseCode": "999",
+                "lineofBusinessCode": "MCR",
+                "planBenefitTypeCode": "MEDICAL"
+            }
+        ],
+        "sourceSystemCode": "COS",
+        "claimAdjudicationPlatformCode": "Professional",
+        "claimTransactionIdentifier": "VRG:81478565:0:1:20251213:2471458",
+        "claimSubmittedSourceSystemCode": "COSM",
+        "claimSubmittedIdentifier": "FL18047802"
+    },
+    "claimCategories": {
+        "claimType": "PROFESSIONAL",
+        "claimFrequencyTypeCode": "1",
+        "claimFrequencyTypeDescription": "Admit thru discharge claim",
+        "claimEncounterIndicator": false,
+        "claimTransactionType": "ORIGINAL",
+        "isSplitClaim": false,
+        "claimSubmissionMethodCode": "EDI",
+        "claimSubmissionMethodDescription": "ELECTRONIC",
+        "inoutNetworkClaimCode": "IN"
+    },
+    "claimState": {
+        "claimTransactionStatus": [
+            {
+                "sequence": 1,
+                "statusEffectivePeriod": {
+                    "start": "2025-12-12",
+                    "end": "2025-12-30"
+                },
+                "claimTransactionProcessStatusCode": "approved",
+                "claimTransactionStatusCode": "I",
+                "claimTransactionStatusDescription": "FINALIZED PAID",
+                "claimStatusCrosswalkData": [
+                    {
+                        "claimStatusCategoryCode507": "F1",
+                        "claimStatusCode508": "104"
+                    }
+                ]
+            }
+        ],
+        "claimEvents": {
+            "startingServiceDate": "2025-12-07",
+            "endingServiceDate": "2025-12-07",
+            "claimReceiptDatetime": "2025-12-12",
+            "claimAdjudicationEntryDatetime": "2025-12-13T02:47:14.580+0000",
+            "claimAdjudicationDatetime": "2025-12-23T12:52:38",
+            "claimReviewDatetime": "2025-12-17T00:00:00",
+            "claimPaidDate": "2025-12-30"
+        }
+    },
+    "patient": {
+        "name": {
+            "fullName": "RICHARD JAMES JR",
+            "lastName": "JAMES JR",
+            "firstName": "RICHARD"
+        },
+        "gender": "Male",
+        "dateOfBirth": "1956-01-10",
+        "age": "69",
+        "subscriberId": "913564764",
+        "memberId": "913564764",
+        "dependent": "00",
+        "policyNumber": "01134"
+    },
+    "providers": [
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "providerTaxId": "203728202",
+                "npi": "1538484803",
+                "otherProviderIdentifiers": [
+                    {
+                        "providerIdentifier": "003367759",
+                        "providerIdentifierSourceSystemCode": "MPIN"
+                    },
+                    {
+                        "providerIdentifier": "00160102772",
+                        "providerIdentifierSourceSystemCode": "PROVIDERNBR"
+                    }
+                ]
+            },
+            "name": {
+                "fullName": "JONES, M.D., MICHAEL CARMEN",
+                "lastName": "JONES, M.D., MICHAEL CARMEN",
+                "firstName": "JONES, M.D., MICHAEL CARMEN"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "npi": "1235251554"
+            },
+            "role": "RENDERING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "providerTaxId": "203728202",
+                "npi": "1538484803"
+            },
+            "name": {
+                "fullName": "ATLANTIC RADIOLOGY ASSOCIATES",
+                "lastName": "ATLANTIC RADIOLOGY ASSOCIATES"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "npi": "1235251554"
+            },
+            "name": {
+                "fullName": "MICHAEL JONES",
+                "lastName": "JONES",
+                "firstName": "MICHAEL"
+            },
+            "role": "RENDERING"
+        }
+    ],
+    "claimAuthorizations": [
+        {
+            "authorizationNumber": ":0:0"
+        }
+    ],
+    "insurance": {
+        "coverage": {
+            "insurer": [
+                {
+                    "insuranceType": "ADJUDICATED",
+                    "insuranceTypeCode": "P"
+                }
+            ]
+        },
+        "sourceSpecificAttributes": [
+            {
+                "sourceName": "COSM",
+                "attributeName": "siteId",
+                "attributeValue": "VRG"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "returnRefundInd"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "ambulancePickupZip"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "overrideAmount"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "lineLevelLMSVCode"
+            }
+        ],
+        "reasonCodes": [
+            {
+                "claimRemittanceAdviceRemarks": [
+                    {
+                        "remittanceAdviceRemarkCode": "0"
+                    }
+                ],
+                "claimDenialReasonCode": "0"
+            }
+        ]
+    },
+    "payments": [
+        {
+            "claimPaymentAmount": "75.65",
+            "paymentAmount": "971.96",
+            "checkSeriesDesignatorCode": "745",
+            "electronicFundsTransferTrackingNumber": "C6534557",
+            "electronicFundsTransferDate": "2025-12-30",
+            "claimAdjudicationDate": "2025-12-23",
+            "claimAdjudicationTime": "12:52:38",
+            "paymentOtherIdentifiers": [
+                {
+                    "modeCode": "ACH"
+                }
+            ],
+            "claimPayeeAssignmentCode": "P",
+            "payeeName": "ATLANTIC RADIOLOGY ASSOCIATES LLC",
+            "payeeAddress": [
+                {
+                    "payeeAddressLine1Text": "PO BOX 116287",
+                    "payeeCityName": "ATLANTA",
+                    "payeeStateProvinceCode": "GA",
+                    "payeePostalCode": "303686287"
+                }
+            ]
+        }
+    ],
+    "totals": {
+        "totalBilledChargeAmount": "465.00",
+        "totalNotCoveredAmount": "387.81",
+        "totalPatientNotCoveredAmount": "0.00",
+        "totalProviderNotCoveredAmount": "387.81",
+        "totalDiscountAmount": "0.00",
+        "totalClaimAllowedAmount": "77.19",
+        "totalBenefitCoinsuranceAmount": "0.00",
+        "totalCopayAmount": "0.00",
+        "totalDeductibleAmount": "0.00",
+        "totalPatientResponsibilityAmount": "0.00",
+        "totalClaimPaidAmount": "75.65",
+        "totalInterestAmount": "0.00",
+        "totalSequesteredAmount": "1.54"
+    }
+}

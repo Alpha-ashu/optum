@@ -1,0 +1,775 @@
+query ClaimDetailDynamicQuery(
+    $claimCOSM: Boolean!
+    $claimCSP: Boolean!
+    $claimTransaction: Boolean!
+    $claimExtension: Boolean!
+    $claimServiceLine: Boolean!
+    $serviceAdjudicationGroup: Boolean!
+    $claimOtherPayer: Boolean!
+    $claimPricing: Boolean!
+    $claimTransactionProvider: Boolean!
+    $claimAdjudicationProcessCode: Boolean!
+    $claimTransactionStandardizedAttribute: Boolean!
+    $claimTransactionStatuse: Boolean!
+    $claimServiceAdjudicationServiceProcessCode: Boolean!
+    $claimAccumulator: Boolean!
+    $claimServicePricing: Boolean!
+    $claimSubmitted: Boolean!
+    $claimSubmittedAttachment: Boolean!
+    $claimSubmittedService: Boolean!
+    $claimSubmittedAssociatedProvider: Boolean!
+    $claimSubmittedOtherPayer: Boolean!
+    $claimTransactions: ClaimTransactionQuery
+    $claimExtensions: ClaimExtensionQuery
+    $claimServiceLines: ClaimServiceLineQuery
+    $serviceAdjudicationGroups: ServiceAdjudicationGroupQuery
+    $claimOtherPayers: ClaimOtherPayerQuery
+    $claimPricings: ClaimPricingQuery
+    $claimTransactionProviders: ClaimTransactionProviderQuery
+    $claimAdjudicationProcessCodes: ClaimAdjudicationProcessCodeQuery
+    $claimTransactionStandardizedAttributes: ClaimTransactionStandardizedAttributeQuery
+    $claimTransactionStatuses: ClaimTransactionStatusQuery
+    $claimServiceAdjudicationServiceProcessCodes: ClaimServiceAdjudicationServiceProcessCodeQuery
+    $claimAccumulators: ClaimAccumulatorQuery
+    $claimServicePricings: ClaimServicePricingQuery
+    $claimSubmitteds: ClaimSubmittedQuery
+    $claimSubmittedAttachments: ClaimSubmittedAttachmentQuery
+    $claimSubmittedServices: ClaimSubmittedServiceQuery
+    $claimSubmittedOtherPayers: ClaimSubmittedOtherPayerQuery
+    $claimSubmittedAssociatedProviders: ClaimSubmittedAssociatedProviderQuery
+) {
+    claimSubmitteds(query: $claimSubmitteds) @include(if: $claimSubmitted) {
+        __typename
+        claimTransactionIdentifier
+        claimSubmittedIdentifier
+        claimReceiptLocatorNumber
+        claimTypeCode
+        patientAccountNumber
+        claimReceiptLocatorNumber
+        claimSourceSystemCode
+        relatedCause1Code
+        placeOfServiceCode
+        claimFrequencyTypeCode
+        claimEncounterIndicator
+        claimSubmissionMethodCode
+        startingServiceDate
+        endingServiceDate
+        claimReceiptDate
+        totalBilledChargeAmount
+        patientMemberNumber
+        patientSocialSecurityNumber
+        subscriberSocialSecurityNumber @include(if: $claimCOSM)
+        subscriberMemberNumber
+        patientLastName
+        patientFirstName
+        patientMiddleName
+        patientGenderCode
+        patientBirthDate
+        subscriberPolicyNumber
+        subscriberLastName
+        subscriberFirstName
+        subscriberMiddleName
+        subscriberGenderCode
+        billingProviderNationalProviderIdentifier
+        billingProviderTaxIdentificationNumber
+        billingProviderLastOrganizationName
+        billingProviderFirstName
+        billingProviderMiddleName
+        subscriberBirthDate
+        patientIndividualRelationshipCode
+        subscriberIndividualRelationshipCode
+        claimFilingIndicatorCode
+        serviceFacilityNationalProviderIdentifier
+        serviceFacilityTaxIdentificationNumber
+        serviceFacilityOrganizationName
+        serviceFacilityAddressLine1Text
+        serviceFacilityAddressLine2Text
+        serviceFacilityCityNameText
+        serviceFaciltiyStateProvinceCode
+        serviceFacilityPostalCode
+        claimSubmittedDiagnosisCode {
+            __typename
+            diagnosisPrioritySequenceNumber
+            diagnosisCode
+            diagnosisTypeCode
+            diagnosisLevelTypeCode
+            presentOnAdmissionsIndicator
+        }
+        claimSubmittedOtherIdentifier {
+            __typename
+            otherIdentifierTypeCode
+            claimOtherIdentifier
+        }
+        claimSubmittedSourceSpecificAttribute {
+            __typename
+            attributeValue
+            attributeType
+            attributeName
+        }
+        claimSubmittedDiagnosisRelatedGroupCode @include(if: $claimCSP) {
+            __typename
+            diagnosisRelatedGroupCode
+        }
+        claimSubmittedReferenceItem {
+            __typename
+            referenceText
+            referenceTypeCode
+        }
+    }
+    claimSubmittedAttachments(query: $claimSubmittedAttachments)
+    @include(if: $claimSubmittedAttachment) {
+        __typename
+        claimSourceSystemCode
+        claimSubmittedIdentifier
+        attachmentControlNumber
+        attachmentTypeCode
+        attachmentTransmissionCode
+    }
+    claimSubmittedServices(query: $claimSubmittedServices)
+    @include(if: $claimSubmittedService) {
+        __typename
+        claimSubmittedIdentifier
+        serviceBilledChargeAmount
+        serviceLineNumber
+        serviceDiagnosis1PointerNumber
+        serviceDiagnosis2PointerNumber
+        serviceDiagnosis3PointerNumber
+        serviceDiagnosis4PointerNumber
+        claimSubmittedServiceAttachments {
+            __typename
+            attachmentControlNumber
+            attachmentTypeCode
+            attachmentTransmissionCode
+        }
+        claimSubmittedServiceAssociatedProviders {
+            __typename
+            entityTypeCode
+            lastOrganizationName
+            firstName
+            middleName
+        }
+        claimSubmittedServiceReferenceItem {
+            __typename
+            referenceText
+            referenceTypeCode
+            serviceReferenceRowIdentifier
+        }
+    }
+    claimSubmittedAssociatedProviders(query: $claimSubmittedAssociatedProviders)
+    @include(if: $claimSubmittedAssociatedProvider) {
+        __typename
+        claimSubmittedIdentifier
+        nationalProviderIdentifier
+        entityTypeCode
+        taxIdentificationNumber
+        lastOrganizationName
+        firstName
+        middleName
+    }
+    claimSubmittedOtherPayers(query: $claimSubmittedOtherPayers)
+    @include(if: $claimSubmittedOtherPayer) {
+        __typename
+        claimSubmittedIdentifier
+        claimSourceSystemCode
+        subscriberPayerResponsibilitySequenceCode
+        claimSubmittedServiceOtherPayers {
+            __typename
+            claimSubmittedServiceIdentifier
+            claimSubmittedOtherPayerServiceAdjustments {
+                __typename
+                serviceAdjustmentAmount
+                serviceAdjustmentGroupCode
+                serviceAdjustmentReasonCode
+            }
+        }
+    }
+    claimTransactions(query: $claimTransactions) @include(if: $claimTransaction) {
+        __typename
+        claimTransactionIdentifier
+        sourceSystemCode
+        lastSeenDate
+        originalPayerClaimNumber
+        claimSubmittedIdentifier
+        totalContractAmount @include(if: $claimCOSM)
+        providerContingencyPercent @include(if: $claimCOSM)
+        patientAccountNumber
+        claimReceiptLocatorNumber
+        claimAdjudicationPlatformCode
+        benefitLevelCauseCode
+        claimTypeDescription
+        claimTypeCode
+        claimBillType
+        placeOfServiceCode
+        placeOfServiceCodeDescription
+        claimEncounterIndicator
+        claimSubmissionMethodCode
+        claimSubmissionMethodDescription @include(if: $claimCSP)
+        claimBillTypeDescription @include(if: $claimCSP)
+        originalClaimTransactionIdentifier
+        totalBilledChargeAmount
+        claimTransactionStatusCode @include(if: $claimCSP)
+        claimAdjudicationEntryTime
+        surpriseMedicalBillingLevelCode @include(if: $claimCSP)
+        claimReceiptDate
+        billingProviderTaxIdentificationNumber
+        billingProviderIdentifier
+        billingProviderNationalProviderIdentifier
+        billingProviderAgreementIdentifier @include(if: $claimCSP)
+        renderingProviderNationalProviderIdentifier
+        renderingProviderIdentifier
+        claimAdjustedTime @include(if: $claimCSP)
+        claimTransactionType
+        checkIssueDate @include(if: $claimCSP)
+        checkPaymentTrackingNumber
+        electronicFundsTransferTrackingNumber
+        inoutNetworkClaimCode
+        startingServiceDate
+        endingServiceDate
+        claimAdjudicationEntryDate
+        claimAdjudicationDate
+        claimAdjudicationTime
+        claimAdjustedDate
+        electronicFundsTransferDate
+        totalPatientNotCoveredAmount
+        totalProviderNotCoveredAmount
+        totalDiscountAmount
+        totalClaimAllowedAmount
+        totalCopayAmount
+        totalBenefitCoinsuranceAmount
+        totalDeductibleAmount
+        totalPatientResponsibilityAmount
+        totalClaimPaidAmount
+        totalInterestAmount
+        patientIndividualIdentifier
+        subscriberIndividualIdentifier
+        medicalRecordNumber
+        admissionDatetime
+        dischargeDatetime
+        dischargeStatusCode
+        adjudicatedCobLevel @include(if: $claimCOSM)
+        totalContractAmount
+        totalPatientPaidAmount
+        providerContingencyPercent
+        claimPayeeAssignmentCode
+        totalCobSavingsAmount @include(if: $claimCOSM)
+        otherLetterCorrespondenceIdentifier @include(if: $claimCOSM)
+        lastWorkedDate @include(if: $claimCOSM)
+        delayReasonCode @include(if: $claimCOSM)
+        claimDenialReasonDescription @include(if: $claimCOSM)
+        primaryCareProviderIdentifier @include(if: $claimCOSM)
+        referringProviderIdentifier @include(if: $claimCOSM)
+        claimTransactionProcessStatusDescription
+        outOfNetworkClaimBillingProviderIndicator
+        outOfNetworkClaimRenderingProviderIndicator
+        claimServiceOtherPayers {
+            __typename
+            claimServiceOtherPayerRowIdentifier
+            otherPayerServicePaidAmount
+            otherPayerPatientLiabilityAmount
+            claimServiceOtherPayerOtherMonetaryAmount {
+                __typename
+                otherPayerClaimServiceOtherAmount
+                amountTypeCode
+            }
+        }
+        claimTransactionExtensions @include(if: $claimCOSM) {
+            __typename
+            claimOverrideFlag
+            dol
+            cobCalc
+        }
+        claimValueCode @include(if: $claimCOSM) {
+            __typename
+            valueAmount
+            valueDescription
+        }
+        claimOtherIndicator @include(if: $claimCOSM) {
+            __typename
+            indicatorTypeCode
+            indicatorTypeDescription
+            claimOtherIndicator
+        }
+        claimIcdProcedureCode {
+            __typename
+            icdProcedureCode
+            icdVersion
+            icdProcedureDate
+            principalProcedureIndicator
+            procedurePrioritySequenceNumber
+        }
+        claimConditionCode {
+            __typename
+            conditionCode
+            conditionCodeDescription @include(if: $claimCSP)
+        }
+        claimNote @include(if: $claimCSP) {
+            __typename
+            claimNoteTypeCode
+            claimNoteTypeDescription
+            noteTypeText
+            noteEnteredDate
+            noteEnteredByName
+        }
+        claimOtherMonetaryAmount {
+            __typename
+            amountTypeCode
+            claimAmount
+        }
+        outOfNetworkClaimBillingProviderIndicator
+        claimTransactionSourceSpecificAttribute {
+            __typename
+            attributeName
+            attributeValue
+        }
+        claimDiagnosisRelatedGroupCode {
+            __typename
+            diagnosisRelatedGroupCode
+        }
+        claimDiagnosisCode {
+            __typename
+            diagnosisPrioritySequenceNumber
+            diagnosisCode
+            diagnosisTypeCode
+            diagnosisCodeDescription
+            diagnosisLevelTypeCode
+            presentOnAdmissionsIndicator
+        }
+        claimAuthorization {
+            __typename
+            authorizationNumber
+            authorizationTypeCode
+            claimAuthorizationExceptionCode
+        }
+        claimTransactionAdjustment {
+            __typename
+            claimAdjustmentGroupCode
+            claimAdjustmentReasonCode
+            claimAdjustmentAmount
+            claimAdjustmentQuantity
+            claimAdjustmentReasonDescription @include(if: $claimCSP)
+        }
+        claimReview {
+            __typename
+            claimReviewDate
+            claimReviewReasonCode
+            claimReviewReasonDescription
+            claimReviewIdentifier @include(if: $claimCOSM)
+            reviewProcessorIdentifier @include(if: $claimCOSM)
+            claimReviewResultCode @include(if: $claimCOSM)
+            claimReviewResultDescription @include(if: $claimCOSM)
+        }
+        claimRemittanceAdviceRemark {
+            __typename
+            remittanceAdviceRemarkCode
+            proprietaryCodeIndicator
+            remittanceAdviceRemarkDescription
+        }
+        claimPayToAddress {
+            __typename
+            addressLine1Text @include(if: $claimCOSM)
+            addressLine2Text @include(if: $claimCOSM)
+            addressTownName @include(if: $claimCOSM)
+            stateProvinceCode @include(if: $claimCOSM)
+            postalCode @include(if: $claimCOSM)
+            submittedAddressLine1Text @include(if: $claimCSP)
+            submittedAddressLine2Text @include(if: $claimCSP)
+            submittedCityNameText @include(if: $claimCSP)
+            submittedStateProvinceCode @include(if: $claimCSP)
+            submittedPostalCode @include(if: $claimCSP)
+            entityTypeCode
+            fipsStateCode
+        }
+        claimSubmitted {
+            __typename
+            claimSourceSystemCode
+            claimSubmittedIdentifier
+            claimReceiptLocatorNumber
+            totalBilledChargeAmount
+            patientGenderCode
+            claimSubmittedOtherIdentifier {
+                __typename
+                claimOtherIdentifier
+                otherIdentifierTypeCode
+            }
+        }
+        claimServiceLineExtensions {
+            __typename
+            payeeCode
+            otherinsurancePatientresponsibilityAmount
+            lineProviderInfo {
+                __typename
+                providerTaxPrefixSuffixIdentifier
+            }
+        }
+        claimOtherIdentifier {
+            __typename
+            claimOtherIdentifier
+            otherIdentifierTypeCode
+        }
+    }
+    claimExtensions(query: $claimExtensions) @include(if: $claimExtension) {
+        __typename
+        claimTransactionIdentifier
+        commercialMedicareMedicaidCode
+        autoAdjudicationIndicator
+        claimProviderMpinIdentifier
+        patientFirstName
+        patientLastName
+        patientBirthDate
+        patientDependentNumber
+        claimSubmittedTypeCode
+        networkManagementFeeAmount
+        networkManagementFeePercentage
+        subscriberFirstName
+        subscriberLastName
+        claimLevelReasonCode
+        payLocationCode
+        insuredGroupName
+        participatingNonparticipatingIndicator
+        claimWorkHistory {
+            __typename
+            historyPendCode
+        }
+        claimAdditionalInfo {
+            __typename
+            killDeleteIndicator
+            killDeleteReasonCode
+        }
+        providerInfo {
+            __typename
+            providerNationalProviderIdentifier
+            providerSequenceCode
+            providerGroupName
+            providerFirstName
+            providerLastName
+            providerMiddleName
+            providerMpinIdentifier
+            providerQualificationCode
+            addressText1
+            addressText2
+            city
+            state
+            postalcode
+            providerTierIndicator
+            providerSpecialityCode
+        }
+        paymentInfo {
+            __typename
+            paymentAmount
+            paymentMethodTypeCode @include(if: $claimCOSM)
+            paymentNumber
+            paymentEffectiveDate
+            checkSeriesDesignatorCode
+            payVendorIdentifier
+            externalPayerCode
+            paymentModeCode
+            payeeName
+            draftNumber
+            overpaymentRecoveryAmount
+            paymentEnginecheckSeriesDesignatorCode
+            paymentEngineTracerNumber
+        }
+    }
+    claimServiceLines(query: $claimServiceLines) @include(if: $claimServiceLine) {
+        __typename
+        claimTransactionIdentifier
+        claimSubmittedIdentifier
+        claimServiceLineIdentifier
+        claimSubmittedServiceIdentifier
+        serviceLineDeniedIndicator
+        referringProviderNationalProviderIdentifier @include(if: $claimCOSM)
+        claimServiceLineTransactionStatusCode @include(if: $claimCSP)
+        contractWithholdContingencyLineAmount
+        outOfNetworkServiceIndicator
+        claimServiceLineCancelReasonCode
+        claimServiceLineCancelReasonDescription @include(if: $claimCSP)
+        serviceDate
+        serviceEndDate
+        claimLineAdjudicationDate
+        claimLineAdjudicationTime
+        professionalDiagnosis1PointerNumber
+        professionalDiagnosis2PointerNumber
+        professionalDiagnosis3PointerNumber
+        professionalDiagnosis4PointerNumber
+        serviceUnitCount
+        serviceProcedureCode
+        serviceProcedureDescription
+        revenueCode
+        procedureModifier1Code
+        procedureModifier2Code
+        procedureModifier3Code
+        procedureModifier4Code
+        nationalDrugCode
+        billedChargeLineAmount
+        patientNotCoveredAmount
+        providerNotCoveredAmount
+        discountLineAmount
+        allowedLineAmount
+        deductibleLineAmount
+        benefitCopayLineAmount
+        benefitCoinsuranceLineAmount
+        memberResponsibilityLineAmount
+        netPaidLineAmount
+        capitatedServiceIndicator
+        approvedLineAmount
+        placeOfServiceCode
+        placeOfServiceCodeDescription @include(if: $claimCOSM)
+        qualifiedPaymentAmount
+        feeScheduleIdentifier
+        claimServiceNote {
+            __typename
+            claimServiceNoteRowIdentifier
+            noteTypeText
+        }
+        claimServiceLineExtension {
+            __typename
+            originalPlaceofServicecode
+            lineFinalCauseCode
+            lbmLineIncludeCode
+            pharmacyCouponAmount
+            baseWouldPayAmount
+            supplementalWouldPayAmount
+            majorMedicalWouldPayAmount
+            lineProviderWriteOff
+            payeeCode
+            prsDispositionCode
+            prsCreateSourceCode
+            prsDispositionCode12
+            coinsuranceAfterCouponAmount
+            pharmacyCouponStatusCode
+            deductibleAfterCouponAmount
+            closure1Code
+            closure2Code
+            closure3Code
+            closure4Code
+            prsRemarkCode
+            remarkCode2
+            notCoveredRemark1Code
+            notCoveredRemark2Code
+            informationRemark1Code
+            informationRemark2Code
+            otherinsurancePaidLineAmount
+            pharmacyCouponPatientResponsibilityAmount
+            medicaidL04Amount
+            ub92Chargeamount
+            ub92NotcoveredAmount
+            ub92OriginalunitsCount
+            ub92Servicedate
+            ub92ProcedureCode
+            hcfaItemcontrolText
+            hcfaProceduremodifier1code
+            hcfaProceduremodifier2code
+            hcfaProceduremodifier3code
+            hcfaProceduremodifier4code
+            hcfaServiceplaceCode
+            contractAmount
+            procedureCode
+            originalProcedurecode
+            timelyFileLimitValue
+            timelyFileTypeCode
+            linePaymentInfo {
+                __typename
+                paymentAmount
+                paymentNumber
+                paymentEffectiveDate
+                checkSeriesDesignatorCode
+            }
+            lineProviderInfo {
+                __typename
+                providerProductCode
+                providerMarketTypecode
+                providerMarketNumber
+                providerIpaIndicator
+                providerTierIndicator
+            }
+        }
+        claimServiceBenefitCoverage {
+            __typename
+            eligibilityRelationshipCode @include(if: $claimCOSM)
+            enrolleeMemberFacingIdentifier
+            organizationPopulationGroupNumber @include(if: $claimCSP)
+            productCode
+            packageCode @include(if: $claimCOSM)
+            networkIdentifier @include(if: $claimCOSM)
+        }
+        claimServiceLineAuthorization {
+            __typename
+            authorizationNumber
+            authorizationTypeCode
+            authorizationSourceCode
+            externalOrganizationAuthorizationIdentifier
+        }
+        claimServiceAdjustment {
+            __typename
+            claimAdjustmentGroupCode
+            claimAdjustmentReasonCode
+            serviceAdjustmentAmount
+            claimAdjustment835GroupCode
+            claimAdjustment835ReasonCode
+        }
+        claimServiceOtherIndicator {
+            __typename
+            indicatorTypeCode
+            claimServiceOtherIndicator
+            indicatorTypeDescription
+        }
+        claimServiceLineAccumulators {
+            __typename
+            claimAccumulatorTypeCode
+            claimAccumulatorTypeDescription
+            claimServiceLineAccumulatorAmount
+            claimServiceLineIdentifier
+            claimTransactionIdentifier
+        }
+        claimServiceOtherMonetaryAmount {
+            __typename
+            amountTypeCode
+            claimServiceLineAmount
+            amountTypeDescription
+        }
+        claimServiceRemittanceAdviceRemark {
+            __typename
+            remittanceAdviceRemarkCode
+            remittanceAdviceRemarkDescription
+            proprietaryCodeIndicator
+        }
+        claimServiceLineSourceSpecificAttribute {
+            __typename
+            attributeName
+            attributeValue
+        }
+    }
+    claimTransactionStandardizedAttributes(
+        query: $claimTransactionStandardizedAttributes
+    ) @include(if: $claimTransactionStandardizedAttribute) {
+        __typename
+        claimTransactionStatusCode
+        claimTransactionIdentifier
+    }
+    claimPricings(query: $claimPricings) @include(if: $claimPricing) {
+        __typename
+        claimTransactionIdentifier
+        pricingRateAmount @include(if: $claimCOSM)
+    }
+    claimTransactionProviders(query: $claimTransactionProviders)
+    @include(if: $claimTransactionProvider) {
+        __typename
+        claimTransactionIdentifier
+        providerIdentifier
+        acceptingMedicaidIndicator
+        acceptingMedicareIndicator
+        providerEntityRoleCode
+        proprietaryProviderSpecialtyCode
+        organizationName @include(if: $claimCOSM)
+        claimProviderOtherIndicator {
+            __typename
+            claimOtherIndicator
+            indicatorTypeCode
+        }
+        claimProviderAddress @include(if: $claimCOSM) {
+            __typename
+            providerAddressLine1Text
+            providerAddressLine2Text
+            providerCityNameText
+            providerPostalCode
+            providerStateProvinceCode
+        }
+    }
+    claimOtherPayers(query: $claimOtherPayers) @include(if: $claimOtherPayer) {
+        __typename
+        claimTransactionIdentifier
+        otherPayerClaimRowIdentifier
+        otherPayerPrimaryIdentifierCode @include(if: $claimCSP)
+        organizationName
+        cobCoveredAmount
+        cobDiscountAmount
+        cobAllowedAmount
+        cobPatientResponsibleAmount
+        cobPayerPaidAmount
+        cobApprovedAmount @include(if: $claimCOSM)
+        otherPayerContactName @include(if: $claimCOSM)
+        coordinationOfBenefitInsuranceTypeCode
+        coordinationOfBenefitCoverageTypeCode
+        coordinationOfBenefitInsuranceTypeDescription
+        organizationName
+        coordinationOfBenefitInsuranceTypeDescription
+        claimOtherPayerSubscriber {
+            __typename
+            subscriberPayerResponsibilitySequenceCode
+            subscriberInsuranceTypeCode @include(if: $claimCOSM)
+        }
+    }
+    claimServicePricings(query: $claimServicePricings)
+    @include(if: $claimServicePricing) {
+        __typename
+        claimTransactionIdentifier
+        claimServiceLineIdentifier
+        ambulatoryPaymentStatusCode
+        ambulatoryPaymentClassificationCode
+        pricingMethodologyCode
+        pricingMethodologyDescription
+    }
+    serviceAdjudicationGroups(query: $serviceAdjudicationGroups)
+    @include(if: $serviceAdjudicationGroup) {
+        __typename
+        claimTransactionIdentifier
+        adjudicationLevelExpirationDate
+        serviceAdjudicationGroupIdentifier
+        serviceGroupPricing {
+            __typename
+            pricingMethodType
+            pricingMethodDescription
+            pricingMethodDetailType
+            pricingMethodDetailDescription
+            pricingRateValueTypeCode
+        }
+    }
+    claimAccumulators(query: $claimAccumulators) @include(if: $claimAccumulator) {
+        __typename
+        claimAccumulatorTypeCode
+        claimAccumulatorTypeDescription
+        claimAccumulatorAmount
+        claimTransactionIdentifier
+        sourceSystemCode
+    }
+    claimAdjudicationProcessCodes(query: $claimAdjudicationProcessCodes)
+    @include(if: $claimAdjudicationProcessCode) {
+        __typename
+        claimTransactionIdentifier
+        claimAdjudicationProcessCode
+        processResultText
+        claimAdjudicationProcessCodeDescription
+        processAmount
+        claimAdjudicationProcessCodeType
+        claimAdjudicationProcessCategoryCode
+        claimAdjudicationProcessResultCode
+        claimAdjudicationProcessResultCodeDescription
+    }
+    claimServiceAdjudicationServiceProcessCodes(
+        query: $claimServiceAdjudicationServiceProcessCodes
+    ) @include(if: $claimServiceAdjudicationServiceProcessCode) {
+        __typename
+        claimTransactionIdentifier
+        claimServiceLineIdentifier
+        claimAdjudicationProcessCode
+        claimAdjudicationProcessCodeType
+        processAmount
+        claimAdjudicationProcessCodeDescription
+        claimAdjudicationProcessCategoryCode
+        claimAdjudicationProcessResultCode
+        claimAdjudicationProcessResultCodeDescription
+        processResultText
+    }
+    claimTransactionStatuses(query: $claimTransactionStatuses)
+    @include(if: $claimTransactionStatuse) {
+        __typename
+        claimTransactionIdentifier
+        claimTransactionStatusSequenceNumber
+        claimTransactionProcessStatusCode
+        claimTransactionProcessStatusDescription
+        claimTransactionStatusCode
+        claimTransactionStatusDescription
+        claimTransactionStatusEffectiveDatetime
+        transactionProcessorIdentifier
+    }
+}

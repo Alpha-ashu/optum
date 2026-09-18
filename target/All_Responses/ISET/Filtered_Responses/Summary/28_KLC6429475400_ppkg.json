@@ -1,0 +1,219 @@
+{
+    "claimIdentifiers": {
+        "internalReferenceIdentifier": "FW77277489",
+        "payerClaimControlNumber": "KLC064294754",
+        "patientAccountNumber": "135718265101",
+        "clearinghouseTraceNumber": "Q83RLU33WY021R",
+        "filmLocation": {
+            "claimReceiptLocatorNumber": "947262153324400",
+            "filmOfficeNumber": "33244",
+            "fileLocatorDate": "2026-08-03"
+        },
+        "claimOtherIdentifiers": [
+            {
+                "benefitLevelCauseCode": "48839",
+                "lineofBusinessCode": "MCR",
+                "planBenefitTypeCode": "MEDICAL"
+            }
+        ],
+        "sourceSystemCode": "COS",
+        "claimAdjudicationPlatformCode": "Hospital",
+        "claimTransactionIdentifier": "KLC:64294754:1:0",
+        "claimSubmittedSourceSystemCode": "COSM",
+        "claimSubmittedIdentifier": "FW77277489"
+    },
+    "claimCategories": {
+        "claimType": "INSTITUTIONAL",
+        "claimBillType": "721",
+        "capitatedClaimIndicator": "N",
+        "claimEncounterIndicator": false,
+        "claimTransactionType": "ORIGINAL",
+        "isSplitClaim": false,
+        "claimSubmissionMethodCode": "EDI",
+        "claimSubmissionMethodDescription": "ELECTRONIC",
+        "inoutNetworkClaimCode": "IN"
+    },
+    "claimState": {
+        "claimTransactionStatus": [
+            {
+                "sequence": 1,
+                "statusEffectivePeriod": {
+                    "start": "2026-08-03",
+                    "end": "2026-08-25"
+                },
+                "claimTransactionProcessStatusCode": "approved",
+                "claimTransactionStatusCode": "I",
+                "claimTransactionStatusDescription": "FINALIZED PAID",
+                "claimStatusCrosswalkData": [
+                    {
+                        "claimStatusCategoryCode507": "F1",
+                        "claimStatusCode508": "104"
+                    }
+                ]
+            }
+        ],
+        "claimEvents": {
+            "startingServiceDate": "2026-07-01",
+            "endingServiceDate": "2026-07-31",
+            "claimReceiptDatetime": "2026-08-03",
+            "claimAdjudicationEntryDatetime": "2026-08-12T00:00:00.000+0000",
+            "claimAdjudicationDatetime": "2026-08-19T15:30:40",
+            "claimAdjustedDatetime": "2026-08-12T00:00:00",
+            "claimReviewDatetime": "2026-08-19T00:00:00",
+            "claimPaidDate": "2026-08-25"
+        }
+    },
+    "patient": {
+        "name": {
+            "fullName": "NOEL ANGELES",
+            "lastName": "ANGELES",
+            "firstName": "NOEL"
+        },
+        "gender": "Male",
+        "dateOfBirth": "1961-11-13",
+        "age": "64",
+        "subscriberId": "988392678",
+        "memberId": "988392678",
+        "dependent": "00",
+        "policyNumber": "71206"
+    },
+    "providers": [
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "providerTaxId": "953372911",
+                "npi": "1780054478",
+                "otherProviderIdentifiers": [
+                    {
+                        "providerIdentifier": "004149153",
+                        "providerIdentifierSourceSystemCode": "MPIN"
+                    },
+                    {
+                        "providerIdentifier": "00500012117",
+                        "providerIdentifierSourceSystemCode": "PROVIDERNBR"
+                    }
+                ]
+            },
+            "name": {
+                "fullName": "PRINCESS ANNE DIALYSIS",
+                "firstName": "PRINCESS ANNE DIALYSIS"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "ADJUDICATED",
+            "role": "RENDERING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "providerTaxId": "953372911",
+                "npi": "1780054478"
+            },
+            "name": {
+                "fullName": "PRINCESS ANNE DIALYSIS",
+                "lastName": "PRINCESS ANNE DIALYSIS"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "role": "RENDERING"
+        }
+    ],
+    "claimAuthorizations": [
+        {
+            "authorizationNumber": ":0:0"
+        }
+    ],
+    "insurance": {
+        "coverage": {
+            "insurer": [
+                {
+                    "insuranceType": "ADJUDICATED",
+                    "insuranceTypeCode": "P"
+                }
+            ]
+        },
+        "sourceSpecificAttributes": [
+            {
+                "sourceName": "COSM",
+                "attributeName": "siteId",
+                "attributeValue": "KLC"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "returnRefundInd"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "ambulancePickupZip"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "overrideAmount"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "lineLevelLMSVCode"
+            }
+        ],
+        "reasonCodes": [
+            {
+                "claimRemittanceAdviceRemarks": [
+                    {
+                        "remittanceAdviceRemarkCode": "0"
+                    }
+                ],
+                "claimAdjustmentReasons": [
+                    {
+                        "claimAdjustmentGroupCode": "CO",
+                        "claimAdjustmentReasonCode": "0"
+                    }
+                ],
+                "claimDenialReasonCode": "0"
+            }
+        ]
+    },
+    "payments": [
+        {
+            "claimPaymentAmount": "4670.34",
+            "paymentAmount": "4625.97",
+            "checkSeriesDesignatorCode": "806",
+            "electronicFundsTransferTrackingNumber": "V7777581",
+            "electronicFundsTransferDate": "2026-08-25",
+            "claimAdjudicationDate": "2026-08-19",
+            "claimAdjudicationTime": "15:30:40",
+            "paymentOtherIdentifiers": [
+                {
+                    "modeCode": "ACH"
+                }
+            ],
+            "claimPayeeAssignmentCode": "P",
+            "payeeName": "TOTAL RENAL CARE INC",
+            "payeeAddress": [
+                {
+                    "payeeAddressLine1Text": "PO BOX 402946",
+                    "payeeCityName": "ATLANTA",
+                    "payeeStateProvinceCode": "GA",
+                    "payeePostalCode": "303842946"
+                }
+            ]
+        }
+    ],
+    "totals": {
+        "totalBilledChargeAmount": "148430.41",
+        "totalNotCoveredAmount": "1654.80",
+        "totalPatientNotCoveredAmount": "0.00",
+        "totalProviderNotCoveredAmount": "1654.80",
+        "totalDiscountAmount": "142094.16",
+        "totalClaimAllowedAmount": "4681.45",
+        "totalBenefitCoinsuranceAmount": "11.11",
+        "totalCopayAmount": "0.00",
+        "totalDeductibleAmount": "0.00",
+        "totalPatientResponsibilityAmount": "11.11",
+        "totalClaimPaidAmount": "4670.34",
+        "totalInterestAmount": "0.00",
+        "totalSequesteredAmount": "0.00"
+    }
+}

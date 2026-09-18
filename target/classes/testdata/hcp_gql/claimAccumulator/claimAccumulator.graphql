@@ -1,0 +1,13 @@
+query getClaimAccumulators($query: ClaimAccumulatorQuery) {
+    claimAccumulators(query: $query) {
+        claimTransactionIdentifier
+        claimAccumulatorTypeCode
+        claimAccumulatorStartDate
+        claimAccumulatorEndDate
+        claimAccumulatorAmount
+        claimAccumulatorYearToDateAmount
+        claimAccumulatorRemainderAmount
+        sourceSystemCode
+        claimAdjudicationPlatformCode
+    }
+}

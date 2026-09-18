@@ -1,0 +1,37 @@
+query getClaimPricings($query: ClaimPricingQuery) {
+    claimPricings(query: $query) {
+        claimTransactionIdentifier
+        claimAdjudicationPlatformCode
+        sourceSystemCode
+        approvedDiagnosisRelatedGroupCode
+        approvedDiagnosisRelatedGroupCodeDescription
+        approvedGrouperAmount
+        approvedServiceUnitCount
+        diagnosisRelatedGroupType
+        policyComplianceCode
+        policyComplianceDescription
+        pricingAllowedAmount
+        pricingExceptionCode
+        pricingExceptionDescription
+        pricingMethodologyCode
+        pricingMethodologyDescription
+        pricingOrganizationIdentifier
+        pricingRateAmount
+        pricingRejectReasonCode
+        pricingRejectReasonDescription
+        pricingSavingsAmount
+        unitOfMeasureCode
+        unitOfMeasureDescription
+        unitOfMeasureEffectiveDate
+        unitOfMeasureExpirationDate
+        audit {
+            createDatetime
+            updateDatetime
+            recordStatusCode
+        }
+        hcpMetaData {
+            kafkaTimestamp
+            upsertTimestamp
+        }
+    }
+}

@@ -1,0 +1,212 @@
+{
+    "claimIdentifiers": {
+        "internalReferenceIdentifier": "FL18256410",
+        "payerClaimControlNumber": "Not present in upm",
+        "patientAccountNumber": "10093450-11022-39283",
+        "clearinghouseTraceNumber": "Not present in upm",
+        "filmLocation": {
+            "claimReceiptLocatorNumber": "943253464782200",
+            "filmOfficeNumber": "Not present in upm",
+            "fileLocatorDate": "Not present in upm"
+        },
+        "claimOtherIdentifiers": [
+            {
+                "benefitLevelCauseCode": "Not present in upm",
+                "lineofBusinessCode": "Not present in upm",
+                "planBenefitTypeCode": "Not present in upm"
+            }
+        ],
+        "sourceSystemCode": "Not present in upm",
+        "claimAdjudicationPlatformCode": "Not present in upm",
+        "claimTransactionIdentifier": "Not present in upm",
+        "claimSubmittedSourceSystemCode": "Not present in upm",
+        "claimSubmittedIdentifier": "Not present in upm"
+    },
+    "claimCategories": {
+        "claimType": "Not present in upm",
+        "claimFrequencyTypeCode": "Not present in upm",
+        "claimFrequencyTypeDescription": "Not present in upm",
+        "claimEncounterIndicator": "Not present in upm",
+        "claimTransactionType": "Not present in upm",
+        "isSplitClaim": "Not present in upm",
+        "claimSubmissionMethodCode": "Not present in upm",
+        "claimSubmissionMethodDescription": "Not present in upm",
+        "inoutNetworkClaimCode": "Not present in upm"
+    },
+    "claimState": {
+        "claimTransactionStatus": [
+            {
+                "sequence": "Not present in upm",
+                "statusEffectivePeriod": {
+                    "start": "Not present in upm",
+                    "end": "Not present in upm"
+                },
+                "claimTransactionProcessStatusCode": "Not present in upm",
+                "claimTransactionStatusCode": "Not present in upm",
+                "claimTransactionStatusDescription": "Not present in upm",
+                "claimStatusCrosswalkData": [
+                    {
+                        "claimStatusCategoryCode507": "Not present in upm",
+                        "claimStatusCode508": "Not present in upm"
+                    },
+                    {
+                        "claimStatusCategoryCode507": "F1",
+                        "claimStatusCode508": "Not present in upm"
+                    }
+                ]
+            }
+        ],
+        "claimEvents": {
+            "startingServiceDate": "Not present in upm",
+            "endingServiceDate": "2025-10-20",
+            "claimReceiptDatetime": "2025-12-12",
+            "claimAdjudicationEntryDatetime": "Not present in upm",
+            "claimAdjudicationDatetime": "Not present in upm",
+            "claimReviewDatetime": "Not present in upm",
+            "claimPaidDate": "2026-01-02"
+        }
+    },
+    "patient": {
+        "name": {
+            "fullName": "Not present in upm",
+            "lastName": "PARDO",
+            "firstName": "MARCEL"
+        },
+        "gender": "Not present in upm",
+        "dateOfBirth": "Not present in upm",
+        "age": "Not present in upm",
+        "subscriberId": "984199644",
+        "memberId": "Not present in upm",
+        "dependent": "00",
+        "policyNumber": "15887"
+    },
+    "providers": [
+        {
+            "providerDataType": "Not present in upm",
+            "identifiers": {
+                "providerTaxId": "680469453",
+                "npi": "Not present in upm",
+                "otherProviderIdentifiers": [
+                    {
+                        "providerIdentifierSourceSystemCode": "Not present in upm"
+                    }
+                ]
+            },
+            "name": {
+                "fullName": "CALIFORNIA SLEEP SOLUTIONS LLC",
+                "lastName": "Not present in upm",
+                "firstName": "Not present in upm"
+            },
+            "role": "Not present in upm"
+        },
+        {
+            "providerDataType": "Not present in upm",
+            "role": "Not present in upm"
+        },
+        {
+            "providerDataType": "Not present in upm",
+            "identifiers": {
+                "providerTaxId": "680469453",
+                "npi": "Not present in upm"
+            },
+            "name": {
+                "fullName": "Not present in upm",
+                "lastName": "Not present in upm"
+            },
+            "role": "Not present in upm"
+        },
+        {
+            "providerDataType": "Not present in upm",
+            "role": "Not present in upm"
+        }
+    ],
+    "claimAuthorizations": [
+        {
+            "authorizationNumber": "Not present in upm"
+        }
+    ],
+    "insurance": {
+        "coverage": {
+            "insurer": [
+                {
+                    "insuranceType": "Not present in upm",
+                    "insuranceTypeCode": "Not present in upm"
+                }
+            ]
+        },
+        "sourceSpecificAttributes": [
+            {
+                "sourceName": "Not present in upm",
+                "attributeName": "Not present in upm",
+                "attributeValue": "ATL"
+            },
+            {
+                "sourceName": "Not present in upm",
+                "attributeName": "Not present in upm"
+            },
+            {
+                "sourceName": "Not present in upm",
+                "attributeName": "Not present in upm"
+            },
+            {
+                "sourceName": "Not present in upm",
+                "attributeName": "Not present in upm"
+            },
+            {
+                "sourceName": "Not present in upm",
+                "attributeName": "Not present in upm"
+            }
+        ],
+        "reasonCodes": [
+            {
+                "claimRemittanceAdviceRemarks": [
+                    {
+                        "remittanceAdviceRemarkCode": "Not present in upm"
+                    }
+                ],
+                "claimDenialReasonCode": "Not present in upm"
+            }
+        ]
+    },
+    "payments": [
+        {
+            "claimPaymentAmount": "0.00",
+            "paymentAmount": "Not present in upm",
+            "checkSeriesDesignatorCode": "Not present in upm",
+            "electronicFundsTransferTrackingNumber": "U5776636",
+            "electronicFundsTransferDate": "2026-01-02",
+            "claimAdjudicationDate": "Not present in upm",
+            "claimAdjudicationTime": "Not present in upm",
+            "paymentOtherIdentifiers": [
+                {
+                    "modeCode": "Not present in upm"
+                }
+            ],
+            "claimPayeeAssignmentCode": "Not present in upm",
+            "payeeName": "Not present in upm",
+            "payeeAddress": [
+                {
+                    "payeeAddressLine1Text": "Not present in upm",
+                    "payeeCityName": "Not present in upm",
+                    "payeeStateProvinceCode": "Not present in upm",
+                    "payeePostalCode": "Not present in upm"
+                }
+            ]
+        }
+    ],
+    "totals": {
+        "totalBilledChargeAmount": "Not present in upm",
+        "totalNotCoveredAmount": "Not present in upm",
+        "totalPatientNotCoveredAmount": "Not present in upm",
+        "totalProviderNotCoveredAmount": "Not present in upm",
+        "totalDiscountAmount": "Not present in upm",
+        "totalClaimAllowedAmount": "Not present in upm",
+        "totalBenefitCoinsuranceAmount": "Not present in upm",
+        "totalCopayAmount": "0.00",
+        "totalDeductibleAmount": "Not present in upm",
+        "totalPatientResponsibilityAmount": "0.00",
+        "totalClaimPaidAmount": "Not present in upm",
+        "totalInterestAmount": "Not present in upm",
+        "totalSequesteredAmount": "Not present in upm"
+    }
+}

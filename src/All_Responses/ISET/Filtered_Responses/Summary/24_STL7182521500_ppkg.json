@@ -1,0 +1,219 @@
+{
+    "claimIdentifiers": {
+        "internalReferenceIdentifier": "FT75871824",
+        "payerClaimControlNumber": "STL071825215",
+        "patientAccountNumber": "PGAN37817175",
+        "clearinghouseTraceNumber": "Q56SSU204L00A1",
+        "filmLocation": {
+            "claimReceiptLocatorNumber": "941261267268500",
+            "filmOfficeNumber": "72685",
+            "fileLocatorDate": "2026-05-06"
+        },
+        "claimOtherIdentifiers": [
+            {
+                "benefitLevelCauseCode": "47771",
+                "lineofBusinessCode": "MCR",
+                "planBenefitTypeCode": "MEDICAL"
+            }
+        ],
+        "sourceSystemCode": "COS",
+        "claimAdjudicationPlatformCode": "Hospital",
+        "claimTransactionIdentifier": "STL:71825215:1:0",
+        "claimSubmittedSourceSystemCode": "COSM",
+        "claimSubmittedIdentifier": "FT75871824"
+    },
+    "claimCategories": {
+        "claimType": "INSTITUTIONAL",
+        "claimBillType": "131",
+        "capitatedClaimIndicator": "N",
+        "claimEncounterIndicator": false,
+        "claimTransactionType": "ORIGINAL",
+        "isSplitClaim": false,
+        "claimSubmissionMethodCode": "EDI",
+        "claimSubmissionMethodDescription": "ELECTRONIC",
+        "inoutNetworkClaimCode": "IN"
+    },
+    "claimState": {
+        "claimTransactionStatus": [
+            {
+                "sequence": 1,
+                "statusEffectivePeriod": {
+                    "start": "2026-05-06",
+                    "end": "2026-06-04"
+                },
+                "claimTransactionProcessStatusCode": "approved",
+                "claimTransactionStatusCode": "I",
+                "claimTransactionStatusDescription": "FINALIZED PAID",
+                "claimStatusCrosswalkData": [
+                    {
+                        "claimStatusCategoryCode507": "F1",
+                        "claimStatusCode508": "104"
+                    }
+                ]
+            }
+        ],
+        "claimEvents": {
+            "startingServiceDate": "2026-04-29",
+            "endingServiceDate": "2026-04-29",
+            "claimReceiptDatetime": "2026-05-06",
+            "claimAdjudicationEntryDatetime": "2026-05-07T00:00:00.000+0000",
+            "claimAdjudicationDatetime": "2026-05-27T09:05:25",
+            "claimAdjustedDatetime": "2026-05-07T00:00:00",
+            "claimReviewDatetime": "2026-05-11T00:00:00",
+            "claimPaidDate": "2026-06-04"
+        }
+    },
+    "patient": {
+        "name": {
+            "fullName": "BRENDA CARVER",
+            "lastName": "CARVER",
+            "firstName": "BRENDA"
+        },
+        "gender": "Female",
+        "dateOfBirth": "1954-02-27",
+        "age": "72",
+        "subscriberId": "937453349",
+        "memberId": "937453349",
+        "dependent": "00",
+        "policyNumber": "86011"
+    },
+    "providers": [
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "providerTaxId": "237339737",
+                "npi": "1386619450",
+                "otherProviderIdentifiers": [
+                    {
+                        "providerIdentifier": "000149944",
+                        "providerIdentifierSourceSystemCode": "MPIN"
+                    },
+                    {
+                        "providerIdentifier": "00500014232",
+                        "providerIdentifierSourceSystemCode": "PROVIDERNBR"
+                    }
+                ]
+            },
+            "name": {
+                "fullName": "LAKE REGIONAL HEALTH SYSTEM",
+                "firstName": "LAKE REGIONAL HEALTH SYSTEM"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "ADJUDICATED",
+            "role": "RENDERING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "providerTaxId": "237339737",
+                "npi": "1386619450"
+            },
+            "name": {
+                "fullName": "LAKE REGIONAL HEALTH SYS",
+                "lastName": "LAKE REGIONAL HEALTH SYS"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "role": "RENDERING"
+        }
+    ],
+    "claimAuthorizations": [
+        {
+            "authorizationNumber": ":0:0"
+        }
+    ],
+    "insurance": {
+        "coverage": {
+            "insurer": [
+                {
+                    "insuranceType": "ADJUDICATED",
+                    "insuranceTypeCode": "P"
+                }
+            ]
+        },
+        "sourceSpecificAttributes": [
+            {
+                "sourceName": "COSM",
+                "attributeName": "siteId",
+                "attributeValue": "STL"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "returnRefundInd"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "ambulancePickupZip"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "overrideAmount"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "lineLevelLMSVCode"
+            }
+        ],
+        "reasonCodes": [
+            {
+                "claimRemittanceAdviceRemarks": [
+                    {
+                        "remittanceAdviceRemarkCode": "0"
+                    }
+                ],
+                "claimAdjustmentReasons": [
+                    {
+                        "claimAdjustmentGroupCode": "CO",
+                        "claimAdjustmentReasonCode": "0"
+                    }
+                ],
+                "claimDenialReasonCode": "0"
+            }
+        ]
+    },
+    "payments": [
+        {
+            "claimPaymentAmount": "139.28",
+            "paymentAmount": "265112.23",
+            "checkSeriesDesignatorCode": "806",
+            "electronicFundsTransferTrackingNumber": "V4068352",
+            "electronicFundsTransferDate": "2026-06-04",
+            "claimAdjudicationDate": "2026-05-27",
+            "claimAdjudicationTime": "09:05:25",
+            "paymentOtherIdentifiers": [
+                {
+                    "modeCode": "ACH"
+                }
+            ],
+            "claimPayeeAssignmentCode": "P",
+            "payeeName": "LAKE REGIONAL HEALTH SYSTEM",
+            "payeeAddress": [
+                {
+                    "payeeAddressLine1Text": "PO BOX 801661",
+                    "payeeCityName": "KANSAS CITY",
+                    "payeeStateProvinceCode": "MO",
+                    "payeePostalCode": "641801661"
+                }
+            ]
+        }
+    ],
+    "totals": {
+        "totalBilledChargeAmount": "146.00",
+        "totalNotCoveredAmount": "3.88",
+        "totalPatientNotCoveredAmount": "0.00",
+        "totalProviderNotCoveredAmount": "3.88",
+        "totalDiscountAmount": "0.00",
+        "totalClaimAllowedAmount": "142.12",
+        "totalBenefitCoinsuranceAmount": "0.00",
+        "totalCopayAmount": "0.00",
+        "totalDeductibleAmount": "0.00",
+        "totalPatientResponsibilityAmount": "0.00",
+        "totalClaimPaidAmount": "139.28",
+        "totalInterestAmount": "0.00",
+        "totalSequesteredAmount": "2.84"
+    }
+}

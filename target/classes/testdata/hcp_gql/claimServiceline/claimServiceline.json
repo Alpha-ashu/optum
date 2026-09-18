@@ -1,0 +1,17 @@
+{
+  "claimServiceLine": true,
+  "query": {
+    "limit": {
+      "pageSize": 500
+    },
+    "where": {
+      "and": [
+        {
+          "claimTransactionIdentifier": {
+            "_eq": "DT54163049"
+          }
+        }
+      ]
+    }
+  }
+}

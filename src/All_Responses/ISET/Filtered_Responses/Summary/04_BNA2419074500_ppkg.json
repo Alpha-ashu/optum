@@ -1,0 +1,162 @@
+{
+    "claimIdentifiers": {
+        "internalReferenceIdentifier": "FY24598678",
+        "payerClaimControlNumber": "BNA24190745",
+        "claimOtherIdentifiers": [
+            {
+                "benefitLevelCauseCode": "999",
+                "lineofBusinessCode": "MCR"
+            }
+        ],
+        "sourceSystemCode": "COS",
+        "claimAdjudicationPlatformCode": "Professional",
+        "claimTransactionIdentifier": "BNA:24190745:0:1:20260915:15550171",
+        "claimSubmittedIdentifier": "FY24598678"
+    },
+    "claimCategories": {
+        "claimType": "PROFESSIONAL",
+        "claimFrequencyTypeCode": "0",
+        "claimFrequencyTypeDescription": "Non-payment/zero claims",
+        "claimEncounterIndicator": false,
+        "claimTransactionType": "ORIGINAL",
+        "isSplitClaim": false,
+        "claimSubmissionMethodCode": "CPA",
+        "claimSubmissionMethodDescription": "KEYED",
+        "inoutNetworkClaimCode": "IN"
+    },
+    "claimState": {
+        "claimTransactionStatus": [
+            {
+                "sequence": 1,
+                "statusEffectivePeriod": {
+                    "start": "2026-07-20",
+                    "end": "2026-09-18"
+                },
+                "claimTransactionProcessStatusCode": "pending",
+                "claimTransactionStatusCode": "P",
+                "claimTransactionStatusDescription": "PENDED",
+                "claimStatusCrosswalkData": [
+                    {
+                        "claimStatusCategoryCode507": "P1",
+                        "claimStatusCode508": "20"
+                    }
+                ]
+            }
+        ],
+        "claimEvents": {
+            "startingServiceDate": "2026-06-22",
+            "endingServiceDate": "2026-06-22",
+            "claimReceiptDatetime": "2026-07-20",
+            "claimAdjudicationEntryDatetime": "2026-09-15T15:55:01.710+0000",
+            "claimAdjudicationDatetime": "2026-09-18T03:08:19",
+            "claimReviewDatetime": "2026-09-15T00:00:00"
+        }
+    },
+    "patient": {
+        "name": {
+            "fullName": "PATRICIA GOWDEY",
+            "lastName": "GOWDEY",
+            "firstName": "PATRICIA"
+        },
+        "dateOfBirth": "1955-01-27",
+        "age": "71",
+        "subscriberId": "926404808",
+        "dependent": "00",
+        "policyNumber": "74321"
+    },
+    "providers": [
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "providerTaxId": "900210545",
+                "npi": "1952682767",
+                "otherProviderIdentifiers": [
+                    {
+                        "providerIdentifier": "001980269",
+                        "providerIdentifierSourceSystemCode": "MPIN"
+                    },
+                    {
+                        "providerIdentifier": "00080092485",
+                        "providerIdentifierSourceSystemCode": "PROVIDERNBR"
+                    }
+                ]
+            },
+            "name": {
+                "fullName": "WOODMAN, M.D., TROY JAMES",
+                "lastName": "WOODMAN, M.D., TROY JAMES",
+                "firstName": "WOODMAN, M.D., TROY JAMES"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "npi": "1487638086"
+            },
+            "role": "RENDERING"
+        }
+    ],
+    "claimAuthorizations": [
+        {
+            "authorizationNumber": ":0:0"
+        }
+    ],
+    "insurance": {
+        "coverage": {
+            "insurer": [
+                {
+                    "insuranceType": "ADJUDICATED",
+                    "insuranceTypeCode": "X"
+                }
+            ]
+        },
+        "sourceSpecificAttributes": [
+            {
+                "sourceName": "COSM",
+                "attributeName": "siteId",
+                "attributeValue": "BNA"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "returnRefundInd"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "ambulancePickupZip"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "overrideAmount"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "lineLevelLMSVCode"
+            }
+        ],
+        "reasonCodes": [
+            {
+                "claimRemittanceAdviceRemarks": [
+                    {
+                        "remittanceAdviceRemarkCode": "0"
+                    }
+                ],
+                "claimDenialReasonCode": "0"
+            }
+        ]
+    },
+    "totals": {
+        "totalBilledChargeAmount": "395.00",
+        "totalNotCoveredAmount": "0.00",
+        "totalPatientNotCoveredAmount": "0.00",
+        "totalProviderNotCoveredAmount": "0.00",
+        "totalDiscountAmount": "0.00",
+        "totalClaimAllowedAmount": "97.62",
+        "totalBenefitCoinsuranceAmount": "0.00",
+        "totalCopayAmount": "0.00",
+        "totalDeductibleAmount": "0.00",
+        "totalPatientResponsibilityAmount": "0.00",
+        "totalClaimPaidAmount": "97.62",
+        "totalInterestAmount": "0.00",
+        "totalSequesteredAmount": "0.00"
+    }
+}

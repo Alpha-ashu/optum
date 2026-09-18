@@ -1,0 +1,224 @@
+{
+    "claimIdentifiers": {
+        "internalReferenceIdentifier": "FR45382336",
+        "payerClaimControlNumber": "STL75594662",
+        "patientAccountNumber": "254655V26088",
+        "clearinghouseTraceNumber": "Q3VAUH06NH000R",
+        "filmLocation": {
+            "claimReceiptLocatorNumber": "919260908129100",
+            "filmOfficeNumber": "81291",
+            "fileLocatorDate": "2026-03-31"
+        },
+        "claimOtherIdentifiers": [
+            {
+                "benefitLevelCauseCode": "999",
+                "lineofBusinessCode": "MCR",
+                "planBenefitTypeCode": "MEDICAL"
+            }
+        ],
+        "sourceSystemCode": "COS",
+        "claimAdjudicationPlatformCode": "Professional",
+        "claimTransactionIdentifier": "STL:75594662:0:1:20260331:9345185",
+        "claimSubmittedSourceSystemCode": "COSM",
+        "claimSubmittedIdentifier": "FR45382336"
+    },
+    "claimCategories": {
+        "claimType": "PROFESSIONAL",
+        "claimFrequencyTypeCode": "1",
+        "claimFrequencyTypeDescription": "Admit thru discharge claim",
+        "claimEncounterIndicator": false,
+        "claimTransactionType": "ORIGINAL",
+        "isSplitClaim": false,
+        "claimSubmissionMethodCode": "EDI",
+        "claimSubmissionMethodDescription": "ELECTRONIC",
+        "inoutNetworkClaimCode": "IN"
+    },
+    "claimState": {
+        "claimTransactionStatus": [
+            {
+                "sequence": 1,
+                "statusEffectivePeriod": {
+                    "start": "2026-03-31",
+                    "end": "2026-04-29"
+                },
+                "claimTransactionProcessStatusCode": "approved",
+                "claimTransactionStatusCode": "I",
+                "claimTransactionStatusDescription": "FINALIZED PAID",
+                "claimStatusCrosswalkData": [
+                    {
+                        "claimStatusCategoryCode507": "F1",
+                        "claimStatusCode508": "104"
+                    }
+                ]
+            }
+        ],
+        "claimEvents": {
+            "startingServiceDate": "2026-03-25",
+            "endingServiceDate": "2026-03-25",
+            "claimReceiptDatetime": "2026-03-31",
+            "claimAdjudicationEntryDatetime": "2026-03-31T09:34:51.850+0000",
+            "claimAdjudicationDatetime": "2026-04-21T17:05:09",
+            "claimReviewDatetime": "2026-04-07T00:00:00",
+            "claimPaidDate": "2026-04-29"
+        }
+    },
+    "patient": {
+        "name": {
+            "fullName": "JAMES HURT",
+            "lastName": "HURT",
+            "firstName": "JAMES"
+        },
+        "gender": "Male",
+        "dateOfBirth": "1958-02-11",
+        "age": "68",
+        "subscriberId": "906855265",
+        "memberId": "906855265",
+        "dependent": "00",
+        "policyNumber": "72931"
+    },
+    "providers": [
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "providerTaxId": "050539357",
+                "npi": "1720032105",
+                "otherProviderIdentifiers": [
+                    {
+                        "providerIdentifier": "003203623",
+                        "providerIdentifierSourceSystemCode": "MPIN"
+                    },
+                    {
+                        "providerIdentifier": "00040270029",
+                        "providerIdentifierSourceSystemCode": "PROVIDERNBR"
+                    }
+                ]
+            },
+            "name": {
+                "fullName": "MALLAH, M.D., KOZHAYA",
+                "lastName": "KOZHAYA MALLAH MD",
+                "firstName": "MALLAH, M.D., KOZHAYA"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "ADJUDICATED",
+            "identifiers": {
+                "npi": "1376717694"
+            },
+            "role": "RENDERING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "providerTaxId": "050539357",
+                "npi": "1720032105"
+            },
+            "name": {
+                "fullName": "LOGAN GENERAL HOSPITAL LLC",
+                "lastName": "LOGAN GENERAL HOSPITAL LLC"
+            },
+            "role": "BILLING"
+        },
+        {
+            "providerDataType": "SUBMITTED",
+            "identifiers": {
+                "npi": "1376717694"
+            },
+            "name": {
+                "fullName": "KOZHAYA MALLAH",
+                "lastName": "MALLAH",
+                "firstName": "KOZHAYA"
+            },
+            "role": "RENDERING"
+        }
+    ],
+    "claimAuthorizations": [
+        {
+            "authorizationNumber": ":0:0"
+        }
+    ],
+    "insurance": {
+        "coverage": {
+            "insurer": [
+                {
+                    "insuranceType": "ADJUDICATED",
+                    "insuranceTypeCode": "P"
+                }
+            ]
+        },
+        "sourceSpecificAttributes": [
+            {
+                "sourceName": "COSM",
+                "attributeName": "siteId",
+                "attributeValue": "STL"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "returnRefundInd"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "ambulancePickupZip"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "overrideAmount"
+            },
+            {
+                "sourceName": "COSM",
+                "attributeName": "lineLevelLMSVCode"
+            }
+        ],
+        "reasonCodes": [
+            {
+                "claimRemittanceAdviceRemarks": [
+                    {
+                        "remittanceAdviceRemarkCode": "0"
+                    }
+                ],
+                "claimDenialReasonCode": "0"
+            }
+        ]
+    },
+    "payments": [
+        {
+            "claimPaymentAmount": "6.83",
+            "paymentAmount": "1758.87",
+            "checkSeriesDesignatorCode": "806",
+            "electronicFundsTransferTrackingNumber": "V2380030",
+            "electronicFundsTransferDate": "2026-04-29",
+            "claimAdjudicationDate": "2026-04-21",
+            "claimAdjudicationTime": "17:05:09",
+            "paymentOtherIdentifiers": [
+                {
+                    "modeCode": "ACH"
+                }
+            ],
+            "claimPayeeAssignmentCode": "P",
+            "payeeName": "LOGAN GENERAL HOSPITAL LLC",
+            "payeeAddress": [
+                {
+                    "payeeAddressLine1Text": "PO BOX 25656",
+                    "payeeCityName": "BELFAST",
+                    "payeeStateProvinceCode": "ME",
+                    "payeePostalCode": "049152007"
+                }
+            ]
+        }
+    ],
+    "totals": {
+        "totalBilledChargeAmount": "23.00",
+        "totalNotCoveredAmount": "16.04",
+        "totalPatientNotCoveredAmount": "0.00",
+        "totalProviderNotCoveredAmount": "16.04",
+        "totalDiscountAmount": "0.00",
+        "totalClaimAllowedAmount": "6.96",
+        "totalBenefitCoinsuranceAmount": "0.00",
+        "totalCopayAmount": "0.00",
+        "totalDeductibleAmount": "0.00",
+        "totalPatientResponsibilityAmount": "0.00",
+        "totalClaimPaidAmount": "6.83",
+        "totalInterestAmount": "0.00",
+        "totalSequesteredAmount": "0.13"
+    }
+}

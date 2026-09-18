@@ -1,0 +1,400 @@
+testcase,memberNumber,firstName,lastName,dateOfBirth,startDate,endDate,groupNo,site,payerClaimControlNumber,claimNumber,searchtype,Claimtype,claimType,requestBody
+01,903125116,DAWN,SAUER,1946-12-05,2021-02-19,2021-02-19,12809,ATL,ATL37037605,37037605,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""ATL"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2021-02-19"",
+    ""subscriberNumber"": ""903125116"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2021-02-19"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""12809"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+02,907175495,JAMES,MCCLURE,1965-05-06,2021-05-02,2021-05-31,67200,STM,STM99056189,99056189,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""STM"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2021-05-02"",
+    ""subscriberNumber"": ""907175495"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2021-05-31"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""67200"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+03,971871049,KATHLEEN,STROPKAY,1956-05-02,2021-10-02,2021-10-31,15634,OEB,OEB39555664,39555664,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""OEB"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2021-10-02"",
+    ""subscriberNumber"": ""971871049"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2021-10-31"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""15634"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+04,928525919,JUANNA,DAIGLE,1954-05-12,2021-10-14,2021-10-14,90122,PNX,PNX95559550,95559550,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""PNX"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2021-10-14"",
+    ""subscriberNumber"": ""928525919"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2021-10-14"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""90122"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+05,907203330,DELOIS,YOUNG,1954-12-29,2021-12-01,2021-12-01,72860,VRG,VRG31705723,31705723,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""VRG"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2021-12-01"",
+    ""subscriberNumber"": ""907203330"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2021-12-01"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""72860"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+06,982604002,EDWIN,GOLDWASSER,1932-04-16,2022-01-01,2022-01-30,21813,STL,STL35766139,35766139,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""STL"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2022-01-01"",
+    ""subscriberNumber"": ""982604002"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2022-01-30"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""21813"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+07,956030808,SHIRLEY,CAMPBELL,1943-08-03,2025-04-24,2025-04-24,01214,BNA,BNA70058670,70058670,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""BNA"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2025-04-24"",
+    ""subscriberNumber"": ""956030808"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2025-04-24"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""01214"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+08,963546950,ROBERTA,PETERS,1943-11-27,2025-05-01,2025-05-01,44500,PVS,PVS28380317,28380317,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""PVS"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2025-05-01"",
+    ""subscriberNumber"": ""963546950"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2025-05-01"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""44500"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+09,984189369,C,SMITH,1948-12-06,2025-04-21,2025-04-21,16373,OEB,OEB36565378,36565378,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""OEB"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2025-04-21"",
+    ""subscriberNumber"": ""984189369"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2025-04-21"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""16373"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+10,913235980,EVA,RAYNOR,1931-09-22,2025-04-21,2025-04-21,16370,KEN,KEN66759153,66759153,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""KEN"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2025-04-21"",
+    ""subscriberNumber"": ""913235980"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2025-04-21"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""16370"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+11,913860765,MARGARET,FOUNTAIN,1940-02-24,2025-04-08,2025-05-07,74152,NTL,NTL61458902,61458902,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""NTL"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2025-04-08"",
+    ""subscriberNumber"": ""913860765"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2025-05-07"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""74152"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+12,989924631,IRA,ROBINSON,1943-12-01,2025-04-08,2025-05-07,72872,VRG,VRG74792111,74792111,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""VRG"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2025-04-08"",
+    ""subscriberNumber"": ""989924631"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2025-05-07"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""72872"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+13,906997472,ERNEST,DAY,1950-01-01,2025-04-09,2025-04-09,65025,EVC,EVC26156884,26156884,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""EVC"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2025-04-09"",
+    ""subscriberNumber"": ""906997472"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2025-04-09"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""65025"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+14,993210110,DEBORAH,EAST,1954-04-01,2025-04-09,2025-04-09,00477,EVC,EVC26140472,26140472,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""EVC"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2025-04-09"",
+    ""subscriberNumber"": ""993210110"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2025-04-09"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""00477"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+15,908970708,ANDRES,MALDONADO,,2025-04-11,2025-05-10,99850,NTL,NTL61520404,61520404,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""NTL"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2025-04-11"",
+    ""subscriberNumber"": ""908970708"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2025-05-10"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""99850"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+16,990256940,MICHELE,BOYKO,,2025-04-02,2025-05-01,82996,ATL,ATL42322988,42322988,C,Physician,P,"{
+  ""searchInput"": {
+    ""division"": ""NTL"",
+    ""claimType"": ""4"",
+    ""dateType"": ""2"",
+    ""startServiceDate"": ""2025-04-02"",
+    ""subscriberNumber"": ""990256940"",
+    ""dependentCode"": ""00"",
+    ""endServiceDate"": ""2025-05-01"",
+    ""controlModifier"": {
+      ""uniqueClaim"": ""NO"",
+      ""cosmosSystemParameters"": {
+        ""sourceId"": ""15"",
+        ""userId"": ""90251""
+      }
+    },
+    ""groupNumber"": ""82996"",
+    ""providerType"": ""1"",
+    ""claimStatus"": ""1""
+  }
+}"
+17,907351982,HENRY,SAUNDERS,,2025-04-02,2025-05-01,66105,NYC,NYC51086754,51086754,C,Physician,P,"{
+    ""searchInput"": {
+        ""startServiceDate"": ""2025-04-02"",
+        ""endServiceDate"": ""2025-05-01"",
+        ""division"": ""NYC"",
+        ""claimType"": ""4"",
+        ""dateType"": ""2"",
+        ""subscriberNumber"": ""907351982"",
+        ""controlModifier"": {
+            ""uniqueClaim"": ""NO"",
+            ""limitSearchDates"": ""NO"",
+            ""cosmosSystemParameters"": {
+                ""sourceId"": ""17"",
+                ""userId"": ""23611""
+            }
+        },
+        ""groupNumber"": ""66105"",
+        ""dependentCode"": ""00"",
+        ""claimStatus"": ""1""
+    }
+}"
+18,996589600,DOROTHY,GALINSKI,,2025-04-02,2025-05-01,15743,OEB,OEB36322332,36322332,C,Physician,P,"{
+    ""searchInput"": {
+        ""startServiceDate"": ""2025-04-02"",
+        ""endServiceDate"": ""2025-05-01"",
+        ""division"": ""OEB"",
+        ""claimType"": ""4"",
+        ""dateType"": ""2"",
+        ""subscriberNumber"": ""996589600"",
+        ""controlModifier"": {
+            ""uniqueClaim"": ""NO"",
+            ""limitSearchDates"": ""NO"",
+            ""cosmosSystemParameters"": {
+                ""sourceId"": ""17"",
+                ""userId"": ""23611""
+            }
+        },
+        ""groupNumber"": ""15743"",
+        ""dependentCode"": ""00"",
+        ""claimStatus"": ""1""
+    }
+}"
+19,990256940,MICHELE,BOYKO,,2025-04-02,2025-05-01,82996,RAM,RAM42322988,42322988,C,Physician,P,"{
+    ""searchInput"": {
+        ""startServiceDate"": ""2025-04-02"",
+        ""endServiceDate"": ""2025-05-01"",
+        ""division"": ""RAM"",
+        ""claimType"": ""4"",
+        ""dateType"": ""2"",
+        ""subscriberNumber"": ""990256940"",
+        ""controlModifier"": {
+            ""uniqueClaim"": ""NO"",
+            ""limitSearchDates"": ""NO"",
+            ""cosmosSystemParameters"": {
+                ""sourceId"": ""17"",
+                ""userId"": ""23611""
+            }
+        },
+        ""groupNumber"": ""82996"",
+        ""dependentCode"": ""00"",
+        ""claimStatus"": ""1""
+    }
+}"
