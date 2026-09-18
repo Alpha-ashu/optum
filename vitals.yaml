@@ -1,0 +1,8 @@
+apiVersion: v1
+metadata:
+  askId: UHGWM110-026194
+  caAgileId: 323001286048ud
+  projectKey: com.uhg.payer:ppkg-claims-dark-mode-validator
+  projectFriendlyName: ppkg-claims-dark-mode-validator
+  componentType: code
+  targetQG: GATE_00
