@@ -124,6 +124,57 @@ CONSUMER_CONFIG: Dict[str, dict] = {
         "target_feature_file": _p(*_FEATURE_DIR_PROD, "alex_qae_physician.feature"),
         "search_type":         "Claim Search",
     },
+    "ISET_Summary": {
+        "test_data":      _p("src", "test", "resources", "testdata", "upm_ppkg", "ISET", "summary_testdata.csv"),
+        "claim_filter":   None,
+        "claim_type":     "Summary",
+        "mapping_sheets": [_p("src", "test", "resources", "json_mapping", "legacy_ppkg", "upm_ppkg", "ISET", "ISET_Summary_mapping.xlsx")],
+        "response_base":  _p("target", "All_Responses", "ISET"),
+        "expected_source": "UPM",
+        "actual_source":   "PPKG",
+        "sources": {
+            "UPM":  {"folder": "UPM_Responses/Summary",  "suffix": "_upm.json"},
+            "PPKG": {"folder": "PPKG_Responses/Summary", "suffix": "_ppkg.json"},
+        },
+        "consumer_name":       "ISET",
+        "source_feature_file": _p("src", "test", "resources", "feature_files", "upm_ppkg", "cosmos", "ISET", "summary", "upm_summary.feature"),
+        "target_feature_file": _p("src", "test", "resources", "feature_files", "upm_ppkg", "cosmos", "ISET", "summary", "ppkg_summary.feature"),
+        "search_type":         "Claim Summary Search",
+    },
+    "ISET_Hospital": {
+        "test_data":      _p("src", "test", "resources", "testdata", "upm_ppkg", "ISET", "hospital_testdata.csv"),
+        "claim_filter":   "HOSPITAL",
+        "claim_type":     "Hospital",
+        "mapping_sheets": [_p("src", "test", "resources", "json_mapping", "legacy_ppkg", "upm_ppkg", "ISET", "ISET_Hospital_mapping.xlsx")],
+        "response_base":  _p("target", "All_Responses", "ISET"),
+        "expected_source": "UPM",
+        "actual_source":   "PPKG",
+        "sources": {
+            "UPM":  {"folder": "UPM_Responses/Hospital",  "suffix": "_upm.json"},
+            "PPKG": {"folder": "PPKG_Responses/Hospital", "suffix": "_ppkg.json"},
+        },
+        "consumer_name":       "ISET",
+        "source_feature_file": _p("src", "test", "resources", "feature_files", "upm_ppkg", "cosmos", "ISET", "read-claim-details", "hospital", "upm_hospital.feature"),
+        "target_feature_file": _p("src", "test", "resources", "feature_files", "upm_ppkg", "cosmos", "ISET", "read-claim-details", "hospital", "ppkg_hospital.feature"),
+        "search_type":         "Claim Search",
+    },
+    "ISET_Physician": {
+        "test_data":      _p("src", "test", "resources", "testdata", "upm_ppkg", "ISET", "physician_testdata.csv"),
+        "claim_filter":   "PHYSICIAN",
+        "claim_type":     "Physician",
+        "mapping_sheets": [_p("src", "test", "resources", "json_mapping", "legacy_ppkg", "upm_ppkg", "ISET", "ISET_Physician_mapping.xlsx")],
+        "response_base":  _p("target", "All_Responses", "ISET"),
+        "expected_source": "UPM",
+        "actual_source":   "PPKG",
+        "sources": {
+            "UPM":  {"folder": "UPM_Responses/Physician",  "suffix": "_upm.json"},
+            "PPKG": {"folder": "PPKG_Responses/Physician", "suffix": "_ppkg.json"},
+        },
+        "consumer_name":       "ISET",
+        "source_feature_file": _p("src", "test", "resources", "feature_files", "upm_ppkg", "cosmos", "ISET", "read-claim-details", "physician", "upm_physician.feature"),
+        "target_feature_file": _p("src", "test", "resources", "feature_files", "upm_ppkg", "cosmos", "ISET", "read-claim-details", "physician", "ppkg_physician.feature"),
+        "search_type":         "Claim Search",
+    },
 }
 
 
@@ -185,10 +236,12 @@ MAPPING_COLUMN_ALIASES: Dict[str, List[str]] = {
     'source': [
         'PPKG Path', 'PPKGPath', 'Source Path', 'SourcePath', 'Expected Path',
         'HCP Path', 'UPM Path', 'Clink Path', 'Claim360_Path', 'Claim360 Path','SourcePath', 'Source_Path_1',
+        'Legacy', 'legacy',
     ],
     'target': [
         'ALEX Path', 'AlexPath', 'Target Path', 'TargetPath', 'Actual Path',
         'Decanary_Path', 'Decanary Path', 'PPKG Target Path','target_path', 'Target_Path_2',
+        'pp claim path', 'pp_claim_path', 'PP Claim Path',
     ],
 }
 

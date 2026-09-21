@@ -124,18 +124,24 @@ def build_validation_summary(consolidated_df: pd.DataFrame) -> List[Tuple[str, o
 
     total_records     = len(df)
     matched           = int((status == 'Match').sum())
+    hardcoded_matches = int((df['Category'] == 'Hardcoded Match').sum()) if 'Category' in df.columns else 0
     mismatched        = int((status == 'Mismatch').sum())
-    # Source = PPKG (expected), Target = Alex (actual).
-    missing_in_source = int((status == 'Value Missing in PPKG').sum())
-    missing_in_target = int((status == 'Value Missing in Alex').sum())
+    # Generic Source and Target status matching (with backward compatibility)
+    missing_in_source = int(((status == 'Value Missing in Source') | (status == 'Value Missing in PPKG')).sum())
+    missing_in_target = int(((status == 'Value Missing in Target') | (status == 'Value Missing in Alex')).sum())
 
-    return [
+    rows = [
         ('Total Records',     total_records),
         ('Matched',           matched),
+    ]
+    if hardcoded_matches > 0:
+        rows.append(('  - Hardcoded Matches', hardcoded_matches))
+    rows.extend([
         ('Mismatched',        mismatched),
         ('Missing in Source', missing_in_source),
         ('Missing in Target', missing_in_target),
-    ]
+    ])
+    return rows
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -193,13 +199,20 @@ def inject_consumer_report_sheets(
         cell.fill = title_fill if row == 1 else section_fill
         cell.alignment = Alignment(horizontal='left', vertical='center')
 
+    hardcoded_fill = PatternFill('solid', fgColor='E8DAEF')
+
     def _kv_rows(start_row: int, rows) -> int:
         r = start_row
         for label, value in rows:
             lcell = ws.cell(row=r, column=1, value=label)
             vcell = ws.cell(row=r, column=2, value=('' if value is None else str(value)))
             lcell.font = Font(bold=True)
-            lcell.fill = label_fill
+            if 'Hardcoded' in str(label):
+                lcell.fill = hardcoded_fill
+                vcell.fill = hardcoded_fill
+                vcell.font = Font(bold=True)
+            else:
+                lcell.fill = label_fill
             lcell.border = border
             vcell.border = border
             vcell.alignment = Alignment(vertical='center', wrap_text=False)

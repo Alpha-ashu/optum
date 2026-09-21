@@ -38,6 +38,10 @@ except ImportError:
     _fc = _ilu.module_from_spec(_spec)
     _spec.loader.exec_module(_fc)
 
+_this_dir = os.path.dirname(os.path.abspath(__file__))
+if _this_dir not in sys.path:
+    sys.path.insert(0, _this_dir)
+
 # Onboard a NEW validation by editing feature_config.CONSUMER_CONFIG (or drop a
 CONSUMER_CONFIG = dict(_fc.CONSUMER_CONFIG)
 
@@ -51,6 +55,7 @@ except ImportError:
         os.path.join(os.path.dirname(__file__), 'validation_framework.py'),
     )
     _vf = _ilu.module_from_spec(_spec)
+    sys.modules['validation_framework'] = _vf
     _spec.loader.exec_module(_vf)
 
 try:
@@ -72,6 +77,7 @@ except ImportError:
         os.path.join(os.path.dirname(__file__), 'hardcoding.py'),
     )
     _hc = _ilu.module_from_spec(_spec)
+    sys.modules['hardcoding'] = _hc
     _spec.loader.exec_module(_hc)
 
 # Consumer-based reporting layer (Run Information / Validation Summary sheets).
@@ -85,6 +91,7 @@ except ImportError:
         os.path.join(os.path.dirname(__file__), 'consumer_report.py'),
     )
     _cr = _ilu.module_from_spec(_spec)
+    sys.modules['consumer_report'] = _cr
     _spec.loader.exec_module(_cr)
 
 # CSV column aliases (canonical name -> list of possible column names in CSV)
@@ -197,6 +204,11 @@ def values_match(a, b) -> bool:
     nb = normalize_value(b)
     if na == nb:
         return True
+    try:
+        if na and nb and float(na) == float(nb):
+            return True
+    except (ValueError, TypeError):
+        pass
     # Only fuzzy-match non-empty strings; an empty vs non-empty value is a
     if not na or not nb:
         return False
@@ -265,32 +277,225 @@ def load_mapping(
     return [(prep(row[src_col]), prep(row[tgt_col])) for _, row in df.iterrows()]
 
 
-def wrap_response(data: dict) -> Tuple[dict, str]:
-    """Return the FULL claim array with ALL transactions at their original indices."""
-    root_key = 'claim'
-    if isinstance(data, dict):
-        if 'claim' in data:
-            root_key = 'claim'
-            claims = data['claim']
-        elif 'data' in data:
-            root_key = 'data'
-            claims = data['data']
+def _tc_sort_key(val) -> int:
+    try:
+        s = str(val).strip()
+        digits = ''.join(c for c in s if c.isdigit())
+        return int(digits) if digits else 999999
+    except Exception:
+        return 999999
+
+
+def _get_claim_icn_val(claim_obj: Optional[dict], fallback: str = '') -> str:
+    if not isinstance(claim_obj, dict):
+        return str(fallback or '')
+    # 1. ediAttachmentData (UPM)
+    edi = claim_obj.get('ediAttachmentData')
+    if isinstance(edi, dict):
+        v = edi.get('chIcn') or edi.get('flnId')
+        if v:
+            return str(v).strip()
+    # 2. claimIdentifiers (PPKG / Alex)
+    ci = claim_obj.get('claimIdentifiers')
+    if isinstance(ci, dict):
+        for k in ('internalReferenceIdentifier', 'claimSubmittedIdentifier', 'icn'):
+            v = ci.get(k)
+            if v:
+                return str(v).strip()
+    # 3. Top-level identifiers
+    for k in ('internalReferenceIdentifier', 'chIcn', 'icn', 'claimSubmittedIdentifier'):
+        v = claim_obj.get(k)
+        if v:
+            return str(v).strip()
+    return str(fallback or '')
+
+
+def _get_claim_num_val(claim_obj: Optional[dict], fallback: str = '') -> str:
+    if not isinstance(claim_obj, dict):
+        return str(fallback or '')
+    ci = claim_obj.get('claimIdentifiers')
+    if isinstance(ci, dict):
+        v = ci.get('payerClaimControlNumber')
+        if v:
+            return str(v).strip()
+    site = str(claim_obj.get('claimSiteId') or '').strip()
+    racn = str(claim_obj.get('revisedAuditControlNumber') or '').strip()
+    acn = str(claim_obj.get('auditControlNumber') or '').strip()
+    if site and racn:
+        return site + racn
+    if site and acn:
+        return site + acn
+    for k in ('payerClaimControlNumber', 'auditControlNumber', 'claimNumber'):
+        v = claim_obj.get(k)
+        if v:
+            return str(v).strip()
+    return str(fallback or '')
+
+
+def _get_claim_txn_val(claim_obj: Optional[dict], fallback: str = '') -> str:
+    if not isinstance(claim_obj, dict):
+        return str(fallback or '')
+    for k in ('recordId', 'claimTransactionIdentifier', 'claimTransaction'):
+        v = claim_obj.get(k)
+        if v:
+            return str(v).strip()
+    ci = claim_obj.get('claimIdentifiers')
+    if isinstance(ci, dict):
+        v = ci.get('claimTransactionIdentifier')
+        if v:
+            return str(v).strip()
+    return str(fallback or '')
+
+
+def _get_claim_type_val(claim_obj: Optional[dict], fallback: str = '') -> str:
+    if not isinstance(claim_obj, dict):
+        return str(fallback or '')
+    for k in ('recordTypeDescription', 'claimTypeDescription', 'claimType'):
+        v = claim_obj.get(k)
+        if v:
+            return str(v).strip()
+    cc = claim_obj.get('claimCategories')
+    if isinstance(cc, dict):
+        v = cc.get('claimTransactionType') or cc.get('claimType')
+        if v:
+            return str(v).strip()
+    return str(fallback or '')
+
+
+def _types_compatible(t1: str, t2: str) -> bool:
+    if not t1 or not t2:
+        return True
+    u1, u2 = str(t1).upper(), str(t2).upper()
+    if u1 == u2:
+        return True
+    hosp = {'HOSPITAL', 'INSTITUTIONAL', 'I', 'H'}
+    phys = {'PHYSICIAN', 'PROFESSIONAL', 'P', 'M'}
+    if u1 in hosp and u2 in hosp:
+        return True
+    if u1 in phys and u2 in phys:
+        return True
+    return False
+
+
+def extract_claim_identifiers(c: Optional[dict]) -> dict:
+    if not isinstance(c, dict):
+        return {'icn': '', 'nums': set(), 'primary_num': '', 'txn': '', 'type': ''}
+    icn = _get_claim_icn_val(c)
+    primary_num = _get_claim_num_val(c)
+    nums = set()
+    if primary_num:
+        nums.add(primary_num.upper())
+    site = str(c.get('claimSiteId') or '').strip().upper()
+    acn = str(c.get('auditControlNumber') or '').strip().upper()
+    racn = str(c.get('revisedAuditControlNumber') or '').strip().upper()
+    pcn = str(c.get('patientControlNumber') or '').strip().upper()
+    if site and racn:
+        nums.add(site + racn)
+    if site and acn:
+        nums.add(site + acn)
+    if racn:
+        nums.add(racn)
+    if acn:
+        nums.add(acn)
+    if pcn:
+        nums.add(pcn)
+    ci = c.get('claimIdentifiers')
+    if isinstance(ci, dict):
+        pccn = str(ci.get('payerClaimControlNumber') or '').strip().upper()
+        if pccn:
+            nums.add(pccn)
+        csi = str(ci.get('claimSubmittedIdentifier') or '').strip().upper()
+        if csi:
+            nums.add(csi)
+    pccn_top = str(c.get('payerClaimControlNumber') or '').strip().upper()
+    if pccn_top:
+        nums.add(pccn_top)
+
+    txn = _get_claim_txn_val(c)
+    ctype = _get_claim_type_val(c)
+    return {'icn': icn, 'nums': nums, 'primary_num': primary_num, 'txn': txn, 'type': ctype}
+
+
+def match_upm_claims(
+    hcp_claims: List[dict],
+    alex_claims: List[dict],
+    claim_number: str = '',
+) -> List[Tuple[Optional[int], Optional[int], Optional[dict], Optional[dict], str]]:
+    """Match Source (UPM) claims with Target (PPKG) claims using business keys:
+    1. Exact ICN match (Source chIcn <-> Target internalReferenceIdentifier)
+    2. Claim number match (3-char site + numeric revisedAuditControlNumber <-> Target payerClaimControlNumber)
+    3. Test case CSV claim number correspondence
+    Returns list of (s_idx, t_idx, c_src, c_tgt, match_status).
+    """
+    u_ids = [extract_claim_identifiers(c) for c in hcp_claims]
+    p_ids = [extract_claim_identifiers(c) for c in alex_claims]
+    clm_clean = claim_number.strip().upper()
+
+    candidate_s_indices = []
+    if clm_clean:
+        for i, uid in enumerate(u_ids):
+            if any(sn == clm_clean or sn.startswith(clm_clean) or clm_clean.startswith(sn) for sn in uid['nums']):
+                candidate_s_indices.append(i)
+    if not candidate_s_indices:
+        candidate_s_indices = list(range(len(hcp_claims)))
+
+    pairs = []
+    matched_t_indices = set()
+
+    for s_idx in candidate_s_indices:
+        s_id = u_ids[s_idx]
+        best_t_idx = None
+
+        # 1. Check by ICN
+        if s_id['icn']:
+            for t_idx, t_id in enumerate(p_ids):
+                if t_idx not in matched_t_indices and t_id['icn'] and t_id['icn'].upper() == s_id['icn'].upper():
+                    best_t_idx = t_idx
+                    break
+
+        # 2. Check by claim number (with compatible claim type)
+        if best_t_idx is None:
+            for t_idx, t_id in enumerate(p_ids):
+                if t_idx in matched_t_indices:
+                    continue
+                if any(sn == tn or (len(sn) >= 6 and len(tn) >= 6 and (sn.startswith(tn) or tn.startswith(sn)))
+                       for sn in s_id['nums'] for tn in t_id['nums']):
+                    if _types_compatible(s_id['type'], t_id['type']):
+                        best_t_idx = t_idx
+                        break
+
+        # 3. Check by CSV claim_number
+        if best_t_idx is None and clm_clean:
+            for t_idx, t_id in enumerate(p_ids):
+                if t_idx in matched_t_indices:
+                    continue
+                if any(tn == clm_clean or tn.startswith(clm_clean) or clm_clean.startswith(tn) for tn in t_id['nums']):
+                    if _types_compatible(s_id['type'], t_id['type']):
+                        best_t_idx = t_idx
+                        break
+
+        if best_t_idx is not None:
+            matched_t_indices.add(best_t_idx)
+            pairs.append((s_idx, best_t_idx, hcp_claims[s_idx], alex_claims[best_t_idx], 'Matched'))
         else:
-            claims = []
-    else:
-        claims = []
+            pairs.append((s_idx, None, hcp_claims[s_idx], None, 'Missing in Target'))
 
-    if not isinstance(claims, list):
-        claims = []
+    # Check for unmatched target claims that correspond to this test case
+    for t_idx, t_id in enumerate(p_ids):
+        if t_idx not in matched_t_indices:
+            if clm_clean and any(tn == clm_clean or tn.startswith(clm_clean) or clm_clean.startswith(tn) for tn in t_id['nums']):
+                pairs.append((None, t_idx, None, alex_claims[t_idx], 'Missing in Source'))
 
-    return {"claim": claims}, root_key
+    return pairs
 
 
 def is_error_response(data) -> bool:
     if not isinstance(data, dict):
         return False
     # Explicit status error codes
-    if data.get("status") in [404, "404", 400, "400"]:
+    if data.get("status") in [404, "404", 400, "400", 500, "500", 401, "401", 403, "403"]:
+        return True
+    if data.get("code") in [404, "404", 400, "400", 500, "500", 401, "401", 403, "403"]:
         return True
     # Generic service-status envelope (e.g. {"svcRspSts": {"ResponseCode": "404"}})
     for env_key in ('svcRspSts', 'serviceResponseStatus', 'responseStatus'):
@@ -304,18 +509,139 @@ def is_error_response(data) -> bool:
         warnings = data.get('meta', {}).get('warnings', [])
         if warnings:
             return True
+    # Generic message error
+    if "message" in data and any(err_k in str(data["message"]).lower() for err_k in ("cannot consume", "unauthorized", "not found", "forbidden")):
+        return True
     return False
+
+
+def _extract_claims_from_data(data) -> list:
+    """Extract list of claim objects from any response shape (PPKG, Alex, UPM, SOAP, etc.)."""
+    if not isinstance(data, dict):
+        return []
+    # 1. Standard PPKG / Alex shape
+    if isinstance(data.get('claim'), list):
+        return data['claim']
+    if isinstance(data.get('data'), list):
+        return data['data']
+    if isinstance(data.get('claim'), dict):
+        return [data['claim']]
+    if isinstance(data.get('data'), dict):
+        return [data['data']]
+
+    # 2. UPM Search shape: searchResult.searchOutput.claims.claimReference (or .claims)
+    sr = data.get('searchResult')
+    if isinstance(sr, dict):
+        so = sr.get('searchOutput', {})
+        if isinstance(so, dict):
+            clms = so.get('claims', {})
+            if isinstance(clms, dict):
+                ref = clms.get('claimReference')
+                if isinstance(ref, list):
+                    return ref
+                elif isinstance(ref, dict):
+                    return [ref]
+            elif isinstance(clms, list):
+                return clms
+
+    # 3. UPM Read shape: readResult.readOutput.claims.claim (or Cosmos)
+    rr = data.get('readResult')
+    if isinstance(rr, dict):
+        ro = rr.get('readOutput', {})
+        if isinstance(ro, dict):
+            clms = ro.get('claims', {})
+            if isinstance(clms, dict):
+                c = clms.get('claim')
+                if isinstance(c, list):
+                    return c
+                elif isinstance(c, dict):
+                    return [c]
+            elif isinstance(clms, list):
+                return clms
+        mc = rr.get('readCosmosMemberClaimSummaryResponse', {}).get('memberClaim')
+        if isinstance(mc, list):
+            return mc
+        elif isinstance(mc, dict):
+            return [mc]
+
+    # 4. Cosmos Physician Detail shape: readOutput.readCosmosPhysicianClaimDetailResponse.claimReference
+    ro = data.get('readOutput')
+    if isinstance(ro, dict):
+        cr = ro.get('readCosmosPhysicianClaimDetailResponse', {}).get('claimReference')
+        if isinstance(cr, list):
+            return cr
+        elif isinstance(cr, dict):
+            return [cr]
+
+    # 5. SOAP envelope: soap:Envelope._.soap:Body.ns2:invokeServiceResponse._.return.claim
+    soap = data.get('soap:Envelope') or data.get('Envelope')
+    if isinstance(soap, dict):
+        body = soap.get('_', {}).get('soap:Body') or soap.get('soap:Body') or soap.get('Body')
+        if isinstance(body, dict):
+            resp = body.get('ns2:invokeServiceResponse') or body.get('invokeServiceResponse') or {}
+            ret = resp.get('_', {}).get('return') or resp.get('return') or {}
+            if isinstance(ret, dict):
+                clm = ret.get('claim')
+                if isinstance(clm, list):
+                    return clm
+                elif isinstance(clm, dict):
+                    return [clm]
+
+    # 6. Single claim dict: if not an error and contains claim-level fields
+    if not is_error_response(data) and any(k in data for k in ('claimIdentifiers', 'recordType', 'claimSiteId', 'auditControlNumber', 'claimNumber', 'providers', 'claimCategories')):
+        return [data]
+
+    return []
+
+
+def find_matching_claim(claims: list, claim_number: str) -> Optional[dict]:
+    """Find the specific claim object matching claim_number from a list of claims."""
+    if not claims:
+        return None
+    if not claim_number or len(claims) == 1:
+        return claims[0]
+
+    target = str(claim_number).strip().upper()
+    for c in claims:
+        if not isinstance(c, dict):
+            continue
+        site = str(c.get('claimSiteId', '') or '').strip().upper()
+        acn  = str(c.get('auditControlNumber', '') or '').strip().upper()
+        racn = str(c.get('revisedAuditControlNumber', '') or '').strip().upper()
+        clmn = str(c.get('claimNumber', '') or '').strip().upper()
+        pccn = str(c.get('claimIdentifiers', {}).get('payerClaimControlNumber', '') or '').strip().upper()
+        icn  = str(c.get('claimIdentifiers', {}).get('internalReferenceIdentifier', '') or '').strip().upper()
+        ch_icn = str(c.get('ediAttachmentData', {}).get('chIcn', '') or '').strip().upper()
+
+        cand_ids = {clmn, acn, racn, pccn, icn, ch_icn}
+        if site:
+            cand_ids.add(site + acn)
+            cand_ids.add(site + racn)
+        cand_ids.discard('')
+
+        if target in cand_ids:
+            return c
+        if len(target) > 3 and target[:3].isalpha() and target[3:] in cand_ids:
+            return c
+        for cid in cand_ids:
+            if cid and (target.startswith(cid) or cid.startswith(target)):
+                return c
+
+    return claims[0]
+
+
+def wrap_response(data: dict) -> Tuple[dict, str]:
+    """Return the FULL claim array with ALL transactions at their original indices."""
+    claims = _extract_claims_from_data(data)
+    return {"claim": claims}, 'claim'
 
 
 def describe_error_response(source: str, data) -> str:
     """Build a human-readable failure message for an error response.
 
-    Surfaces the real diagnostic information for BOTH error shapes:
-      1. top-level  {status, detail, title}
+    Surfaces the real diagnostic information for error shapes:
+      1. top-level  {status, detail, title, message}
       2. gateway    {meta: {warnings: [{code, title, detail}, ...]}}
-    So the report's 'Failure Reason' is meaningful (e.g. the 500 "Graph API
-    Unavailable / Unable to retrieve data from HCP" warning) instead of an
-    empty 'returned error:' string.
     """
     if not isinstance(data, dict):
         return f"{source} returned a non-JSON / unexpected response"
@@ -330,33 +656,26 @@ def describe_error_response(source: str, data) -> str:
                 continue
             code   = str(w.get('code', '') or '').strip()
             title  = str(w.get('title', '') or '').strip().strip('"').strip()
-            detail = str(w.get('detail', '') or '').strip()
+            detail = str(w.get('detail', '') or w.get('message', '') or '').strip()
             seg = ' - '.join(p for p in (code, title, detail) if p)
             if seg:
                 parts.append(seg)
         if parts:
             return f"{source} returned error: " + ' | '.join(parts)
 
-    # Shape 1: top-level status/title/detail.
-    status = str(data.get('status', '') or '').strip()
+    # Shape 1: top-level status/title/detail/message.
+    status = str(data.get('status', '') or data.get('code', '') or '').strip()
     title  = str(data.get('title', '') or '').strip()
-    detail = str(data.get('detail', '') or '').strip()
+    detail = str(data.get('detail', '') or data.get('message', '') or data.get('error_description', '') or '').strip()
     seg = ' - '.join(p for p in (status, title, detail) if p)
     return f"{source} returned error: " + (seg or 'unspecified error')
 
 
 def extract_status_code(data) -> str:
-    """Best-effort HTTP / service status code from an error-response envelope.
-
-    Looks at the same shapes is_error_response() understands:
-      1. top-level  {"status": 404, ...}
-      2. service    {"svcRspSts": {"ResponseCode": "404"}} (or responseStatus/…)
-      3. gateway    {"meta": {"warnings": [{"code": "500", ...}]}}
-    Returns '' when no code can be found.
-    """
+    """Best-effort HTTP / service status code from an error-response envelope."""
     if not isinstance(data, dict):
         return ''
-    st = data.get('status')
+    st = data.get('status') or data.get('code')
     if st not in (None, ''):
         return str(st).strip()
     for env_key in ('svcRspSts', 'serviceResponseStatus', 'responseStatus'):
@@ -398,18 +717,13 @@ def format_actual_response(source: str, data, max_len: int = 30000) -> str:
 def has_claim_data(data) -> bool:
     if not isinstance(data, dict):
         return False
-    for key in ('data', 'claim'):
-        val = data.get(key)
-        if isinstance(val, list) and len(val) > 0:
-            return True
-    return False
+    claims = _extract_claims_from_data(data)
+    return len(claims) > 0
 
 
 def get_claims_list(data: dict) -> list:
     """Return the raw claim array from a response dict."""
-    if not isinstance(data, dict):
-        return []
-    return data.get('claim') or data.get('data') or []
+    return _extract_claims_from_data(data)
 
 
 def build_member_identifier(member_number_raw: str) -> str:
@@ -463,28 +777,38 @@ def build_claim_match_and_missing(
 
         available = alex_icn_map.get(ppkg_icn, deque())
         alex_idx  = available.popleft() if available else None
+        if alex_idx is None and ppkg_idx < len(alex_claims) and ppkg_idx not in matched_alex_indices:
+            alex_idx = ppkg_idx
 
         if alex_idx is None:
             claim_match_rows.append({
                 'Test Case':        test_case,
                 'Claim Number':     claim_number,
                 'Member Number':    member_number,
-                'Claim Type':       claim_type,
-                'Consumer':         consumer,
-                'PPKG Claim Index': ppkg_idx,
-                'Alex Claim Index': '',
-                'PPKG ICN':         ppkg_icn,
-                'Alex ICN':         '',
-                'PPKG TxnId':       ppkg_txn,
-                'Alex TxnId':       '',
-                'PPKG TxnType':     ppkg_txn_type,
-                'Alex TxnType':     '',
-                'Match Status':     'Missing in Alex',
+                'Claim Type':         claim_type,
+                'Consumer':           consumer,
+                'Source Claim Index': ppkg_idx,
+                'Target Claim Index': '',
+                'Source ICN':         ppkg_icn,
+                'Target ICN':         '',
+                'Source TxnId':       ppkg_txn,
+                'Target TxnId':       '',
+                'Source TxnType':     ppkg_txn_type,
+                'Target TxnType':     '',
+                'PPKG Claim Index':   ppkg_idx,
+                'Alex Claim Index':   '',
+                'PPKG ICN':           ppkg_icn,
+                'Alex ICN':           '',
+                'PPKG TxnId':         ppkg_txn,
+                'Alex TxnId':         '',
+                'PPKG TxnType':       ppkg_txn_type,
+                'Alex TxnType':       '',
+                'Match Status':       'Missing in Target',
             })
             missing_records_rows.append(_missing_row(
                 test_case, claim_number, ppkg_icn or icn_number, claim_type, validation_type,
                 True, True, 'MATCHING_RECORD_NOT_FOUND',
-                f"PPKG claim transaction (ICN {ppkg_icn!r}, index {ppkg_idx}) has no matching Alex claim.",
+                f"Source claim transaction (ICN {ppkg_icn!r}, index {ppkg_idx}) has no matching Target claim.",
             ))
         else:
             matched_alex_indices.add(alex_idx)
@@ -493,23 +817,31 @@ def build_claim_match_and_missing(
             alex_txn      = str(alex_claim.get('claimIdentifiers', {}).get('claimTransactionIdentifier', '') or '')
             alex_txn_type = str(alex_claim.get('claimCategories', {}).get('claimTransactionType', '') or '')
             claim_match_rows.append({
-                'Test Case':        test_case,
-                'Claim Number':     claim_number,
-                'Member Number':    member_number,
-                'Claim Type':       claim_type,
-                'Consumer':         consumer,
-                'PPKG Claim Index': ppkg_idx,
-                'Alex Claim Index': alex_idx,
-                'PPKG ICN':         ppkg_icn,
-                'Alex ICN':         alex_icn,
-                'PPKG TxnId':       ppkg_txn,
-                'Alex TxnId':       alex_txn,
-                'PPKG TxnType':     ppkg_txn_type,
-                'Alex TxnType':     alex_txn_type,
-                'Match Status':     'Matched',
+                'Test Case':          test_case,
+                'Claim Number':       claim_number,
+                'Member Number':      member_number,
+                'Claim Type':         claim_type,
+                'Consumer':           consumer,
+                'Source Claim Index': ppkg_idx,
+                'Target Claim Index': alex_idx,
+                'Source ICN':         ppkg_icn,
+                'Target ICN':         alex_icn,
+                'Source TxnId':       ppkg_txn,
+                'Target TxnId':       alex_txn,
+                'Source TxnType':     ppkg_txn_type,
+                'Target TxnType':     alex_txn_type,
+                'PPKG Claim Index':   ppkg_idx,
+                'Alex Claim Index':   alex_idx,
+                'PPKG ICN':           ppkg_icn,
+                'Alex ICN':           alex_icn,
+                'PPKG TxnId':         ppkg_txn,
+                'Alex TxnId':         alex_txn,
+                'PPKG TxnType':       ppkg_txn_type,
+                'Alex TxnType':       alex_txn_type,
+                'Match Status':       'Matched',
             })
 
-    # Alex claims not matched to any PPKG claim
+    # Target claims not matched to any Source claim
     for alex_idx, alex_claim in enumerate(alex_claims):
         if alex_idx in matched_alex_indices:
             continue
@@ -519,25 +851,33 @@ def build_claim_match_and_missing(
         alex_txn      = str(alex_claim.get('claimIdentifiers', {}).get('claimTransactionIdentifier', '') or '')
         alex_txn_type = str(alex_claim.get('claimCategories', {}).get('claimTransactionType', '') or '')
         claim_match_rows.append({
-            'Test Case':        test_case,
-            'Claim Number':     claim_number,
-            'Member Number':    member_number,
-            'Claim Type':       claim_type,
-            'Consumer':         consumer,
-            'PPKG Claim Index': '',
-            'Alex Claim Index': alex_idx,
-            'PPKG ICN':         '',
-            'Alex ICN':         alex_icn,
-            'PPKG TxnId':       '',
-            'Alex TxnId':       alex_txn,
-            'PPKG TxnType':     '',
-            'Alex TxnType':     alex_txn_type,
-            'Match Status':     'Missing in PPKG',
+            'Test Case':          test_case,
+            'Claim Number':       claim_number,
+            'Member Number':      member_number,
+            'Claim Type':         claim_type,
+            'Consumer':           consumer,
+            'Source Claim Index': '',
+            'Target Claim Index': alex_idx,
+            'Source ICN':         '',
+            'Target ICN':         alex_icn,
+            'Source TxnId':       '',
+            'Target TxnId':       alex_txn,
+            'Source TxnType':     '',
+            'Target TxnType':     alex_txn_type,
+            'PPKG Claim Index':   '',
+            'Alex Claim Index':   alex_idx,
+            'PPKG ICN':           '',
+            'Alex ICN':           alex_icn,
+            'PPKG TxnId':         '',
+            'Alex TxnId':         alex_txn,
+            'PPKG TxnType':       '',
+            'Alex TxnType':       alex_txn_type,
+            'Match Status':       'Missing in Source',
         })
         missing_records_rows.append(_missing_row(
             test_case, claim_number, alex_icn or icn_number, claim_type, validation_type,
             True, True, 'MATCHING_RECORD_NOT_FOUND',
-            f"Alex claim transaction (ICN {alex_icn!r}, index {alex_idx}) has no matching PPKG claim.",
+            f"Target claim transaction (ICN {alex_icn!r}, index {alex_idx}) has no matching Source claim.",
         ))
 
     return claim_match_rows, missing_records_rows
@@ -548,12 +888,12 @@ def build_claim_match_and_missing(
 CONSOLIDATED_COLUMNS = [
     'Test Case', 'Member Number', 'Claim Number', 'ICN Number',
     'Claim Type', 'ClaimTransaction',
-    'PPKG Claim Index', 'Alex Claim Index',
-    'PPKG ICN', 'Alex ICN',
+    'Source Claim Index', 'Target Claim Index',
+    'Source ICN', 'Target ICN',
     'Json Schema',
-    'PPKGPath', 'AlexPath',
+    'Source Path', 'Target Path',
     'Normalized Pointer',
-    'PPKGValue', 'AlexValue',
+    'Source Value', 'Target Value',
     'Match Status', 'Category', 'Severity', 'Conclusion',
     'Parent Alignment Issue', 'Root Cause Path',
 ]
@@ -562,19 +902,19 @@ CONSOLIDATED_COLUMNS = [
 VALIDATION_RESULTS_COLUMNS = [
     'Test Case', 'Member Number', 'Claim Number', 'ICN Number',
     'Claim Type', 'ClaimTransaction',
-    'PPKG Claim Index', 'Alex Claim Index',
-    'PPKG ICN', 'Alex ICN',
+    'Source Claim Index', 'Target Claim Index',
+    'Source ICN', 'Target ICN',
     'Json Schema',
-    'PPKGPath', 'AlexPath',
-    'PPKGValue', 'AlexValue',
+    'Source Path', 'Target Path',
+    'Source Value', 'Target Value',
     'Match Status', 'Category', 'Severity', 'Conclusion',
 ]
 
 # Schema Validation sheet - one row per normalized pointer, cross-referencing
 SCHEMA_VALIDATION_COLUMNS = [
     'Normalized Pointer',
-    'Mapping Pointer', 'PPKG Schema Pointer', 'Alex Schema Pointer',
-    'Present In Mapping', 'Present In PPKG Schema', 'Present In Alex Schema',
+    'Mapping Pointer', 'Source Schema Pointer', 'Target Schema Pointer',
+    'Present In Mapping', 'Present In Source Schema', 'Present In Target Schema',
     'Response Status', 'Category', 'Severity', 'Conclusion',
     'Missing Only In Response', 'Missing Only In Schema',
     'Missing In Both Response And Schema', 'Mapped But Not Populated',
@@ -601,36 +941,36 @@ def classify_severity(status: str, ppkg_val, alex_val) -> Tuple[str, str, str]:
         if pv_empty and not av_empty:
             return (
                 'Non-Blocker',
-                'PPKG returned an empty placeholder object/array at this '
-                'position; Alex has the populated record. Not a genuine '
+                'Source returned an empty placeholder object/array at this '
+                'position; Target has the populated record. Not a genuine '
                 'value mismatch.',
-                'Empty Record In PPKG',
+                'Empty Record In Source',
             )
         if av_empty and not pv_empty:
             return (
                 'Non-Blocker',
-                'Alex returned an empty placeholder object/array at this '
-                'position; PPKG has the populated record. Not a genuine '
+                'Target returned an empty placeholder object/array at this '
+                'position; Source has the populated record. Not a genuine '
                 'value mismatch.',
-                'Empty Record In Alex',
+                'Empty Record In Target',
             )
-        return 'Blocker', 'Data Mismatch between PPKG and Alex', 'Data Mismatch'
+        return 'Blocker', 'Data Mismatch between Source and Target', 'Data Mismatch'
     if status == 'Value Missing in Target':
-        # PPKG itself only holds an empty placeholder at this array position -
+        # Source itself only holds an empty placeholder at this array position -
         if pv_empty:
             return (
                 'Non-Blocker',
-                'PPKG contains an empty placeholder object/array at this '
-                'position; Alex may hold the populated record at a '
+                'Source contains an empty placeholder object/array at this '
+                'position; Target may hold the populated record at a '
                 'different array index. Not a genuine missing-field defect.',
-                'Empty Record In PPKG',
+                'Empty Record In Source',
             )
-        # Provisional - refined post-run once the aggregate Alex schema is
-        return 'Blocker', 'Field present in PPKG, missing in Alex', 'Missing In Alex (True Missing)'
+        # Provisional - refined post-run once the aggregate Target schema is
+        return 'Blocker', 'Field present in Source, missing in Target', 'Missing In Target (True Missing)'
     if status == 'Value Missing in Source':
-        return 'Non-Blocker', 'New Field Added in Alex Response', 'Alex Only Field'
+        return 'Non-Blocker', 'New Field Added in Target Response', 'Target Only Field'
     if status == 'Value Missing in Both':
-        return 'Non-Blocker', 'Field absent in both PPKG and Alex', 'Missing In Both'
+        return 'Non-Blocker', 'Field absent in both Source and Target', 'Missing In Both'
     return 'Non-Blocker', '', ''
 
 
@@ -638,43 +978,44 @@ def status_category(status: str) -> str:
     """Reviewer-friendly category label for the straightforward statuses."""
     return {
         'Match':                  'Match',
-        'Mismatch':                'Data Mismatch',
-        'Value Missing in Target':  'Missing In Alex (True Missing)',
-        'Value Missing in Both':  'Missing In Both',
+        'Mismatch':               'Data Mismatch',
+        'Value Missing in Target': 'Missing In Target (True Missing)',
+        'Value Missing in Both':   'Missing In Both',
+        'Value Missing in Source': 'Target Only Field',
     }.get(status, '')
 
 
 def refine_value_missing_in_ppkg(in_ppkg_schema: bool) -> Tuple[str, str, str]:
-    """Refine the generic 'Value Missing in Source' outcome into two distinct,"""
+    """Refine the generic 'Value Missing in Source' outcome."""
     if in_ppkg_schema:
         return (
             'Blocker',
-            'Field expected in PPKG but not returned (PPKG has this field '
+            'Field expected in Source but not returned (Source has this field '
             'type elsewhere in the dataset, but not this specific occurrence)',
-            'Missing In PPKG (True Missing)',
+            'Missing In Source (True Missing)',
         )
     return (
         'Non-Blocker',
-        'Field available in Alex. No corresponding field exists in PPKG. '
+        'Field available in Target. No corresponding field exists in Source. '
         'Validation not applicable.',
-        'Alex Only Field',
+        'Target Only Field',
     )
 
 
 def refine_value_missing_in_alex(in_alex_schema: bool) -> Tuple[str, str, str]:
-    """Refine the generic 'Value Missing in Target' outcome using the AGGREGATE"""
+    """Refine the generic 'Value Missing in Target' outcome."""
     if in_alex_schema:
         return (
             'Non-Blocker',
-            'Field exists in both systems; Alex has this record at a '
+            'Field exists in both systems; Target has this record at a '
             'different array index/position. Investigate record-matching / '
             'array alignment logic - do NOT treat this as a missing field.',
             'Record Alignment Difference',
         )
     return (
         'Blocker',
-        'Field present in PPKG, missing in Alex',
-        'Missing In Alex (True Missing)',
+        'Field present in Source, missing in Target',
+        'Missing In Target (True Missing)',
     )
 
 
@@ -854,40 +1195,39 @@ SUMMARY_COLUMNS = [
 
 CLAIM_MATCH_COLUMNS = [
     'Test Case', 'Claim Number', 'Member Number', 'Claim Type', 'Consumer',
-    'PPKG Claim Index', 'Alex Claim Index',
-    'PPKG ICN', 'Alex ICN',
-    'PPKG TxnId', 'Alex TxnId',
-    'PPKG TxnType', 'Alex TxnType',
+    'Source Claim Index', 'Target Claim Index',
+    'Source ICN', 'Target ICN',
+    'Source TxnId', 'Target TxnId',
+    'Source TxnType', 'Target TxnType',
     'Match Status',
 ]
 
 MISSING_RECORDS_COLUMNS = [
     'Test Case', 'Claim Number', 'ICN', 'Claim Type', 'Validation Type',
-    'PPKG Response Available', 'Alex Response Available',
+    'Source Response Available', 'Target Response Available',
     'Failure Category', 'Failure Reason',
 ]
 
 # Schema Coverage Analysis sheet (schema-drift detection)
 SCHEMA_COVERAGE_COLUMNS = [
     'Path', 'Source',
-    'Present In Mapping', 'Present In PPKG Response', 'Present In Alex Response',
+    'Present In Mapping', 'Present In Source Response', 'Present In Target Response',
     'Coverage Status', 'Sample Value',
 ]
 
 # Recognised Missing-Records failure categories
 FAILURE_CATEGORIES = (
+    'RESPONSE_MISSING_SOURCE',
+    'RESPONSE_MISSING_TARGET',
     'RESPONSE_MISSING_PPKG',
     'RESPONSE_MISSING_ALEX',
     'RESPONSE_MISSING_BOTH',
     'INVALID_CLAIM_TYPE',
     'CLAIM_NOT_FOUND',
     'MATCHING_RECORD_NOT_FOUND',
-    # The SAME claim/member appears on more than one test-data row. The row is
-    # still validated in full (nothing is dropped) - this category exists so the
-    # repetition is visible on the Missing Records + Summary sheets.
     'DUPLICATE_RECORD',
-    # Generic ("direct") mode: one side returned an error/failure envelope
-    # (e.g. 404/500) while the other returned a normal response.
+    'RESPONSE_FAILED_SOURCE',
+    'RESPONSE_FAILED_TARGET',
     'RESPONSE_FAILED_PPKG',
     'RESPONSE_FAILED_ALEX',
 )
@@ -902,15 +1242,17 @@ def _missing_row(test_case, claim_number, icn, claim_type, validation_type,
                  ppkg_avail, alex_avail, category, reason) -> dict:
     """Build a single Missing Records row using the enhanced schema."""
     return {
-        'Test Case':               test_case,
-        'Claim Number':            claim_number,
-        'ICN':                     icn,
-        'Claim Type':              claim_type,
-        'Validation Type':         validation_type,
-        'PPKG Response Available': _yn(ppkg_avail),
-        'Alex Response Available': _yn(alex_avail),
-        'Failure Category':        category,
-        'Failure Reason':          reason,
+        'Test Case':                 test_case,
+        'Claim Number':              claim_number,
+        'ICN':                       icn,
+        'Claim Type':                claim_type,
+        'Validation Type':           validation_type,
+        'Source Response Available': _yn(ppkg_avail),
+        'Target Response Available': _yn(alex_avail),
+        'PPKG Response Available':   _yn(ppkg_avail),
+        'Alex Response Available':   _yn(alex_avail),
+        'Failure Category':          category,
+        'Failure Reason':            reason,
     }
 
 
@@ -981,31 +1323,37 @@ def _row(test_case, member_number, claim_number, icn_number,
     src_path = strip_path_suffix(src_path) or strip_path_suffix(alex_path)
     normalized_ptr = '/' + wildcard_path(src_path) if src_path else ''
     return {
-        'Test Case':          test_case,
-        'Member Number':      member_number,
-        'Claim Number':       claim_number,
-        'ICN Number':         icn_number,
-        'Claim Type':         claim_type,
-        'ClaimTransaction':   claim_transaction,
-        'PPKG Claim Index':   ppkg_idx,
-        'Alex Claim Index':   alex_idx,
-        'PPKG ICN':           ppkg_icn,
-        'Alex ICN':           alex_icn,
-        # Normalized (index-stripped, wildcarded) schema path - lets reviewers
-        'Json Schema':        normalized_ptr,
-        'PPKGPath':           hcp_path,
-        'AlexPath':           alex_path,
-        'Normalized Pointer': normalized_ptr,
-        'PPKGValue':          normalize_value(hcp_val),
-        'AlexValue':          normalize_value(alex_val),
-        'Match Status':       status,
-        'Category':           category,
-        'Severity':           severity,
-        'Conclusion':         conclusion,
-        # Default: this row is NOT a suppressed child of some other parent
+        'Test Case':              test_case,
+        'Member Number':          member_number,
+        'Claim Number':           claim_number,
+        'ICN Number':             icn_number,
+        'Claim Type':             claim_type,
+        'ClaimTransaction':       claim_transaction,
+        'Source Claim Index':     ppkg_idx,
+        'Target Claim Index':     alex_idx,
+        'Source ICN':             ppkg_icn,
+        'Target ICN':             alex_icn,
+        'PPKG Claim Index':       ppkg_idx,
+        'Alex Claim Index':       alex_idx,
+        'PPKG ICN':               ppkg_icn,
+        'Alex ICN':               alex_icn,
+        'Json Schema':            normalized_ptr,
+        'Source Path':            hcp_path,
+        'Target Path':            alex_path,
+        'PPKGPath':               hcp_path,
+        'AlexPath':               alex_path,
+        'Normalized Pointer':     normalized_ptr,
+        'Source Value':           normalize_value(hcp_val),
+        'Target Value':           normalize_value(alex_val),
+        'PPKGValue':              normalize_value(hcp_val),
+        'AlexValue':              normalize_value(alex_val),
+        'Match Status':           status,
+        'Category':               category,
+        'Severity':               severity,
+        'Conclusion':             conclusion,
         'Parent Alignment Issue': 'N',
         'Root Cause Path':        '',
-        '_mapping_order':     mapping_order,
+        '_mapping_order':         mapping_order,
     }
 
 
@@ -1119,11 +1467,14 @@ def ordered_by_schema(paths, schema_order: Dict[str, int]) -> List[str]:
 
 
 def schema_has_path(wc: str, paths_all: Dict[str, object]) -> bool:
-    """True if the normalized wildcard pointer `wc` (no leading slash) is"""
+    """True if the normalized wildcard pointer `wc` (no leading slash) is present in paths_all."""
     if wc in paths_all:
         return True
     prefix = wc + '/'
-    return any(k.startswith(prefix) for k in paths_all)
+    if any(k.startswith(prefix) for k in paths_all):
+        return True
+    suffix = '/' + wc
+    return any(k.endswith(suffix) or ('/' + wc + '/') in ('/' + k) for k in paths_all)
 
 
 def build_schema_coverage(
@@ -1132,24 +1483,62 @@ def build_schema_coverage(
     alex_paths: Dict[str, object],
     mapping_ppkg_wc: Optional[set] = None,
     mapping_alex_wc: Optional[set] = None,
+    mapping_pairs: Optional[List[Tuple[str, str]]] = None,
 ) -> List[dict]:
-    """Build the Schema Coverage Analysis rows by cross-referencing every path that"""
+    """Build the Schema Coverage Analysis rows by cross-referencing every path that
+    appears in the mapping sheets, the PPKG response, or the Alex response.
+    Preserves exact schema-to-schema comparison when mapping is 1:1, and
+    cross-references counterpart paths for mapped pairs.
+    """
     mapping_ppkg_wc = mapping_ppkg_wc or set()
     mapping_alex_wc = mapping_alex_wc or set()
+
+    map_src_to_tgt: Dict[str, set] = {}
+    map_tgt_to_src: Dict[str, set] = {}
+    if mapping_pairs:
+        for sp, tp in mapping_pairs:
+            s_clean = wildcard_path(sp).lstrip('/')
+            map_src_to_tgt.setdefault(s_clean, set())
+            for part in str(tp).split('+'):
+                t_clean = wildcard_path(part.strip()).lstrip('/')
+                map_src_to_tgt[s_clean].add(t_clean)
+                map_tgt_to_src.setdefault(t_clean, set()).add(s_clean)
 
     schema_order  = build_schema_order_index(ppkg_paths, alex_paths)
     all_paths     = set(mapping_all_wc) | set(ppkg_paths) | set(alex_paths)
     ordered_paths = ordered_by_schema(all_paths, schema_order)
 
+    def _get_path_val(pth: str, p_dict: Dict[str, object]):
+        if pth in p_dict:
+            return p_dict[pth]
+        p_suf = '/' + pth
+        for k, val in p_dict.items():
+            if k.endswith(p_suf) or ('/' + pth + '/') in ('/' + k):
+                return val
+        return ''
+
     rows: List[dict] = []
 
     for p in ordered_paths:
-        in_map      = p in mapping_all_wc
-        # schema_has_path() correctly recognizes object/array-level paths
-        in_ppkg     = schema_has_path(p, ppkg_paths)
-        in_alex     = schema_has_path(p, alex_paths)
-        in_map_ppkg = p in mapping_ppkg_wc   # mapping sheet expects a PPKG counterpart
-        in_map_alex = p in mapping_alex_wc   # mapping sheet expects an Alex counterpart
+        is_mapped = p in mapping_all_wc
+        in_ppkg_raw = schema_has_path(p, ppkg_paths)
+        in_alex_raw = schema_has_path(p, alex_paths)
+
+        if p in map_src_to_tgt:
+            in_ppkg = in_ppkg_raw
+            in_alex = any(schema_has_path(tp, alex_paths) for tp in map_src_to_tgt[p])
+            in_map_ppkg = True
+            in_map_alex = bool(map_src_to_tgt[p])
+        elif p in map_tgt_to_src:
+            in_alex = in_alex_raw
+            in_ppkg = any(schema_has_path(sp, ppkg_paths) for sp in map_tgt_to_src[p])
+            in_map_alex = True
+            in_map_ppkg = bool(map_tgt_to_src[p])
+        else:
+            in_ppkg = in_ppkg_raw
+            in_alex = in_alex_raw
+            in_map_ppkg = p in mapping_ppkg_wc
+            in_map_alex = p in mapping_alex_wc
 
         if in_ppkg and in_alex:
             source = 'Both'
@@ -1160,26 +1549,32 @@ def build_schema_coverage(
         else:
             source = 'Mapping'
 
-        if in_ppkg and in_alex:
-            # Field genuinely exists on both sides. If it's not yet in the
-            status = 'Mapped And Present' if in_map else 'Missing Mapping Definition'
-        elif in_ppkg and not in_alex:
-            # Present in the source system only.
-            status = 'Missing In Target' if in_map_alex else 'Field Available in Source Only (Not Available in Target)'
-        elif in_alex and not in_ppkg:
-            # Present in the target system only - the exact scenario reviewers found
-            status = 'Missing In Source' if in_map_ppkg else 'Field Available in Target Only (Not Available in Source)'
+        if is_mapped:
+            if in_ppkg and in_alex:
+                status = 'Mapped And Present'
+            elif in_ppkg and not in_alex:
+                status = 'Missing In Target'
+            elif not in_ppkg and in_alex:
+                status = 'Missing In Source'
+            else:
+                status = 'Missing In Both Responses'
         else:
-            # Present in neither response (only reachable via a mapping entry).
-            status = 'Missing In Both Responses' if in_map else 'Missing Mapping Definition'
+            if in_ppkg and not in_alex:
+                status = 'Field Available in Source Only (Not Available in Target)'
+            elif not in_ppkg and in_alex:
+                status = 'Field Available in Target Only (Not Available in Source)'
+            elif in_ppkg and in_alex:
+                status = 'Missing Mapping Definition'
+            else:
+                status = 'Missing In Both Responses'
 
-        sample = ppkg_paths.get(p, alex_paths.get(p, ''))
+        sample = _get_path_val(p, ppkg_paths) or _get_path_val(p, alex_paths)
         rows.append({
             'Path':                     '/' + p,
             'Source':                   source,
-            'Present In Mapping':       _yn(in_map),
-            'Present In PPKG Response': _yn(in_ppkg),
-            'Present In Alex Response': _yn(in_alex),
+            'Present In Mapping':       _yn(is_mapped),
+            'Present In PPKG Response': _yn(in_ppkg_raw),
+            'Present In Alex Response': _yn(in_alex_raw),
             'Coverage Status':          status,
             'Sample Value':             normalize_value(sample),
         })
@@ -1699,6 +2094,125 @@ def compare_direct(
                 '', tv, 'Value Missing in Source', _morder, t_idx, t_idx,
             )
             total += 1
+
+    return rows, total, matched
+
+
+def compare_mapping_pair(
+    source_claim: dict,
+    target_claim: dict,
+    mapping: List[Tuple[str, str]],
+    meta: dict,
+    mapping_order_offset: int = 0,
+    claim_idx: int = 0,
+    source_claim_idx: Optional[int] = None,
+    target_claim_idx: Optional[int] = None,
+) -> Tuple[List[dict], int, int]:
+    """Mapping-based comparison for consumers with differing schemas (e.g. UPM vs PPKG, COB API vs PPKG).
+    Evaluates each mapped pointer pair from the mapping sheet.
+    """
+    rows: List[dict] = []
+    total = 0
+    matched = 0
+
+    test_case         = meta.get('test_case', '')
+    member_number     = meta.get('member_number', '')
+    claim_number      = meta.get('claim_number', '')
+    icn_number        = meta.get('icn_number', '')
+    claim_transaction = meta.get('claim_transaction', '')
+    claim_type        = meta.get('claim_type', '')
+
+    s_c_idx = source_claim_idx if source_claim_idx is not None else meta.get('source_claim_index', claim_idx)
+    t_c_idx = target_claim_idx if target_claim_idx is not None else meta.get('target_claim_index', claim_idx)
+    s_idx_str = str(s_c_idx if s_c_idx is not None else '')
+    t_idx_str = str(t_c_idx if t_c_idx is not None else '')
+
+    src_icn = meta.get('source_icn') or _get_claim_icn_val(source_claim, icn_number)
+    tgt_icn = meta.get('target_icn') or _get_claim_icn_val(target_claim, icn_number)
+
+    for m_idx, (s_path, t_path) in enumerate(mapping):
+        _morder = mapping_order_offset + m_idx
+        s_ptr = s_path.strip()
+        t_ptr = t_path.strip()
+
+        # 1. Summation handling: e.g. /totals/totalNotCoveredAmount+/totals/totalSequesteredAmount
+        if '+' in t_ptr:
+            parts = [p.strip() for p in t_ptr.split('+')]
+            sum_vals = []
+            for p in parts:
+                extracted = extract_values(target_claim, p.lstrip('/'))
+                if extracted and extracted[0][1] not in ('', None):
+                    sum_vals.append(safe_float(extracted[0][1]))
+            t_val = str(sum(sum_vals)) if sum_vals else ''
+            s_ext = extract_values(source_claim, s_ptr.lstrip('/'))
+            s_val = str(s_ext[0][1]) if s_ext and s_ext[0][1] is not None else ''
+            is_m = values_match(s_val, t_val)
+            st = 'Match' if is_m else ('Value Missing in Source' if not s_val and t_val else ('Value Missing in Target' if s_val and not t_val else 'Mismatch'))
+            rows.append(_row(
+                test_case, member_number, claim_number, icn_number,
+                claim_type, claim_transaction,
+                s_idx_str, t_idx_str, src_icn, tgt_icn,
+                s_ptr, t_ptr,
+                s_val, t_val, st,
+                mapping_order=_morder,
+            ))
+            if is_m:
+                matched += 1
+            total += 1
+            continue
+
+        # 2. Extract direct values
+        s_ext = extract_values(source_claim, s_ptr.lstrip('/'))
+        t_ext = extract_values(target_claim, t_ptr.lstrip('/'))
+        s_val = str(s_ext[0][1]) if s_ext and s_ext[0][1] is not None else ''
+        t_val = str(t_ext[0][1]) if t_ext and t_ext[0][1] is not None else ''
+
+        is_m = False
+        matched_tp = t_ptr
+        if s_val and t_val and values_match(s_val, t_val):
+            is_m = True
+        else:
+            # 3. Check candidate elements across array indices if pointer has arrays
+            s_cands = extract_values(source_claim, wildcard_path(s_ptr).lstrip('/'))
+            t_cands = extract_values(target_claim, wildcard_path(t_ptr).lstrip('/'))
+            matched_cand = None
+            if s_cands and t_cands:
+                for sp, sv in s_cands:
+                    for tp, tv in t_cands:
+                        sv_s = str(sv) if sv is not None else ''
+                        tv_s = str(tv) if tv is not None else ''
+                        if sv_s and tv_s and values_match(sv_s, tv_s):
+                            matched_cand = (sp, tp, sv_s, tv_s)
+                            break
+                    if matched_cand:
+                        break
+            if matched_cand:
+                is_m = True
+                s_val = matched_cand[2]
+                t_val = matched_cand[3]
+                matched_tp = '/' + matched_cand[1].lstrip('/')
+
+        if is_m:
+            st = 'Match'
+            matched += 1
+        elif not s_val and not t_val:
+            st = 'Value Missing in Both'
+        elif not s_val:
+            st = 'Value Missing in Source'
+        elif not t_val:
+            st = 'Value Missing in Target'
+        else:
+            st = 'Mismatch'
+
+        rows.append(_row(
+            test_case, member_number, claim_number, icn_number,
+            claim_type, claim_transaction,
+            s_idx_str, t_idx_str, src_icn, tgt_icn,
+            s_ptr, matched_tp,
+            s_val, t_val, st,
+            mapping_order=_morder,
+        ))
+        total += 1
 
     return rows, total, matched
 
@@ -2297,7 +2811,9 @@ def _blocker_category_label(category: str) -> str:
     """Reviewer-friendly label for a Blocker-severity Category, used in the"""
     return {
         'Missing In Alex (True Missing)': 'Missing In Target',
+        'Missing In Target (True Missing)': 'Missing In Target',
         'Missing In PPKG (True Missing)': 'Missing In Source',
+        'Missing In Source (True Missing)': 'Missing In Source',
     }.get(category, category or 'Other')
 
 
@@ -2323,6 +2839,9 @@ def build_summary_blocks(
             pd.DataFrame(duplicate_rows, columns=DUPLICATE_RECORDS_COLUMNS)
             if duplicate_rows else pd.DataFrame(columns=DUPLICATE_RECORDS_COLUMNS)
         )
+        if not dup_df.empty:
+            dup_df['_tc_int'] = dup_df['Test Case'].apply(_tc_sort_key)
+            dup_df = dup_df.sort_values(by=['_tc_int', 'Claim Number']).drop(columns=['_tc_int']).reset_index(drop=True)
         validated   = int((dup_df['Validated'] == 'Yes').sum()) if not dup_df.empty else 0
         skipped     = int((dup_df['Validated'] == 'No').sum()) if not dup_df.empty else 0
         overview = pd.DataFrame([
@@ -2348,6 +2867,7 @@ def build_summary_blocks(
     df = consolidated_df
     total_rows = len(df)
     match_rows = int((df['Match Status'] == 'Match').sum())
+    hardcoded_rows = int((df['Category'] == 'Hardcoded Match').sum()) if 'Category' in df.columns else 0
     blocker_df = df[df['Severity'] == 'Blocker']
     blocker_total     = len(blocker_df)
     non_blocker_total = total_rows - blocker_total
@@ -2372,24 +2892,30 @@ def build_summary_blocks(
         lambda r: f"{(r['Matches'] / r['Fields Compared'] * 100):.2f}%" if r['Fields Compared'] > 0 else 'N/A',
         axis=1,
     )
+    claim_coverage['_tc_int'] = claim_coverage['Test Case'].apply(_tc_sort_key)
     claim_coverage = claim_coverage.sort_values(
-        by=['Blockers', 'Test Case', 'Claim Number'], ascending=[False, True, True]
-    ).reset_index(drop=True)
+        by=['_tc_int', 'Claim Number'], ascending=[True, True]
+    ).drop(columns=['_tc_int']).reset_index(drop=True)
     claim_coverage = claim_coverage[
         ['Test Case', 'Claim Number', 'ICN', 'Claim Transaction',
          'Fields Compared', 'Matches', 'Blockers', 'Coverage %']
     ]
 
     # 1. Executive Summary
-    exec_df = pd.DataFrame([
+    exec_rows = [
         ('Total Claims Processed', len(claim_coverage)),
         ('Total Fields Compared',  total_rows),
         ('Total Matches',          match_rows),
+    ]
+    if hardcoded_rows > 0:
+        exec_rows.append(('  - Hardcoded Matches', hardcoded_rows))
+    exec_rows.extend([
         ('Total Blockers',         blocker_total),
         ('Total Non-Blockers',     non_blocker_total),
         ('Duplicate Claims',       len(duplicate_rows or [])),
         ('Coverage %',             f"{coverage_pct:.2f}%"),
-    ], columns=['Metric', 'Count'])
+    ])
+    exec_df = pd.DataFrame(exec_rows, columns=['Metric', 'Count'])
     blocks.append(('Executive Summary', exec_df))
 
     # 1b. Duplicate Records - overview + full detail table
@@ -2421,17 +2947,19 @@ def build_summary_blocks(
             .reset_index(name='Blockers')
             .rename(columns={'ICN Number': 'ICN'})
         )
+        top_fail['_tc_int'] = top_fail['Test Case'].apply(_tc_sort_key)
         top_fail = top_fail.sort_values(
-            by=['Blockers', 'Json Schema'], ascending=[False, True]
-        ).head(20).reset_index(drop=True)
+            by=['_tc_int', 'Blockers', 'Json Schema'], ascending=[True, False, True]
+        ).drop(columns=['_tc_int']).head(20).reset_index(drop=True)
         top_fail = top_fail[['Json Schema'] + display_cols + ['Blockers']]
     else:
         top_fail = pd.DataFrame(columns=['Json Schema'] + display_cols + ['Blockers'])
     blocks.append(('Top Failure Areas', top_fail))
 
     # 5. Missing Field Summary - Json Schema AND the claim each occurrence
-    def _missing_block(category: str) -> pd.DataFrame:
-        sub = df[df['Category'] == category]
+    def _missing_block(categories) -> pd.DataFrame:
+        cat_list = categories if isinstance(categories, (list, tuple, set)) else [categories]
+        sub = df[df['Category'].isin(cat_list)]
         out_cols = ['Json Schema'] + display_cols + ['Count']
         if sub.empty:
             out = pd.DataFrame(columns=out_cols)
@@ -2443,9 +2971,10 @@ def build_summary_blocks(
                 .reset_index(name='Count')
                 .rename(columns={'ICN Number': 'ICN'})
             )
+            out['_tc_int'] = out['Test Case'].apply(_tc_sort_key)
             out = out.sort_values(
-                by=['Count', 'Json Schema'], ascending=[False, True]
-            ).reset_index(drop=True)
+                by=['_tc_int', 'Count', 'Json Schema'], ascending=[True, False, True]
+            ).drop(columns=['_tc_int']).reset_index(drop=True)
             out = out[out_cols]
         total = int(out['Count'].sum()) if not out.empty else 0
         total_row = pd.DataFrame([{
@@ -2455,9 +2984,9 @@ def build_summary_blocks(
         return pd.concat([out, total_row], ignore_index=True)
 
     blocks.append(('Missing Field Summary - Missing In Target',
-                   _missing_block('Missing In Alex (True Missing)')))
+                   _missing_block(['Missing In Target (True Missing)', 'Missing In Alex (True Missing)'])))
     blocks.append(('Missing Field Summary - Missing In Source',
-                   _missing_block('Missing In PPKG (True Missing)')))
+                   _missing_block(['Missing In Source (True Missing)', 'Missing In PPKG (True Missing)'])))
 
     # 6. Failure Distribution by Claim - WHY each claim has blockers
     failure_dist = claim_coverage[['Test Case', 'Claim Number', 'ICN']].copy()
@@ -2491,9 +3020,10 @@ def build_summary_blocks(
     count_cols = known_categories + extra_categories
     failure_dist['Total Blockers'] = failure_dist[count_cols].sum(axis=1)
     failure_dist = failure_dist[display_cols + count_cols + ['Total Blockers']]
+    failure_dist['_tc_int'] = failure_dist['Test Case'].apply(_tc_sort_key)
     failure_dist = failure_dist.sort_values(
-        by=['Total Blockers', 'Test Case', 'Claim Number'], ascending=[False, True, True]
-    ).reset_index(drop=True)
+        by=['_tc_int', 'Claim Number'], ascending=[True, True]
+    ).drop(columns=['_tc_int']).reset_index(drop=True)
     blocks.append(('Failure Distribution by Claim', failure_dist))
 
     return blocks
@@ -2553,15 +3083,16 @@ def write_excel_report(
     from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
     from openpyxl.utils import get_column_letter
 
-    HEADER_FILL   = PatternFill("solid", fgColor="1F4E79")
-    HEADER_FONT   = Font(color="FFFFFF", bold=True)
-    MATCH_FILL    = PatternFill("solid", fgColor="C6EFCE")   # green
-    MISMATCH_FILL = PatternFill("solid", fgColor="FFC7CE")   # red
-    MISSING_FILL  = PatternFill("solid", fgColor="FFEB9C")   # amber
-    ALT_FILL      = PatternFill("solid", fgColor="EBF3FB")
-    TITLE_FILL    = PatternFill("solid", fgColor="1F4E79")
-    TOTAL_FILL    = PatternFill("solid", fgColor="D9E2F3")
-    THIN_BORDER   = Border(
+    HEADER_FILL    = PatternFill("solid", fgColor="1F4E79")
+    HEADER_FONT    = Font(color="FFFFFF", bold=True)
+    MATCH_FILL     = PatternFill("solid", fgColor="C6EFCE")   # green
+    MISMATCH_FILL  = PatternFill("solid", fgColor="FFC7CE")   # red
+    MISSING_FILL   = PatternFill("solid", fgColor="FFEB9C")   # amber
+    HARDCODED_FILL = PatternFill("solid", fgColor="E8DAEF")   # soft lavender / purple
+    ALT_FILL       = PatternFill("solid", fgColor="EBF3FB")
+    TITLE_FILL     = PatternFill("solid", fgColor="1F4E79")
+    TOTAL_FILL     = PatternFill("solid", fgColor="D9E2F3")
+    THIN_BORDER    = Border(
         left=Side(style='thin'), right=Side(style='thin'),
         top=Side(style='thin'),  bottom=Side(style='thin'),
     )
@@ -2574,6 +3105,8 @@ def write_excel_report(
 
     def _fill_for(status_val) -> Optional[object]:
         sv = str(status_val or '').strip().upper()
+        if 'HARDCODED' in sv:
+            return HARDCODED_FILL
         if sv in ('MATCH', 'MATCHED', 'NON-BLOCKER') or sv == 'MAPPED AND PRESENT':
             return MATCH_FILL
         if sv == 'BLOCKER' or 'MISMATCH' in sv:
@@ -2614,11 +3147,13 @@ def write_excel_report(
                 _style_header(cell)
 
             match_col_idx = None
+            path_col_indices = set()
             if highlight_col:
                 for idx, cell in enumerate(ws[header_row], start=1):
                     if cell.value == highlight_col:
                         match_col_idx = idx
-                        break
+                    if cell.value in ('Source Path', 'Target Path', 'Normalized Pointer', 'PPKGPath', 'AlexPath'):
+                        path_col_indices.add(idx)
 
             for row_idx, row in enumerate(ws.iter_rows(min_row=header_row + 1), start=header_row + 1):
                 is_alt = (row_idx % 2 == 0)
@@ -2629,10 +3164,15 @@ def write_excel_report(
                         cell.fill = ALT_FILL
 
                 if match_col_idx:
-                    fill = _fill_for(ws.cell(row=row_idx, column=match_col_idx).value)
+                    status_cell_val = ws.cell(row=row_idx, column=match_col_idx).value
+                    fill = _fill_for(status_cell_val)
                     if fill:
                         for cell in row:
                             cell.fill = fill
+                        if fill == HARDCODED_FILL:
+                            for c_idx in path_col_indices:
+                                ws.cell(row=row_idx, column=c_idx).font = Font(bold=True)
+                            ws.cell(row=row_idx, column=match_col_idx).font = Font(bold=True)
 
             for col in ws.columns:
                 max_len = max((len(str(c.value)) if c.value is not None else 0) for c in col)
@@ -2678,6 +3218,25 @@ def write_excel_report(
         _format_sheet(wb['Missing Records'],          'Failure Category')
         _format_sheet(wb['Schema Coverage Analysis'], 'Coverage Status')
         _format_sheet(wb['Stats By Element'],         None)
+
+        # Highlight hardcoded elements in Stats By Element
+        ws_stats = wb['Stats By Element']
+        hc_col_idx = None
+        for idx, cell in enumerate(ws_stats[1], start=1):
+            if cell.value == '# Hardcoded':
+                hc_col_idx = idx
+                break
+        if hc_col_idx:
+            for row_idx in range(2, ws_stats.max_row + 1):
+                hc_val = ws_stats.cell(row=row_idx, column=hc_col_idx).value
+                try:
+                    if int(hc_val or 0) > 0:
+                        for col_idx in range(1, ws_stats.max_column + 1):
+                            ws_stats.cell(row=row_idx, column=col_idx).fill = HARDCODED_FILL
+                        ws_stats.cell(row=row_idx, column=1).font = Font(bold=True)
+                        ws_stats.cell(row=row_idx, column=hc_col_idx).font = Font(bold=True)
+                except (ValueError, TypeError):
+                    pass
 
     print(f"  [OK] Report saved: {output_path}")
 
@@ -2772,9 +3331,15 @@ def run(consumer_name: str) -> Optional[str]:
     # claimtype column only required if we need to filter by it
     col_map = verify_csv_columns(df_claims, require_claimtype=(clm_filter is not None))
 
+    is_upm_run = (
+        'UPM' in (expected_source, actual_source) or
+        any(k in consumer_name for k in ['ISET', 'IIM', 'ACET', 'VETSS', 'OHBSPE', 'PTRCR', 'MYUHC', 'MEDICA', 'COB']) or
+        str(config.get('validation_mode', '')).strip().lower() == 'mapping'
+    )
+
     combined_mapping: List[Tuple[str, str]] = []
     for mp in mappings:
-        m = load_mapping(mp, _src_aliases, _tgt_aliases, normalize=not direct_mode)
+        m = load_mapping(mp, _src_aliases, _tgt_aliases, normalize=(not direct_mode and not is_upm_run))
         combined_mapping.extend(m)
         print(f"  Loaded {len(m)} field mappings: {os.path.basename(mp)}")
 
@@ -2787,12 +3352,12 @@ def run(consumer_name: str) -> Optional[str]:
     mapping_ppkg_wc: set = set()
     mapping_alex_wc: set = set()
     for hcp_path, alex_path in combined_mapping:
-        mapping_ppkg_wc.add(wildcard_path(hcp_path))
+        mapping_ppkg_wc.add(wildcard_path(hcp_path).lstrip('/'))
         for ap in str(alex_path).split('+'):
             ap = ap.strip()
             if ap:
-                _ap = ap if direct_mode else normalize_path(ap)
-                mapping_alex_wc.add(wildcard_path(_ap))
+                _ap = ap if (direct_mode or is_upm_run) else normalize_path(ap)
+                mapping_alex_wc.add(wildcard_path(_ap).lstrip('/'))
     mapping_all_wc = mapping_ppkg_wc | mapping_alex_wc
 
     # NOTE: claims are NO LONGER filtered out. Every CSV row is processed and
@@ -2878,7 +3443,20 @@ def run(consumer_name: str) -> Optional[str]:
         alex_avail = os.path.exists(alex_file)
 
         # 1. Claim-type validation
-        if clm_filter and row_claim_type.upper() != clm_filter.upper():
+        def _types_match(rt: str, ft: str) -> bool:
+            if not ft:
+                return True
+            r_up = str(rt).strip().upper()
+            f_up = str(ft).strip().upper()
+            if r_up == f_up:
+                return True
+            if f_up in {'HOSPITAL', 'INSTITUTIONAL', 'I', 'H'} and r_up in {'HOSPITAL', 'INSTITUTIONAL', 'I', 'H'}:
+                return True
+            if f_up in {'PHYSICIAN', 'PROFESSIONAL', 'P', 'M'} and r_up in {'PHYSICIAN', 'PROFESSIONAL', 'P', 'M'}:
+                return True
+            return False
+
+        if clm_filter and not _types_match(row_claim_type, clm_filter):
             reason = (f"Claim returned but belongs to {row_claim_type.title()} category. "
                       f"Cannot be validated under {validation_type.title()} validation.")
             missing_records_rows.append(_missing_row(
@@ -2931,17 +3509,21 @@ def run(consumer_name: str) -> Optional[str]:
                 test_case, claim_number, icn_number, row_claim_type, validation_type,
                 ppkg_avail, alex_avail, 'DUPLICATE_RECORD',
                 f'Duplicate claim: this claim/ICN was already exercised by Test Case '
-                f'{_first_tc}. The row IS fully validated (it has its own response '
-                f'file) - flagged so the repeated claim is visible.'))
+                f'{_first_tc}. Skipped as duplicate.'))
             duplicate_rows.append({
                 'Test Case':            test_case,
                 'Claim Number':         claim_number,
                 'ICN':                  icn_number,
                 'First Seen Test Case': _first_tc,
-                'Occurrence':           'Repeat',
-                'Validated':            'Yes',
+                'Occurrence':           'Repeat (skipped)',
+                'Validated':            'No',
             })
-            print(f"  [INFO]  DUPLICATE CLAIM - {claim_number} (first seen in Test Case {_first_tc}) - still validated")
+            summary_rows.append(_summary_row(
+                test_case, claim_number, icn_number, claim_transaction,
+                'DUPLICATE', f'See Test Case {_first_tc}',
+            ))
+            print(f"  [WARN]  DUPLICATE CLAIM - {claim_number} (first seen in Test Case {_first_tc}) - skipping")
+            continue
         else:
             seen_claim_keys[_claim_dup_key] = test_case
 
@@ -2987,20 +3569,20 @@ def run(consumer_name: str) -> Optional[str]:
                 alex_raw = f.read()
             alex_data = json.loads(alex_raw)
         except (json.JSONDecodeError, ValueError, OSError) as exc:
-            load_error = f"Alex response is not valid JSON ({exc.__class__.__name__}): {exc}"
+            load_error = f"{actual_source} response is not valid JSON ({exc.__class__.__name__}): {exc}"
         if load_error is None:
             try:
                 with open(ppkg_file, 'r', encoding='utf-8') as f:
                     hcp_raw = f.read()
                 hcp_data = json.loads(hcp_raw)
             except (json.JSONDecodeError, ValueError, OSError) as exc:
-                load_error = f"PPKG response is not valid JSON ({exc.__class__.__name__}): {exc}"
+                load_error = f"{expected_source} response is not valid JSON ({exc.__class__.__name__}): {exc}"
 
         if load_error is not None:
             # Record the ACTUAL (raw) response text in Failure Reason so the report
             # shows exactly what came back. No parseable status code here, so the
             # semantic category 'RESPONSE_NOT_JSON' stands in for Failure Category.
-            _raw = alex_raw if 'Alex' in load_error else hcp_raw
+            _raw = alex_raw if actual_source in load_error else hcp_raw
             failure_reason = (f"{load_error} | Actual response: {_truncate_text(_raw)}"
                               if _raw else load_error)
             missing_records_rows.append(_missing_row(
@@ -3014,58 +3596,36 @@ def run(consumer_name: str) -> Optional[str]:
             continue
 
         # Skip guard.
-        # NOTE: is_error_response() (e.g. a 404 "no records found" envelope) only
-        # short-circuits the CLASSIC PPKG-vs-Alex claim-array comparison, where an
-        # error response genuinely means "no claim array to walk". In direct_mode
-        # (same-shape source-vs-target, e.g. stage vs de-canary) the two systems'
-        # error envelopes ARE the thing being validated - ResponseCode,
-        # ResponseDesc, Errors[]... are ordinary mapped fields, so skipping them
-        # would silently drop every test case where both sides legitimately
-        # return the same 404/"record not found" response. Only a genuine JSON
-        # load failure (handled above) skips a direct-mode row.
         skip_reason  = None
         skip_category = 'CLAIM_NOT_FOUND'
-        err_source   = None   # 'Alex' / 'PPKG' — whose response failed
-        err_data     = None   # the actual error-response dict (for status + body)
+        err_source   = None
+        err_data     = None
         if not direct_mode:
             if is_error_response(alex_data):
-                err_source, err_data = 'Alex', alex_data
-                skip_reason = describe_error_response('Alex', alex_data)
+                err_source, err_data = "Target", alex_data
+                skip_reason = describe_error_response("Target", alex_data)
             elif is_error_response(hcp_data):
-                err_source, err_data = 'PPKG', hcp_data
-                skip_reason = describe_error_response('PPKG', hcp_data)
+                err_source, err_data = "Source", hcp_data
+                skip_reason = describe_error_response("Source", hcp_data)
             elif not has_claim_data(alex_data):
-                err_source, err_data = 'Alex', alex_data
-                skip_reason = 'Alex response returned no claim data'
+                err_source, err_data = "Target", alex_data
+                skip_reason = "Target response returned no claim data"
             elif not has_claim_data(hcp_data):
-                err_source, err_data = 'PPKG', hcp_data
-                skip_reason = 'PPKG response returned no claim data'
+                err_source, err_data = "Source", hcp_data
+                skip_reason = "Source response returned no claim data"
         else:
-            # Generic ("direct") mode never checked either side for an
-            # error/failure envelope, so an asymmetric failure (one side
-            # errors out, e.g. a 404/500, while the other returns a normal
-            # response) silently fell through into field-by-field comparison
-            # instead of being flagged - it never landed on the Missing
-            # Records sheet. Detect and report that here, same as classic mode.
-            # If BOTH sides return the SAME error/"not found" envelope that is
-            # a legitimate shared business scenario, not a defect - let it flow
-            # through to compare_direct() so those fields still get validated.
             alex_is_err = is_error_response(alex_data)
             hcp_is_err  = is_error_response(hcp_data)
             if alex_is_err and not hcp_is_err:
-                err_source, err_data = 'Alex', alex_data
-                skip_reason   = describe_error_response('Alex', alex_data)
-                skip_category = 'RESPONSE_FAILED_ALEX'
+                err_source, err_data = "Target", alex_data
+                skip_reason   = describe_error_response("Target", alex_data)
+                skip_category = 'RESPONSE_FAILED_TARGET'
             elif hcp_is_err and not alex_is_err:
-                err_source, err_data = 'PPKG', hcp_data
-                skip_reason   = describe_error_response('PPKG', hcp_data)
-                skip_category = 'RESPONSE_FAILED_PPKG'
+                err_source, err_data = "Source", hcp_data
+                skip_reason   = describe_error_response("Source", hcp_data)
+                skip_category = 'RESPONSE_FAILED_SOURCE'
 
         if skip_reason:
-            # Failure Category = the HTTP / service status code (e.g. 404, 500)
-            # read from the error envelope; falls back to the semantic category
-            # when no code is present. Failure Reason = the ACTUAL response body
-            # so the report records exactly what the service returned.
             status_code    = extract_status_code(err_data)
             failure_cat    = status_code or skip_category
             actual_body    = format_actual_response(err_source, err_data)
@@ -3082,24 +3642,19 @@ def run(consumer_name: str) -> Optional[str]:
             continue
 
         # Schema-path collection (drift analysis)
-        _extract_paths = extract_all_paths_generic if direct_mode else extract_all_paths
+        _extract_paths = extract_all_paths_generic if (direct_mode or is_upm_run) else extract_all_paths
         for p, v in _extract_paths(hcp_data).items():
             ppkg_paths_all.setdefault(p, v)
         for p, v in _extract_paths(alex_data).items():
             alex_paths_all.setdefault(p, v)
 
-        # Claim-level match summary (claim-array specific; skipped for the
-        # generic direct-pointer mode where responses have no claim array).
-        if not direct_mode:
-            cm_rows, mr_rows = build_claim_match_and_missing(
-                hcp_data, alex_data,
-                claim_number, icn_number, member_number, row_claim_type,
-                consumer_name, validation_type, test_case=test_case,
-            )
-            claim_match_rows.extend(cm_rows)
-            missing_records_rows.extend(mr_rows)
+        # Multi-claim response handling:
+        hcp_claims = get_claims_list(hcp_data)
+        alex_claims = get_claims_list(alex_data)
+        is_upm_run = ('UPM' in (expected_source, actual_source) or
+                      any(k in consumer_name for k in ['ISET', 'IIM', 'ACET', 'VETSS', 'OHBSPE', 'PTRCR', 'MYUHC', 'MEDICA', 'COB']) or
+                      str(config.get('validation_mode', '')).strip().lower() == 'mapping')
 
-        # Field-level comparison
         meta = {
             'claim_number':      claim_number,
             'icn_number':        icn_number,
@@ -3109,17 +3664,126 @@ def run(consumer_name: str) -> Optional[str]:
             'test_case':         test_case,
         }
 
-        comp_rows, total, matched_count = (
-            compare_direct(hcp_data, alex_data, combined_mapping, meta)
-            if direct_mode
-            else compare_claim_pair(hcp_data, alex_data, combined_mapping, meta)
-        )
-        consolidated_rows.extend(comp_rows)
+        if direct_mode:
+            comp_rows, total, matched_count = compare_direct(hcp_data, alex_data, combined_mapping, meta)
+            consolidated_rows.extend(comp_rows)
+        elif is_upm_run:
+            comp_rows = []
+            total = 0
+            matched_count = 0
+            if not hcp_claims and not alex_claims:
+                src_icn = _get_claim_icn_val(hcp_data, icn_number)
+                tgt_icn = _get_claim_icn_val(alex_data, icn_number)
+                pair_comp, pair_tot, pair_m = compare_mapping_pair(hcp_data, alex_data, combined_mapping, meta, claim_idx=0)
+                comp_rows.extend(pair_comp)
+                total += pair_tot
+                matched_count += pair_m
+                claim_match_rows.append({
+                    'Test Case':          test_case,
+                    'Claim Number':       claim_number,
+                    'Member Number':      member_number,
+                    'Claim Type':         row_claim_type,
+                    'Consumer':           consumer_name,
+                    'Source Claim Index': 0,
+                    'Target Claim Index': 0,
+                    'Source ICN':         src_icn,
+                    'Target ICN':         tgt_icn,
+                    'Source TxnId':       claim_transaction,
+                    'Target TxnId':       claim_transaction,
+                    'Source TxnType':     row_claim_type,
+                    'Target TxnType':     row_claim_type,
+                    'PPKG Claim Index':   0,
+                    'Alex Claim Index':   0,
+                    'PPKG ICN':           src_icn,
+                    'Alex ICN':           tgt_icn,
+                    'PPKG TxnId':         claim_transaction,
+                    'Alex TxnId':         claim_transaction,
+                    'PPKG TxnType':       row_claim_type,
+                    'Alex TxnType':       row_claim_type,
+                    'Match Status':       'Matched',
+                })
+            else:
+                pairs = match_upm_claims(hcp_claims, alex_claims, claim_number)
+                for s_idx, t_idx, c_src, c_tgt, m_status in pairs:
+                    src_icn = _get_claim_icn_val(c_src, icn_number) if c_src else ''
+                    tgt_icn = _get_claim_icn_val(c_tgt, icn_number) if c_tgt else ''
+                    src_txn = _get_claim_txn_val(c_src, claim_transaction) if c_src else ''
+                    tgt_txn = _get_claim_txn_val(c_tgt, claim_transaction) if c_tgt else ''
+                    src_type = _get_claim_type_val(c_src, row_claim_type) if c_src else ''
+                    tgt_type = _get_claim_type_val(c_tgt, row_claim_type) if c_tgt else ''
+
+                    s_disp = s_idx if s_idx is not None else ''
+                    t_disp = t_idx if t_idx is not None else ''
+
+                    claim_match_rows.append({
+                        'Test Case':          test_case,
+                        'Claim Number':       claim_number,
+                        'Member Number':      member_number,
+                        'Claim Type':         row_claim_type,
+                        'Consumer':           consumer_name,
+                        'Source Claim Index': s_disp,
+                        'Target Claim Index': t_disp,
+                        'Source ICN':         src_icn,
+                        'Target ICN':         tgt_icn,
+                        'Source TxnId':       src_txn,
+                        'Target TxnId':       tgt_txn,
+                        'Source TxnType':     src_type,
+                        'Target TxnType':     tgt_type,
+                        'PPKG Claim Index':   s_disp,
+                        'Alex Claim Index':   t_disp,
+                        'PPKG ICN':           src_icn,
+                        'Alex ICN':           tgt_icn,
+                        'PPKG TxnId':         src_txn,
+                        'Alex TxnId':         tgt_txn,
+                        'PPKG TxnType':       src_type,
+                        'Alex TxnType':       tgt_type,
+                        'Match Status':       m_status,
+                    })
+
+                    if m_status == 'Missing in Target':
+                        missing_records_rows.append(_missing_row(
+                            test_case, claim_number, src_icn or icn_number, row_claim_type, validation_type,
+                            ppkg_avail, alex_avail, 'MATCHING_RECORD_NOT_FOUND',
+                            f"Source claim (ICN {src_icn!r}, index {s_disp}) has no matching Target claim.",
+                        ))
+                    elif m_status == 'Missing in Source':
+                        missing_records_rows.append(_missing_row(
+                            test_case, claim_number, tgt_icn or icn_number, row_claim_type, validation_type,
+                            ppkg_avail, alex_avail, 'MATCHING_RECORD_NOT_FOUND',
+                            f"Target claim (ICN {tgt_icn!r}, index {t_disp}) has no matching Source claim.",
+                        ))
+
+                    meta_idx = dict(meta)
+                    meta_idx['claim_index'] = s_idx if s_idx is not None else (t_idx if t_idx is not None else 0)
+                    meta_idx['source_claim_index'] = s_disp
+                    meta_idx['target_claim_index'] = t_disp
+                    meta_idx['source_icn'] = src_icn
+                    meta_idx['target_icn'] = tgt_icn
+
+                    pair_comp, pair_tot, pair_m = compare_mapping_pair(
+                        c_src or {}, c_tgt or {}, combined_mapping, meta_idx,
+                        source_claim_idx=s_idx, target_claim_idx=t_idx,
+                    )
+                    comp_rows.extend(pair_comp)
+                    total += pair_tot
+                    matched_count += pair_m
+            consolidated_rows.extend(comp_rows)
+        else:
+            cm_rows, mr_rows = build_claim_match_and_missing(
+                hcp_data, alex_data,
+                claim_number, icn_number, member_number, row_claim_type,
+                consumer_name, validation_type, test_case=test_case,
+            )
+            claim_match_rows.extend(cm_rows)
+            missing_records_rows.extend(mr_rows)
+
+            comp_rows, total, matched_count = compare_claim_pair(hcp_data, alex_data, combined_mapping, meta)
+            consolidated_rows.extend(comp_rows)
 
 
         for r in comp_rows:
             # Use the same Normalized Pointer as every other sheet so field
-            schema_path = (r.get('Normalized Pointer') or '').lstrip('/') or wildcard_path(r['PPKGPath'])
+            schema_path = (r.get('Normalized Pointer') or '').lstrip('/') or wildcard_path(r.get('Source Path', r.get('PPKGPath', '')))
             field_stats[schema_path]['total']   += 1
             field_stats[schema_path]['matched'] += int(r['Match Status'] == 'Match')
 
@@ -3147,12 +3811,14 @@ def run(consumer_name: str) -> Optional[str]:
         def _schema_order_for_row(ptr) -> int:
             return schema_order.get(str(ptr).lstrip('/'), _max_order)
 
-        consolidated_df['_claim_idx_int']  = consolidated_df['PPKG Claim Index'].apply(_claim_idx_int)
+        _claim_idx_col = 'Source Claim Index' if 'Source Claim Index' in consolidated_df.columns else 'PPKG Claim Index'
+        consolidated_df['_claim_idx_int']  = consolidated_df[_claim_idx_col].apply(_claim_idx_int)
         consolidated_df['_schema_order']   = consolidated_df['Normalized Pointer'].apply(_schema_order_for_row)
+        consolidated_df['_tc_int']         = consolidated_df['Test Case'].apply(_tc_sort_key)
         consolidated_df = consolidated_df.sort_values(
-            by=['Claim Number', '_claim_idx_int', '_schema_order'],
+            by=['_tc_int', 'Claim Number', '_claim_idx_int', '_schema_order'],
             kind='stable',
-        ).drop(columns=['_claim_idx_int', '_schema_order', '_mapping_order'], errors='ignore').reset_index(drop=True)
+        ).drop(columns=['_tc_int', '_claim_idx_int', '_schema_order', '_mapping_order'], errors='ignore').reset_index(drop=True)
     else:
         consolidated_df = pd.DataFrame(columns=CONSOLIDATED_COLUMNS)
 
@@ -3161,10 +3827,10 @@ def run(consumer_name: str) -> Optional[str]:
 
     # Refine 'Value Missing in Source' rows using the now-complete AGGREGATE
     if not consolidated_df.empty:
-        # Only refine rows STILL at their provisional 'Alex Only Field'
+        # Only refine rows STILL at their provisional 'Target Only Field' / 'Alex Only Field'
         _vmp_mask = (
             (consolidated_df['Match Status'] == 'Value Missing in Source') &
-            (consolidated_df['Category'] == 'Alex Only Field')
+            (consolidated_df['Category'].isin(['Target Only Field', 'Alex Only Field']))
         )
         if _vmp_mask.any():
             _wc_series = consolidated_df.loc[_vmp_mask, 'Normalized Pointer'].astype(str).str.lstrip('/')
@@ -3176,7 +3842,7 @@ def run(consumer_name: str) -> Optional[str]:
         # Refine 'Value Missing in Target' rows using the now-complete
         _vma_mask = (
             (consolidated_df['Match Status'] == 'Value Missing in Target') &
-            (consolidated_df['Category'] == 'Missing In Alex (True Missing)')
+            (consolidated_df['Category'].isin(['Missing In Target (True Missing)', 'Missing In Alex (True Missing)']))
         )
         if _vma_mask.any():
             _wc_series2 = consolidated_df.loc[_vma_mask, 'Normalized Pointer'].astype(str).str.lstrip('/')
@@ -3195,6 +3861,19 @@ def run(consumer_name: str) -> Optional[str]:
     except Exception as _exc:
         print(f"[WARN]  Hardcoded override skipped: {_exc}")
 
+    if is_upm_run and not consolidated_df.empty:
+        # Recalculate summary_rows from consolidated_df so post-override matches are reflected in summary sheet
+        summary_rows.clear()
+        for (tc, clm, icn, ctx), grp in consolidated_df.groupby(['Test Case', 'Claim Number', 'ICN Number', 'ClaimTransaction'], dropna=False, sort=False):
+            grp_tot = len(grp)
+            grp_m = int((grp['Match Status'] == 'Match').sum())
+            grp_cov = (grp_m / grp_tot * 100) if grp_tot > 0 else 0.0
+            summary_rows.append(_summary_row(
+                tc, clm, icn, ctx,
+                f"{grp_cov:.2f}%", f"{grp_m}/{grp_tot}",
+            ))
+        summary_rows.sort(key=lambda r: _tc_sort_key(r.get('Test Case')))
+
     # Severity policy enforcement (config-driven, see 'non_match_is_blocker').
     # Applied LAST so it wins over every refinement/override above: any row whose
     # Match Status is not an exact 'Match' becomes a Blocker; matches stay
@@ -3210,6 +3889,17 @@ def run(consumer_name: str) -> Optional[str]:
         if claim_match_rows
         else pd.DataFrame(columns=CLAIM_MATCH_COLUMNS)
     )
+    if not claim_match_df.empty:
+        claim_match_df['_tc_int'] = claim_match_df['Test Case'].apply(_tc_sort_key)
+        def _c_idx_int(val):
+            try:
+                return int(val)
+            except (ValueError, TypeError):
+                return 9999
+        claim_match_df['_s_idx'] = claim_match_df['Source Claim Index'].apply(_c_idx_int) if 'Source Claim Index' in claim_match_df.columns else 0
+        claim_match_df = claim_match_df.sort_values(
+            by=['_tc_int', '_s_idx'], ascending=[True, True]
+        ).drop(columns=['_tc_int', '_s_idx'], errors='ignore').reset_index(drop=True)
 
     # Missing Records
     missing_records_df = (
@@ -3217,11 +3907,17 @@ def run(consumer_name: str) -> Optional[str]:
         if missing_records_rows
         else pd.DataFrame(columns=MISSING_RECORDS_COLUMNS)
     )
+    if not missing_records_df.empty:
+        missing_records_df['_tc_int'] = missing_records_df['Test Case'].apply(_tc_sort_key)
+        missing_records_df = missing_records_df.sort_values(
+            by=['_tc_int'], ascending=[True]
+        ).drop(columns=['_tc_int'], errors='ignore').reset_index(drop=True)
 
     # Schema Coverage Analysis
     schema_rows = build_schema_coverage(
         mapping_all_wc, ppkg_paths_all, alex_paths_all,
         mapping_ppkg_wc=mapping_ppkg_wc, mapping_alex_wc=mapping_alex_wc,
+        mapping_pairs=combined_mapping,
     )
     schema_df = (
         pd.DataFrame(schema_rows, columns=SCHEMA_COVERAGE_COLUMNS)
@@ -3230,24 +3926,42 @@ def run(consumer_name: str) -> Optional[str]:
     )
 
 
-    # Stats By Element
-    ordered_stat_paths = ordered_by_schema(field_stats.keys(), schema_order)
-    stats_rows = [
-        {
-            'PPKG Field Path': path,
-            '# Occurrences':   field_stats[path]['total'],
-            '# Matched':       field_stats[path]['matched'],
-            '# Mismatched':    field_stats[path]['total'] - field_stats[path]['matched'],
-            '% Matched':       round(field_stats[path]['matched'] / field_stats[path]['total'] * 100, 2)
-                                if field_stats[path]['total'] > 0 else 0.0,
-        }
-        for path in ordered_stat_paths
-    ]
-    stats_df = (
-        pd.DataFrame(stats_rows)
-        if stats_rows
-        else pd.DataFrame(columns=['PPKG Field Path', '# Occurrences', '# Matched', '# Mismatched', '% Matched'])
-    )
+    # Stats By Element (recalculated directly from consolidated_df so post-override matches are reflected)
+    if not consolidated_df.empty:
+        _path_col = 'Normalized Pointer' if 'Normalized Pointer' in consolidated_df.columns else ('Source Path' if 'Source Path' in consolidated_df.columns else 'PPKGPath')
+        _grouped = (
+            consolidated_df.groupby(_path_col, dropna=False)
+            .agg(
+                total=('Match Status', 'size'),
+                matched=('Match Status', lambda s: (s == 'Match').sum()),
+                hardcoded=('Category', lambda s: (s == 'Hardcoded Match').sum()) if 'Category' in consolidated_df.columns else ('Match Status', lambda s: 0),
+            )
+            .reset_index()
+        )
+        _grouped['mismatched'] = _grouped['total'] - _grouped['matched']
+        _grouped['pct_matched'] = (_grouped['matched'] / _grouped['total'] * 100).round(2)
+
+        def _get_sort_key(p):
+            clean_p = str(p).lstrip('/')
+            return schema_order.get(clean_p, 999999)
+        _grouped['_sort_key'] = _grouped[_path_col].apply(_get_sort_key)
+        _grouped = _grouped.sort_values('_sort_key').drop(columns=['_sort_key'])
+
+        stats_rows = [
+            {
+                'Source Field Path': row[_path_col],
+                'PPKG Field Path':   row[_path_col],
+                '# Occurrences':     row['total'],
+                '# Matched':         row['matched'],
+                '# Hardcoded':       row['hardcoded'],
+                '# Mismatched':      row['mismatched'],
+                '% Matched':         row['pct_matched'],
+            }
+            for _, row in _grouped.iterrows()
+        ]
+        stats_df = pd.DataFrame(stats_rows)[['Source Field Path', '# Occurrences', '# Matched', '# Hardcoded', '# Mismatched', '% Matched']]
+    else:
+        stats_df = pd.DataFrame(columns=['Source Field Path', '# Occurrences', '# Matched', '# Hardcoded', '# Mismatched', '% Matched'])
 
     # Run-level metrics (for the console summary only)
     total_rows    = len(consolidated_df)
@@ -3270,12 +3984,12 @@ def run(consumer_name: str) -> Optional[str]:
     print(f"  Total mapping fields     : {len(combined_mapping)}")
     print(f"  Fields compared          : {total_rows}")
     print(f"  Matched / Mismatched     : {match_rows} / {mismatch_rows}")
-    print(f"  Missing PPKG/Alex/Both   : {fmp} / {fma} / {fmb}")
+    print(f"  Missing Source/Target/Both: {fmp} / {fma} / {fmb}")
     if total_rows:
         print(f"  Overall coverage         : {(match_rows / total_rows * 100):.2f}%")
     else:
         print(f"  Overall coverage         : N/A")
-    print(f"  New fields PPKG/Alex     : {new_ppkg} / {new_alex}")
+    print(f"  New fields Source/Target : {new_ppkg} / {new_alex}")
     print(f"  Blockers / Non-Blockers  : {blocker_total} / {non_blocker_total}")
     print(f"  Claim type mismatches    : {type_mismatch_count}")
     print(f"  Duplicate claims         : {len(duplicate_rows)}")
