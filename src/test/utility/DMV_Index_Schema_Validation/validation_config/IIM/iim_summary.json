@@ -1,0 +1,27 @@
+{
+  "name": "IIM_Summary",
+  "validation_name": "UPM vs PPKG - IIM Summary (PROD)",
+  "test_data": "src/test/resources/testdata/upm_ppkg/IIM/cosmos-claims/summary_testdata.csv",
+  "claim_filter": null,
+  "claim_type": "Summary",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/legacy_ppkg/upm_ppkg/IIM/IIM_summary_mapping.xlsx"
+  ],
+  "response_base": "target/All_Responses/IIM",
+  "expected_source": "UPM",
+  "actual_source": "PPKG",
+  "sources": {
+    "UPM": {
+      "folder": "UPM_Responses/Summary",
+      "suffix": "_upm.json"
+    },
+    "PPKG": {
+      "folder": "PPKG_Responses/Summary",
+      "suffix": "_ppkg.json"
+    }
+  },
+  "consumer_name": "IIM",
+  "source_feature_file": "src/test/resources/feature_files/upm_ppkg/cosmos/IIM/summary/upm_summary.feature",
+  "target_feature_file": "src/test/resources/feature_files/upm_ppkg/cosmos/IIM/summary/ppkg_summary.feature",
+  "search_type": "Claim Summary Search"
+}

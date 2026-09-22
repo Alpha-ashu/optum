@@ -235,13 +235,16 @@ CSV_REQUIRED_COLUMNS: set = set()
 MAPPING_COLUMN_ALIASES: Dict[str, List[str]] = {
     'source': [
         'PPKG Path', 'PPKGPath', 'Source Path', 'SourcePath', 'Expected Path',
-        'HCP Path', 'UPM Path', 'Clink Path', 'Claim360_Path', 'Claim360 Path','SourcePath', 'Source_Path_1',
-        'Legacy', 'legacy',
+        'HCP Path', 'HCP_Path', 'HCP GQL Path', 'HCP GQL Schema Path', 'HCP_GQL_Path',
+        'UPM Path', 'Clink Path', 'Claim360_Path', 'Claim360 Path', 'Source_Path_1',
+        'Legacy', 'legacy', 'source', 'expected',
     ],
     'target': [
         'ALEX Path', 'AlexPath', 'Target Path', 'TargetPath', 'Actual Path',
-        'Decanary_Path', 'Decanary Path', 'PPKG Target Path','target_path', 'Target_Path_2',
-        'pp claim path', 'pp_claim_path', 'PP Claim Path',
+        'MES Path', 'MES_Path', 'MESPath', 'MES Target Path',
+        'Custom Resolver Schema Path', 'Custom Resolver Path',
+        'Decanary_Path', 'Decanary Path', 'PPKG Target Path', 'target_path', 'Target_Path_2',
+        'pp claim path', 'pp_claim_path', 'PP Claim Path', 'target', 'actual',
     ],
 }
 

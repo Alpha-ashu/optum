@@ -32,13 +32,9 @@ Feature: UPM - PPKG ISET COSMOS for PROD ENVIRONMENT V2
       var failures = [];
       karate.log('[VALIDATION] === Generating reports for:', varName, '(Consumer:', consumer, ') ===');
       try {
-        karate.exec('python src/test/utility/upm_ppkg_validation/Main.py ' + varName);
-        karate.log('[VALIDATION] Main.py completed for', varName);
-      } catch(e) { failures.push('Main.py: ' + e.message); karate.log('[VALIDATION][ERROR] Main.py failed:', e.message); }
-      try {
-        karate.exec('python src/test/utility/upm_ppkg_validation/report.py ' + varName);
-        karate.log('[VALIDATION] report.py completed for', varName);
-      } catch(e) { failures.push('report.py: ' + e.message); karate.log('[VALIDATION][ERROR] report.py failed:', e.message); }
+        karate.exec('python src/test/utility/DMV_Index_Schema_Validation/Schema_Validation.py ' + varName);
+        karate.log('[VALIDATION] Schema_Validation.py completed for', varName);
+      } catch(e) { failures.push('Schema_Validation.py: ' + e.message); karate.log('[VALIDATION][ERROR] Schema_Validation.py failed:', e.message); }
       try {
         var scenarioType = varName.split('_')[1];
         var features = '';

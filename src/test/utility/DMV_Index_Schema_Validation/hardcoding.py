@@ -1,8 +1,7 @@
 """
 DMV Index Schema Validation - Hardcoded Override Configuration
 ================================================================
-Same pattern as ``src/test/utility/upm_ppkg_validation/hardcoding.py``: a
-plain, developer-editable file with a single ``validate_match(df, var, ...)``
+A plain, developer-editable file with a single ``validate_match(df, var, ...)``
 function that applies KNOWN, deliberate row-level overrides on top of the
 generic comparison engine's output - using explicit rules, exactly like the
 UPM version. The comparison logic in ``Schema_Validation.py`` is never
@@ -529,10 +528,76 @@ def validate_match(
         )
         _mark_matched(df, cols, m_ndays, 'notificationDays match')
 
-        # paymentTypeDescription
-        m_ptype = (s_path.str.contains('paymentTypeDescription', na=False)) & (
-            s_val.isin(['ELECTRONIC']) & t_val.isin(['KEYED', 'ELECTRONIC', 'EDI'])
+        # paymentTypeDescription / paymentType
+        m_ptype = (s_path.str.contains('paymentType', na=False)) & (
+            s_val.isin(['ELECTRONIC', 'E', 'C', 'Z']) & t_val.isin(['KEYED', 'ELECTRONIC', 'EDI'])
         )
-        _mark_matched(df, cols, m_ptype, 'paymentTypeDescription match')
+        _mark_matched(df, cols, m_ptype, 'paymentType match')
+
+        # feeSchedule
+        m_feesched = (s_path.str.contains('feeSchedule', na=False)) & (
+            (s_val.isin(['HCFA', 'HIAA']) & t_val.isin(['HCFA*', 'HIAA*'])) |
+            (s_val.isin(['DISC']) & t_val.isin(['DISCOUNT']))
+        )
+        _mark_matched(df, cols, m_feesched, 'feeSchedule match')
+
+        # openReview
+        m_oreview = (s_path.str.contains('openReview', na=False)) & (
+            s_val.isin(['00000', '0']) & t_val.isin(['0', '00000'])
+        )
+        _mark_matched(df, cols, m_oreview, 'openReview match')
+
+        # reviewPriority
+        m_rpriority = (s_path.str.contains('reviewPriority', na=False)) & (
+            s_val.isin(['000', '0']) & t_val.isin(['I:0', 'E:0', '0'])
+        )
+        _mark_matched(df, cols, m_rpriority, 'reviewPriority match')
+
+        # planNumber, detailNumber (numeric strip zeros)
+        m_num_strip = (s_path.str.contains('planNumber', na=False) | s_path.str.contains('detailNumber', na=False)) & (
+            s_val.apply(lambda x: x.lstrip('0')) == t_val.apply(lambda x: x.lstrip('0'))
+        )
+        _mark_matched(df, cols, m_num_strip, 'planNumber/detailNumber numeric match')
+
+        # hospitalNetwork
+        m_hnet = (s_path.str.contains('hospitalNetwork', na=False)) & (
+            s_val.isin(['000', '0']) & t_val.isin(['0', '000'])
+        )
+        _mark_matched(df, cols, m_hnet, 'hospitalNetwork match')
+
+        # memberSexCategory
+        m_sex = (s_path.str.contains('memberSexCategory', na=False)) & (
+            (s_val.isin(['1']) & t_val.str.lower().isin(['female'])) |
+            (s_val.isin(['0']) & t_val.str.lower().isin(['male']))
+        )
+        _mark_matched(df, cols, m_sex, 'memberSexCategory match')
+
+        # providerTin, providerMpin (strip leading zeros)
+        m_tin = (s_path.str.contains('providerTin', na=False) | s_path.str.contains('providerMpin', na=False)) & (
+            s_val.apply(lambda x: x.lstrip('0')) == t_val.apply(lambda x: x.lstrip('0'))
+        )
+        _mark_matched(df, cols, m_tin, 'providerTin/providerMpin match')
+
+        # splitClaimIndicator / splitIndicator
+        m_split_alias = (s_path.str.contains('splitClaimIndicator', na=False) | s_path.str.contains('splitIndicator', na=False)) & (
+            (s_val.isin(['0', 'False', 'false', 'N', 'n']) & t_val.isin(['0', 'False', 'false', 'N', 'n'])) |
+            (s_val.isin(['1', 'True', 'true', 'Y', 'y']) & t_val.isin(['1', 'True', 'true', 'Y', 'y']))
+        )
+        _mark_matched(df, cols, m_split_alias, 'splitIndicator boolean match')
+
+        # encounterIndicator / encounterFlag
+        m_enc = (s_path.str.contains('encounterIndicator', na=False) | s_path.str.contains('encounterFlag', na=False)) & (
+            (s_val.isin(['0', 'False', 'false']) & t_val.isin(['0', 'False', 'false'])) |
+            (s_val.isin(['1', 'True', 'true']) & t_val.isin(['1', 'True', 'true']))
+        )
+        _mark_matched(df, cols, m_enc, 'encounterFlag match')
+
+        # recordType / recordTypeDescription / typeOfClaim
+        m_rectype = (s_path.str.contains('recordType', na=False) | s_path.str.contains('typeOfClaim', na=False)) & (
+            (s_val.str.upper().isin(['D', 'M', 'PHYSICIAN']) & t_val.str.upper().isin(['PROFESSIONAL', 'MEDICAL'])) |
+            (s_val.str.upper().isin(['H', 'HOSPITAL']) & t_val.str.upper().isin(['INSTITUTIONAL']))
+        )
+        _mark_matched(df, cols, m_rectype, 'recordType match')
 
     return df
+

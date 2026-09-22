@@ -12,14 +12,14 @@ from difflib import SequenceMatcher
 from datetime import datetime
 from typing import Optional, List, Tuple, Dict
 
-import io
 try:
-    if hasattr(sys.stdout, 'buffer'):
-        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-    if hasattr(sys.stderr, 'buffer'):
-        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    if hasattr(sys.stderr, 'reconfigure'):
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 except Exception:
     pass
+
 
 # Resolve project base directory
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
@@ -259,10 +259,32 @@ def load_mapping(
     ``normalize=False`` to keep the raw JSON pointers exactly as authored.
     """
     df = pd.read_excel(excel_path, engine='openpyxl')
-    src_aliases = source_aliases or _fc.MAPPING_COLUMN_ALIASES['source']
-    tgt_aliases = target_aliases or _fc.MAPPING_COLUMN_ALIASES['target']
+    src_aliases = list(source_aliases or []) + [a for a in _fc.MAPPING_COLUMN_ALIASES['source'] if a not in (source_aliases or [])]
+    tgt_aliases = list(target_aliases or []) + [a for a in _fc.MAPPING_COLUMN_ALIASES['target'] if a not in (target_aliases or [])]
     src_col = _resolve_mapping_col(df, src_aliases)
     tgt_col = _resolve_mapping_col(df, tgt_aliases)
+
+    # Heuristic substring fallback if not matched by exact aliases
+    if src_col is None:
+        for c in df.columns:
+            cl = str(c).strip().lower()
+            if any(k in cl for k in ['source', 'expected', 'hcp', 'ppkg', 'legacy', 'upm']):
+                src_col = c
+                break
+    if tgt_col is None:
+        for c in df.columns:
+            cl = str(c).strip().lower()
+            if any(k in cl for k in ['target', 'actual', 'alex', 'mes', 'decanary', 'resolver']):
+                tgt_col = c
+                break
+
+    # If 2 columns exist and still unresolved, default to columns 0 and 1
+    if len(df.columns) == 2:
+        if src_col is None and tgt_col != df.columns[0]:
+            src_col = df.columns[0]
+        if tgt_col is None and src_col != df.columns[1]:
+            tgt_col = df.columns[1]
+
     if src_col is None or tgt_col is None:
         raise ValueError(
             f"Could not resolve mapping columns in '{os.path.basename(excel_path)}'. "
@@ -2012,6 +2034,16 @@ def _index_tuple(ptr: str) -> Tuple[int, ...]:
     return tuple(int(p) for p in ptr.strip('/').split('/') if p.isdigit())
 
 
+def _safe_float_convert(val) -> float:
+    """Safely convert value to float, stripping commas, plus signs, and whitespace."""
+    try:
+        if isinstance(val, str):
+            val = val.replace(',', '').replace('+', '').strip()
+        return float(val) if val not in ('', None) else 0.0
+    except (ValueError, TypeError):
+        return 0.0
+
+
 def compare_direct(
     source_data: dict,
     target_data: dict,
@@ -2051,6 +2083,46 @@ def compare_direct(
 
     for m_idx, (s_path, t_path) in enumerate(mapping):
         _morder  = mapping_order_offset + m_idx
+
+        # Support '+' summation operator in target (e.g. GQL custom resolver aggregation)
+        if '+' in t_path:
+            t_pointers = [p.strip() for p in t_path.split('+')]
+            t_vals_total = 0.0
+            found_any_target = False
+            for ptr in t_pointers:
+                extracted = extract_values(target_data, wildcard_path(ptr))
+                if extracted:
+                    found_any_target = True
+                    for _, val in extracted:
+                        t_vals_total += _safe_float_convert(val)
+
+            s_vals = extract_values(source_data, wildcard_path(s_path))
+            if not s_vals and not found_any_target:
+                _emit(
+                    '/' + s_path.lstrip('/') + ' (field absent in Source)',
+                    '/' + t_path.lstrip('/') + ' (field absent in Target)',
+                    '', '', 'Value Missing in Both', _morder,
+                )
+                total += 1
+            elif not s_vals:
+                status = 'Match' if t_vals_total == 0 else 'Value Missing in Source'
+                _emit(
+                    '/' + s_path.lstrip('/') + ' (field absent in Source)',
+                    '/' + t_path.lstrip('/'),
+                    '', t_vals_total, status, _morder,
+                )
+                matched += int(status == 'Match')
+                total += 1
+            else:
+                for sp, sv in s_vals:
+                    s_float = _safe_float_convert(sv)
+                    is_match = abs(t_vals_total - s_float) < 0.01
+                    status = 'Match' if is_match else 'Mismatch'
+                    _emit('/' + sp.lstrip('/'), '/' + t_path.lstrip('/'), sv, t_vals_total, status, _morder)
+                    matched += int(is_match)
+                    total += 1
+            continue
+
         s_vals   = extract_values(source_data, wildcard_path(s_path))
         t_vals   = extract_values(target_data, wildcard_path(t_path))
 

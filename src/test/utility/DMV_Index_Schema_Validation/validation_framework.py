@@ -36,11 +36,22 @@ config key it introduces is optional and defaults to the current behaviour.
 from __future__ import annotations
 
 import os
+import sys
+import io
 import re
 import json
 import glob
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
+
+try:
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    if hasattr(sys.stderr, 'reconfigure'):
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+except Exception:
+    pass
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -327,7 +338,7 @@ def discover_validation_configs() -> Dict[str, dict]:
         try:
             entry = build_consumer_entry(cfg_path)
         except Exception as exc:  # never let one bad config break discovery
-            print(f"⚠️  Skipping invalid config '{cfg_path}': {exc}")
+            print(f"[WARN]  Skipping invalid config '{cfg_path}': {exc}")
             continue
         if entry:
             name = entry.pop('__register_name__')
@@ -401,7 +412,7 @@ def build_consumer_entry_from_config(
             if os.path.exists(candidate):
                 mapping_sheets = [candidate]
             else:
-                print(f"⚠️  mapping_sheet_dir pattern resolved to a missing file: {candidate}")
+                print(f"[WARN]  mapping_sheet_dir pattern resolved to a missing file: {candidate}")
     if not mapping_sheets:
         mapping_sheets = sorted(glob.glob(os.path.join(folder, '*.xlsx')))
 
@@ -491,28 +502,49 @@ def resolve_response_file(directory: str, identifier: str, claim_key: str, suffi
 def build_report_name(consumer_name: str, config: dict, resolved: dict) -> str:
     """
     Build a descriptive, dynamic report file name from the run context, e.g.
-        PPKG_Test_vs_QAE_SummaryAPI_20260807_162307.xlsx
+        ISET_UPM_PROD_vs_PROD_SummaryAPI_20260807_162307.xlsx
 
-    Convention: ``<Consumer>_<SourceEnv>_vs_<TargetEnv>_<RequestType>_<Timestamp>``
-    where the tokens are taken from metadata parsed off the feature files.
+    Convention: ``<Consumer>_<Source>_<SourceEnv>_vs_<TargetEnv>_<RequestType>_<Timestamp>``
+    where the consumer name is prepended first.
     A custom template may still be supplied via ``config['report_name_template']``.
     Falls back to the legacy ``<consumer>_validation_report_<ts>.xlsx``.
     """
     now = datetime.now()
 
-    # Consumer token: prefer the expected-source label (e.g. "PPKG"), else the
-    # configured consumer_name's first word, else the registration name.
-    consumer_token = (
-        resolved.get('expected_source')
-        or (config.get('consumer_name') or consumer_name).split()[0]
-    )
+    # Determine the distinct consumer prefix (e.g. "ISET", "ACET", "IIM", "MYUHC", ...)
+    raw_consumer = (config.get('consumer_name') or '').strip()
+    if raw_consumer and ' vs ' not in raw_consumer.lower() and '(' not in raw_consumer:
+        consumer_prefix = raw_consumer
+    else:
+        first_token = consumer_name.split('_')[0].strip()
+        if first_token.upper() in [
+            'ISET', 'ACET', 'IIM', 'MEDICA', 'MYUHC', 'OHBSPE', 'PTRCR', 'VETSS',
+            'CLAIM360', 'CLINK', 'TOPS', 'COB', 'PAYMENT',
+        ]:
+            consumer_prefix = first_token
+        elif raw_consumer and ' vs ' not in raw_consumer.lower():
+            consumer_prefix = raw_consumer
+        else:
+            consumer_prefix = ''
+
+    expected_src = resolved.get('expected_source') or config.get('expected_source') or 'PPKG'
+
+    # Build consumer token: consumer first (e.g. "ISET_UPM" or "PPKG")
+    if consumer_prefix and consumer_prefix.lower() != expected_src.lower():
+        consumer_token = f"{consumer_prefix}_{expected_src}"
+    elif consumer_prefix:
+        consumer_token = consumer_prefix
+    else:
+        consumer_token = expected_src
+
     request_type = (resolved.get('request_type') or '').replace(' ', '') or 'Validation'
 
     ctx = {
         'consumer':        consumer_name,
+        'consumer_prefix': consumer_prefix,
         'consumer_token':  consumer_token,
         'module':          resolved.get('module') or config.get('claim_type', ''),
-        'expected':        resolved.get('expected_source', 'PPKG'),
+        'expected':        expected_src,
         'actual':          resolved.get('actual_source', 'Alex'),
         'validation_type': resolved.get('validation_type', ''),
         'search_type':     resolved.get('search_type', '') or resolved.get('validation_type', ''),

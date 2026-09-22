@@ -1,0 +1,27 @@
+{
+  "name": "VETSS_Summary",
+  "validation_name": "UPM vs PPKG - VETSS Summary (PROD)",
+  "test_data": "src/test/resources/testdata/upm_ppkg/VETSS/summary_testdata.csv",
+  "claim_filter": null,
+  "claim_type": "Summary",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/legacy_ppkg/upm_ppkg/VETSS/VETSS_Summary_mapping.xlsx"
+  ],
+  "response_base": "target/All_Responses/VETSS",
+  "expected_source": "UPM",
+  "actual_source": "PPKG",
+  "sources": {
+    "UPM": {
+      "folder": "UPM_Responses/Summary",
+      "suffix": "_upm.json"
+    },
+    "PPKG": {
+      "folder": "PPKG_Responses/Summary",
+      "suffix": "_ppkg.json"
+    }
+  },
+  "consumer_name": "VETSS",
+  "source_feature_file": "src/test/resources/feature_files/upm_ppkg/cosmos/VETSS/summary/upm_summary.feature",
+  "target_feature_file": "src/test/resources/feature_files/upm_ppkg/cosmos/VETSS/summary/ppkg_summary.feature",
+  "search_type": "Claim Summary Search"
+}

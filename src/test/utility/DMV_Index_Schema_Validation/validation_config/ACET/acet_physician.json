@@ -1,0 +1,27 @@
+{
+  "name": "ACET_Physician",
+  "validation_name": "UPM vs PPKG - ACET Physician (PROD)",
+  "test_data": "src/test/resources/testdata/upm_ppkg/ACET/physician_testdata.csv",
+  "claim_filter": "PHYSICIAN",
+  "claim_type": "Physician",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/legacy_ppkg/upm_ppkg/ACET/ACET_Physician_mapping.xlsx"
+  ],
+  "response_base": "target/All_Responses/ACET",
+  "expected_source": "UPM",
+  "actual_source": "PPKG",
+  "sources": {
+    "UPM": {
+      "folder": "UPM_Responses/Physician",
+      "suffix": "_upm.json"
+    },
+    "PPKG": {
+      "folder": "PPKG_Responses/Physician",
+      "suffix": "_ppkg.json"
+    }
+  },
+  "consumer_name": "ACET",
+  "source_feature_file": "src/test/resources/feature_files/upm_ppkg/cosmos/ACET/read-claim-details/physician/upm_physician.feature",
+  "target_feature_file": "src/test/resources/feature_files/upm_ppkg/cosmos/ACET/read-claim-details/physician/ppkg_physician.feature",
+  "search_type": "Claim Search"
+}

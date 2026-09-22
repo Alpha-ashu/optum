@@ -10,5 +10,5 @@ Feature:  HCP GQL - ALEX claimTransaction
     * def callonceALEX = callonce read('classpath:feature_files/ppkg_alex/hcp_mes_gql/claimTransaction/mes_claimTransaction.feature')
     * print('******************** [ALEX Physician][COMPLETED] *****************************************')
     * print('******************** [callonceing Python Functions to Generate Reports] *******************')
-    * def Main = karate.exec('python src\\test\\utility\\DMV_Index_Schema_Validation\\hcp_mes_compare.py' + canonical)
+    * def Main = karate.exec('python src\\test\\utility\\DMV_Index_Schema_Validation\\Schema_Validation.py ' + canonical)
     * print('******************** [HCP and ALEX Claim Details] [claimTransaction] [COMPLETED] *******************')

@@ -31,13 +31,9 @@ Feature:  UPM - PPKG ALEXTRO COSMOS for Decanary ENVIRONMENT
       var consumer = varName.split('_')[0];
       karate.log('[VALIDATION] === Generating reports for:', varName, '(Consumer:', consumer, ') ===');
       try {
-        karate.exec('python src/test/utility/upm_ppkg_validation/Main.py ' + varName);
-        karate.log('[VALIDATION] Main.py completed for', varName);
-      } catch(e) { karate.log('[VALIDATION] Main.py error:', e.message); }
-      try {
-        karate.exec('python src/test/utility/upm_ppkg_validation/report.py ' + varName);
-        karate.log('[VALIDATION] report.py completed for', varName);
-      } catch(e) { karate.log('[VALIDATION] report.py error:', e.message); }
+        karate.exec('python src/test/utility/DMV_Index_Schema_Validation/Schema_Validation.py ' + varName);
+        karate.log('[VALIDATION] Schema_Validation.py completed for', varName);
+      } catch(e) { karate.log('[VALIDATION] Schema_Validation.py error:', e.message); }
       try {
         var scenarioType = varName.split('_')[1];
         var features = '';

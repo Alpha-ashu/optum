@@ -1,0 +1,27 @@
+{
+  "name": "PTRCR_Hospital",
+  "validation_name": "UPM vs PPKG - PTRCR Hospital (PROD)",
+  "test_data": "src/test/resources/testdata/upm_ppkg/PTRCR/hospital_testdata.csv",
+  "claim_filter": "HOSPITAL",
+  "claim_type": "Hospital",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/legacy_ppkg/upm_ppkg/PTRCR/PTRCR_Hospital_mapping.xlsx"
+  ],
+  "response_base": "target/All_Responses/PTRCR",
+  "expected_source": "UPM",
+  "actual_source": "PPKG",
+  "sources": {
+    "UPM": {
+      "folder": "UPM_Responses/Hospital",
+      "suffix": "_upm.json"
+    },
+    "PPKG": {
+      "folder": "PPKG_Responses/Hospital",
+      "suffix": "_ppkg.json"
+    }
+  },
+  "consumer_name": "PTRCR",
+  "source_feature_file": "src/test/resources/feature_files/upm_ppkg/cosmos/PTRCR/read-claim-details/hospital/upm_hospital.feature",
+  "target_feature_file": "src/test/resources/feature_files/upm_ppkg/cosmos/PTRCR/read-claim-details/hospital/ppkg_hospital.feature",
+  "search_type": "Claim Search"
+}

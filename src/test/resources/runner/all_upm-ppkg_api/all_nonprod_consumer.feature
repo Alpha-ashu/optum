@@ -64,6 +64,6 @@ Feature: Executing All Cosmos UPM/PPKG API NON-PROD ENVIRONMENT
 
     * print('******************** [GENERATING CONSOLIDATED VALIDATION REPORTS] ***********************')
     * print('>>> Output: target/All_Responses/ALL_COSMOS_CONSUMER_NONPROD_API_CONSOLIDATE_REPORT.xlsx')
-    * karate.exec('python src\\test\\utility\\upm_ppkg_validation\\consolidate_consumer_reports.py')
+    * karate.exec('python src\\test\\utility\\DMV_Index_Schema_Validation\\consolidate_consumer_reports.py')
     * print('******************** [CONSOLIDATED VALIDATION REPORTS COMPLETED] ***********************')
 

@@ -1,0 +1,27 @@
+{
+  "name": "IIM_Physician",
+  "validation_name": "UPM vs PPKG - IIM Physician (PROD)",
+  "test_data": "src/test/resources/testdata/upm_ppkg/IIM/read-claim-details/physician_testdata.csv",
+  "claim_filter": "PHYSICIAN",
+  "claim_type": "Physician",
+  "mapping_sheets": [
+    "src/test/resources/json_mapping/legacy_ppkg/upm_ppkg/IIM/IIM_Physician_mapping.xlsx"
+  ],
+  "response_base": "target/All_Responses/IIM",
+  "expected_source": "UPM",
+  "actual_source": "PPKG",
+  "sources": {
+    "UPM": {
+      "folder": "UPM_Responses/Physician",
+      "suffix": "_upm.json"
+    },
+    "PPKG": {
+      "folder": "PPKG_Responses/Physician",
+      "suffix": "_ppkg.json"
+    }
+  },
+  "consumer_name": "IIM",
+  "source_feature_file": "src/test/resources/feature_files/upm_ppkg/cosmos/IIM/read-claim-details/physician/upm_physician.feature",
+  "target_feature_file": "src/test/resources/feature_files/upm_ppkg/cosmos/IIM/read-claim-details/physician/ppkg_physician.feature",
+  "search_type": "Claim Search"
+}
