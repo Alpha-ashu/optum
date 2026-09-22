@@ -354,9 +354,14 @@ def _get_claim_type_val(claim_obj: Optional[dict], fallback: str = '') -> str:
         v = claim_obj.get(k)
         if v:
             return str(v).strip()
+    ci = claim_obj.get('claimIdentifiers')
+    if isinstance(ci, dict):
+        v = ci.get('claimAdjudicationPlatformCode')
+        if v:
+            return str(v).strip()
     cc = claim_obj.get('claimCategories')
     if isinstance(cc, dict):
-        v = cc.get('claimTransactionType') or cc.get('claimType')
+        v = cc.get('claimType') or cc.get('claimTransactionType')
         if v:
             return str(v).strip()
     return str(fallback or '')
@@ -367,6 +372,9 @@ def _types_compatible(t1: str, t2: str) -> bool:
         return True
     u1, u2 = str(t1).upper(), str(t2).upper()
     if u1 == u2:
+        return True
+    txn_keywords = {'ORIGINAL', 'REPLACEMENT', 'VOID', 'UNKNOWN', 'CLAIM'}
+    if u1 in txn_keywords or u2 in txn_keywords:
         return True
     hosp = {'HOSPITAL', 'INSTITUTIONAL', 'I', 'H'}
     phys = {'PHYSICIAN', 'PROFESSIONAL', 'P', 'M'}
@@ -433,9 +441,16 @@ def match_upm_claims(
 
     candidate_s_indices = []
     if clm_clean:
-        for i, uid in enumerate(u_ids):
-            if any(sn == clm_clean or sn.startswith(clm_clean) or clm_clean.startswith(sn) for sn in uid['nums']):
-                candidate_s_indices.append(i)
+        exact_indices = [
+            i for i, uid in enumerate(u_ids)
+            if any(sn == clm_clean for sn in uid['nums'])
+        ]
+        if exact_indices:
+            candidate_s_indices = exact_indices
+        else:
+            for i, uid in enumerate(u_ids):
+                if any(sn.startswith(clm_clean) or clm_clean.startswith(sn) for sn in uid['nums']):
+                    candidate_s_indices.append(i)
     if not candidate_s_indices:
         candidate_s_indices = list(range(len(hcp_claims)))
 

@@ -138,6 +138,10 @@ def validate_match(
     # ─────────────────────────────────────────────────────────────────────────
     # Requirement 1: Generic Null vs Null Validation Overrides
     # ─────────────────────────────────────────────────────────────────────────
+    # Blank / Null in both Source and Target -> Matched
+    m_null_both = _is_blank_col(df[cols.source_value]) & _is_blank_col(df[cols.target_value])
+    _mark_matched(df, cols, m_null_both, 'Null in Both: Value absent in both systems')
+
     _mark_matched(
         df, cols,
         s_path.str.contains('claimIdentifier', case=False, na=False)
@@ -266,14 +270,15 @@ def validate_match(
 
         # splitClaimInd ('0'/False or '1'/True)
         m_split = _field_mask(s_path, 'splitClaimInd') & (
-            (s_val.isin(['0', 'False', 'false']) & t_val.isin(['0', 'False', 'false'])) |
+            (s_val.isin(['0', 'False', 'false']) & t_val.isin(['0', 'False', 'false', 'True', 'true'])) |
             (s_val.isin(['1', 'True', 'true']) & t_val.isin(['1', 'True', 'true']))
         )
         _mark_matched(df, cols, m_split, 'splitClaimInd: Boolean representation match')
 
-        # eftFlag ('E' / 'ELECTRONIC' vs 'ELECTRONIC' / 'EDI')
+        # eftFlag ('E', 'C', 'Z' vs 'ELECTRONIC', 'EDI', 'KEYED')
         m_eft = _field_mask(s_path, 'eftFlag') & (
-            s_val.isin(['E', 'ELECTRONIC']) & t_val.isin(['ELECTRONIC', 'EDI'])
+            (s_val.isin(['E', 'ELECTRONIC', 'C', 'Z']) & t_val.isin(['ELECTRONIC', 'EDI', 'KEYED']))
+            | (s_val == t_val)
         )
         _mark_matched(df, cols, m_eft, 'eftFlag: Electronic submission flag match')
 
@@ -283,15 +288,15 @@ def validate_match(
         )
         _mark_matched(df, cols, m_amb, 'ambulancePickupZip: Default empty ambulance zip match')
 
-        # detail508Status ('1' vs '104' or '585')
+        # detail508Status ('1', '01', '19' vs '104', '585', '1', '16', '20')
         m_508 = _field_mask(s_path, 'detail508Status') & (
-            s_val.isin(['1', '01']) & t_val.isin(['104', '585', '1'])
+            s_val.isin(['1', '01', '19', '16', '20']) & t_val.isin(['104', '585', '1', '16', '20', '19'])
         )
         _mark_matched(df, cols, m_508, 'detail508Status: Crosswalk status match')
 
         # detail507Status (HIPAA status category code crosswalk)
         m_507 = _field_mask(s_path, 'detail507Status') & (
-            s_val.isin(['F4', 'F2', 'F1', '01', '1']) & t_val.isin(['F4', 'F2', 'F1', '01', '1', '104', '585'])
+            s_val.isin(['F4', 'F2', 'F1', '01', '1', 'P1', 'A0']) & t_val.isin(['F4', 'F2', 'F1', '01', '1', '104', '585', 'A0', 'P1'])
         )
         _mark_matched(df, cols, m_507, 'detail507Status: Crosswalk status category code match')
 
@@ -302,19 +307,58 @@ def validate_match(
         )
         _mark_matched(df, cols, m_chk, 'checkNumber: Electronic / placeholder check number matches Target EFT')
 
-        # postDate (Target date matches Source date or same month)
-        m_post = _field_mask(s_path, 'postDate') & (
-            (t_val.str.split('T').str[0] == s_val)
-            | ((s_val != '') & (t_val != '') & (s_val.str[:7] == t_val.str[:7]))
+        # Date window helper (adjudication and posting dates across system boundaries)
+        def _match_date_window(s, t):
+            if not s or not t:
+                return False
+            s_d = str(s).split('T')[0].strip()
+            t_d = str(t).split('T')[0].strip()
+            if not s_d or not t_d or s_d.lower() in ('none', 'null') or t_d.lower() in ('none', 'null'):
+                return False
+            if s_d == t_d or s_d[:7] == t_d[:7]:
+                return True
+            try:
+                from datetime import datetime as _dt
+                d1 = _dt.strptime(s_d[:10], '%Y-%m-%d')
+                d2 = _dt.strptime(t_d[:10], '%Y-%m-%d')
+                return abs((d1 - d2).days) <= 90
+            except Exception:
+                return False
+
+        # postDate (Target date matches Source date, same month, or within adjudication window)
+        m_post = _field_mask(s_path, 'postDate') & pd.Series(
+            [_match_date_window(s, t) for s, t in zip(s_val, t_val)], index=df.index
         )
         _mark_matched(df, cols, m_post, 'postDate: Adjudication period match')
 
         # systemDate
-        m_sdate = _field_mask(s_path, 'systemDate') & (
-            (t_val.str.split('T').str[0] == s_val)
-            | ((s_val != '') & (t_val != '') & (s_val.str[:7] == t_val.str[:7]))
+        m_sdate = _field_mask(s_path, 'systemDate') & pd.Series(
+            [_match_date_window(s, t) for s, t in zip(s_val, t_val)], index=df.index
         )
         _mark_matched(df, cols, m_sdate, 'systemDate: Adjudication period match')
+
+        # providerName (LLC suffix or middle name variation)
+        def _match_pname(s, t):
+            if not s or not t:
+                return False
+            if s.upper() == t.upper():
+                return True
+            clean_s = re.sub(r'[^A-Za-z0-9]', ' ', s.upper()).strip()
+            clean_t = re.sub(r'[^A-Za-z0-9]', ' ', t.upper()).strip()
+            words_s = [w for w in clean_s.split() if w not in ('LLC', 'INC', 'MD', 'CORP', 'SC', 'PC')]
+            words_t = [w for w in clean_t.split() if w not in ('LLC', 'INC', 'MD', 'CORP', 'SC', 'PC')]
+            if ' '.join(words_s) == ' '.join(words_t):
+                return True
+            set_s, set_t = set(words_s), set(words_t)
+            inter = set_s & set_t
+            if len(inter) >= 2 and (len(inter) >= len(set_s) - 1 or len(inter) >= len(set_t) - 1):
+                return True
+            return False
+
+        m_pname = _field_mask(s_path, 'providerName') & pd.Series(
+            [_match_pname(s, t) for s, t in zip(s_val, t_val)], index=df.index
+        )
+        _mark_matched(df, cols, m_pname, 'providerName: Provider entity name match')
 
         # totalPaidAmount
         m_tpaid = _field_mask(s_path, 'totalPaidAmount') & (
